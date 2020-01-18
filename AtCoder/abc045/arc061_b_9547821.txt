@@ -1,0 +1,98 @@
+問題文の引用元：https://atcoder.jp/contests/abc045/tasks/arc061_b
+D - すぬけ君の塗り絵 / Snuke's Coloring / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 3 sec / Memory Limit : 256 MB
+配点 : 400 点
+問題文 : 縦 H 行、横 W 列のマス目からなる盤があります。最初、どのマス目も白く塗られています。すぬけ君が、このうち N マスを黒く塗りつぶしました。i 回目 ( 1 \leq i \leq N ) に塗りつぶしたのは、上から a_i 行目で左から b_i 列目のマスでした。すぬけ君がマス目を塗りつぶした後の盤の状態について、以下のものの個数を計算してください。各整数 j ( 0 \leq j \leq 9 ) について、盤の中に完全に含まれるすべての 3 行 3 列の連続するマス目のうち、黒いマスがちょうど j 個あるもの。
+制約3 \leq H \leq 10^93 \leq W \leq 10^90 \leq N \leq min(10^5,H×W)1 \leq a_i \leq H (1 \leq i \leq N)1 \leq b_i \leq W (1 \leq i \leq N)(a_i, b_i) \neq (a_j, b_j) (i \neq j)入力入力は以下の形式で標準入力から与えられる。H W Na_1 b_1:a_N b_N出力出力は 10 行からなる。j+1 行目 ( 0 \leq j \leq 9 ) には、盤の中に完全に含まれるすべての 3 行 3 列の連続するマス目のうち、黒いマスがちょうど j 個あるものの総数を出力せよ。
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+
+
+int main(void) {
+
+    ll ans[10]={0};
+
+    int h,w,n;
+    cin>>h>>w>>n;
+
+    map<pair<int,int>,int> m;
+
+    int dx[]={-2,-1,0,-2,-1,0,-2,-1,0};
+    int dy[]={-2,-2,-2,-1,-1,-1,0,0,0};
+    rep(i,n){
+        int a,b;
+        cin>>a>>b;
+        a--;b--;
+        rep(j,9){
+            if(b+dx[j]<0||b+dx[j]+2>=w||a+dy[j]<0||a+dy[j]+2>=h)continue;
+            m[mp(b+dx[j],a+dy[j])]++;
+        }
+    }
+
+    for(auto it=m.begin();it!=m.end();it++){
+        ans[it->second]++;
+    }
+    ans[0]=(h-2)*(ll)(w-2);
+    rep(i,9){
+        ans[0]-=ans[i+1];
+    }
+    rep(i,10){
+        cout<<ans[i]<<endl;
+    }
+
+
+}
