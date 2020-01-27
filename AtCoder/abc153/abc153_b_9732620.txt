@@ -1,0 +1,148 @@
+問題文の引用元：https://atcoder.jp/contests/abc153/tasks/abc153_b
+B - Common Raccoon vs Monster / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 200 点
+問題文 : アライグマはモンスターと戦っています。モンスターの体力は H です。アライグマは N 種類の必殺技を使うことができ、i 番目の必殺技を使うとモンスターの体力を A_i 減らすことができます。必殺技を使う以外の方法でモンスターの体力を減らすことはできません。モンスターの体力を 0 以下にすればアライグマの勝ちです。アライグマが同じ必殺技を 2 度以上使うことなくモンスターに勝つことができるなら Yes を、できないなら No を出力してください。
+制約1 \leq H \leq 10^91 \leq N \leq 10^51 \leq A_i \leq 10^4入力中のすべての値は整数である。入力入力は以下の形式で標準入力から与えられる。H NA_1 A_2 ... A_N出力アライグマが同じ必殺技を 2 度以上使うことなくモンスターに勝つことができるなら Yes を、できないなら No を出力せよ。
+
+
+
+/*
+
+
+   -J+J+JJ+JJ+++++++J++JJ+J++J+J+J+JJJJ+JJ+++++JJ+J+JJJ+J+JJ+JJ++JJ++J+JJ+JJ+JJJJ++J++J+JJ++++JJJ++JJJ+J++J++JJ++++JJJJJ++J++J++++JJJ++++J+JJJ+J+++++++++J+JJ+JJJJJJJJJJJ++JJJJJJJJJJJJJJJJJJJ+J.
+    d##""H#"TMY"""HBWB"T#"HYHYWMYWMY"WYMMY"TMM""W#"TMYBYMYBMH@T@""B"WTWTY"YY"MBBT#YM"YBTW"YY"UBWW"TH9"B"T@Y"WM"T@W""BB"WBY@W"TBBM"WWB"#"T@"T#"TM"T#"W9""W@4#TM@""""""""""""""""""""""""""""""""M#}
+     d#HU+.(4, ?&.  (S(0,.4,?o?&?Wo?H, ?o3X, .Wn. ?p ?h,>?h,cSO.(. (_.;I<1  > 1%( W Z_.O,( ._`(>(+ .z_.o..a[ dh-(Je.,+`.v_c.>.Cv(!,jf.J .= .= .#!.=.J! .J!.=.dF                                 M#}
+    d#r_4dn, 7&.?G,  (U(6,.4,?&7,?W,7h, T,Un.`7k, (h.?N,l?h,vSO.<.`1 ((O,<`(..w(mHHNa.z.+.+NMMMms`.1d@"7CMb.H@=77MN3dMMMMMN.2/(!((t.C ,^ ,' JY J!.=` .=.m(k#^                                  MN}
+    d#r   ?XS..?G,-4,  -4J6,.4,7J4,4h,4n.(ojX, (H& .h.,N-i(h.v6G 1..o.agag. >.MY`   TNy(MB^.&,.(M[(dM\  j#@(M\  .MEGM$   dNvJ.!J(%.= (` J`.d^.=./` .=-J!?N{`                                   M#}
+    d#MN&.  _4Z&..4,.7,  .4J6,.4,4-O-4o(W, </wi  4n. 4,.HJo,h,zQMMBY""7??Mb (M!.HMggMM8MF`(######%(d#  .M#NM#`  (#j##` `.#@J.!(J^.'.2 .? .F J!.^`.J!,^ .JM]  `                               ` M#}
+    d#[ 7Mm,   ?wS, 7&.?i.`.4J4,(6,6(G?W,7h..1daJ.?k,.dMB""WMm,JM_     ` MM2M] (M####N(Mb .WMM###%(MF  .###M% `.MSMM\ `.M#@(!JJ'.^.>`.'.J^.>./` .^.= .J~.#\ `                                  M#}
+    d#@0, .TMa,  .4Z&.jm+ga.  7,3,(1,1gHMN/4gM"??7WMNM% ....dMn,M{  (gQM###NdN,..7"YMM(dMm,  ` ?H[dM!  d####` `(NW#F   JHMI!JJ!(!.^ (`.f`(!,'`.7.?` ,^.W#@                                 `   M#}
+    d#r  7G, ?TNJ.`.H#"!`_?Hm.(dMMN,(u#) MNMY.&Mm.(M#F`J######K4M}   ` J####a(#Mm,   WNmgM#Ne   MPW#  .M###P `.M##M!  .M##!(J~J`,!.> .=.>.? ./~/! .^.V^ Mb   `                               ` M#}
+    d#Bu,`  7&, ?WmM=`.., ` MMM` M#Mh,Mb`d#E d######Hb d###H###mH[   .+gMM#MY!W##N.  dMI####M~ .M1#HH#MM###m-.J###Ngg-H###(v_/ / .!.v!,~(! .!,! .>.Z^ .JX#               `` `  `               MN}
+    d#r  7G, `.7&.M> .M##aJd###  M##MeWN J#t`M##H####N ,M###MY"M#L`  7!`  MM-  7"^`.j##-(TMY^.(MHN##"W##HMMTWM####"WM###HDv_>./ (`.=.>.!`.?.!`.?(v^ ./!.(N_             `    `    `        `   M#}
+    d#fT-.  71,  d@` ,####H###N  d###### ,NL (####MMM#L`(M#MF .M#N   ....+##NJ....g####NaJJgHH#####mJJ####L..M##Mt  (##M#F.!.!.~ J',~(`./-? .?(v^ ./`.JgMN_ `        ` `  (WN-..Ja.`  `      ` M#}
+    d#m, _7&,` ?1JN,` ?MMH###HM. ,MH##Mt .#N. ?MH#$ .H#e ` ` .d##MHMM#####H#H#H###H###H#H##H#HH######M##H###H###MHgJ#H##M<!,!.!.2.?.! .~_`./(z^`.?`.jgD`.M:          `  j(+HM#"~dMB`           MN}
+    d#kXWm.. ?1.  ?MN&.. ` ?M##|  .THB= `.##k.  _`  j###NgJ&M####HH#H#H#HH#H#H#HH##HHH#H#HH##HHHHHHHHHHHHHH#HHHH####H##M#!_ .`,!.~_ .!.! ,<J^`.?`.ud= .Z4N!              ?^ (N/^  `        `   MN}
+    d#r ?4xTHa, ?=-.TM#Mp   -##b      `  g###NJ. ..H#####H####H##H###H#HMMMMM###H#H###H###H#H##H#H##H##H##HH##H#HH##H##Hb_ _ /_~.! __! ,~J! .<..uV^.-Y_(dN` `                dN.             ` MN}
+    d#@I.. -7Ov9A..(OdM#M; `.###m.`` `  (##H#H#####HHH#HH#HHHH#HH#H#####p  `  ?"WM####H#H##H#HH#H#HH#H#H#H#H#H#H#HH#H###% `.!.__ .~_ .~(! .ugMMM:.uN.<-!d@                   .M%               M#}
+    d#r `_71.. ?WMBW#NJ#@` `(H##MMmJ..+M#H#H#H#H##H##H##H#####H##H#H###9"`        (TMH###HH##H###H##H#H#H#####H###H##H#H<`(__.`.~.`.~.! .gM@!`d#MYXM?~.(#% `                `   `          `   MN}
+    d#MHQ..  _7uM] `?""`  `.M#####H##H#H#H##H#H#HHH#HHH##H#H#H##H#H###Ma.`  `        ?M##################H##H###H##H####._ _` ..`.~.! .gMY`    `  dN_!.(#                 `  `  `` `         ` M#}
+    d#NQyUWHmJ. dN. ` ` ` .M##HH##H#H#H#H#H##H####HH#H#HH#H#H#HH##H#####Ma.`  `      ` MMY^?WMHH#MMHY""""""YHMMH##H##H##` `  _`  .! .(MD`   `  ` .M].<(M%               ` `  (J. +.            M#}
+    d#r?TUHXgVUWWMNJ....JH##HH#HH#H#HH#H#HHHH#HHH#H#H#H##H##H##H#H#HHH####MNg,.`` `` .-M=  ..J"=`               _7TM###]       ._ ._(#^        ` j#+dWMF                   ?N,?^.MD       `  ` MN}
+    d#b-.  _7TWHAZVWMM######H###H##H#HH#H##H#H#H#H#H#HHH##H##H#########MM######MNa&J(H_..v"! ...   `                 ?WNJ.``      .d@`     ` `  (MSVGMD    `             `     -@!   `         M#}
+    d#D(._71-.  ?7TUkeVHM###H#H##HH#H#HH#HH#H#H#HH#HH##HHHHH#HH#HMMM}(M%.MHMM##H#####M#^  `?=jV"N `     ` `  `  `  `  ` TNe. `` .(M@`  `    `  (M^.d#^                   ` ` .Y!` `         `  M#}
+    d#L.  ?7+._?1(.. ?7TSdHM####H##H#H#H#H#H#HH#H#H#H#H##H#H####M#`      (!.M#######=(J` ..VM=..,   `  `   ..... `       .WN,... J#`    `` ` .dMmM9^                        !                  M#}
+    d#HWWX&-.. _?<._?<-.. ?7THM#H#H#HH#HH#H#H#HH#H#H#HHH##H#H##H)   `  `   ?M###H#^.dnJV"H-,@"!.b  ` ... ` dN-`?4,`  `     XMY"WMM'`  `  `(MM##Na.. ``  `                `                 `   M#}
+    d#KvCOwZVUXG+-.  ?~-.<<-. _?TMH#######HH#H#H#HH#H##HHH#H#HH#N.  ` ...JH=(M##^ J=` .gMWWMN,  w,.-Y=_Ta. d!4, `?    ,`    ,h.gMN, `  `  `.HD-(7THNa,  ``  `        `   ` `..  `` `           M#}
+    d#K+Jv71Jv71OOOZXy+.. _!_.<!-._TMH#H#H#H#HH#H#HH#HH#H#HH#H#H#MVV"=?^.=.?(MD .d! .X=  `  ?N_ `?^`  `.J7ND. (h,   ` W ` ` `(b_  W_ `  ..+#MMHN+(+z7MN+              `     (MNgNm.         `  M#}
+    d#r~?7COOz++?<<+++1zOvOz(.. `_._~(TM########H##H#H#H#H#HH#HHMMI`(_.: {`(d' .f! .=.x    . W!      `..MHBWMNx (4&.  W      `d[ uY`   d#WMY` d#"WN<<_(WN, ` `           ` JB! .M=         `   M#}
+    d#Ha-...   ~?71zz((<<_<<<+<z1+-.. `._TM#H#####H#H##H#H##H####N&~.-(-mVU@``.d!  .M#n...dN.7` `  ` .Y!   ` (WN,  ?UJK       .@ .@ ` .Mb  `  `  MHWN; .JN;``        `  `,"` vM#`              MN}
+    d#mJv777VUUuJ...   ??<1+((<~~:<<;<:-.. _TM##M##H#H##HHH#HH#H##NVY"!  .K`  J\ .dMH#######{        <J/ `     dN.   .D `    `.h.d^..M#THJ.`  `    JMN,.(dN.               .(#"M\ `          ` MN}
+    d#b(.._??<<((+??7TOO&(... `~?<_____~___..._TMH##H#H##H#H#H#H##!    ` d!  .F  d#MH#H#####      ` .M#m....JMp.M{  `(\  `   `.P`.JM#M~.> T4a,      .dE..(N~ `           .J"`   `  `      `    MN}
+    d#mJ...._!??<_.-_<<!~_(<?<<11-...  `__.-.````-TM###H#H#HH#H##N,     .t   d`  H^ W##MM#M^    `` jH##H######N ^  ` X`   `   .NM#N#MHJ-,!,_./4a. .JM9<_(dN,`        `  ``  ` `              ` MN}
+    d#h((-+7""YYUAgJ-..._~!_---_~~___~<!~-.. `   `  ."MM##H##H#H##M)` ` X(...F   ?>    .J@! `     .###H###H####  `  .F `     `(###M=  .W,^.?./<,TQMb<~~((+M]                .-.                M#}
+    d#o.  ``  ~???<~~-(<?77T71+--...`` ` . ```` `      .TM##H##H###F   .PdF_7`         ?` `     ``dB=d##H#M##M'     d`    `  .#W#@!     7L.? (~.>,MF_`` ..M\ `            ` .MF`          `  ` MN}
+    d#f?777"TTCIz++-......   ``````._~<!~~...             .TM#####Hb`  ,SH: `         `    "  `  `?!  ?"=!.MM^ ` ``.t   `  ` (aY^    `   (b--(.(&MY` ...(MF              `  .M}    `           MN}
+    d#D<<<<(-..........`  `~~??!<!~~_....   `` ` `    `  `   .7MM##N   JCM-          `   R ..`  `         (Y`   ` .K`     ` .@`         ` ,N/(dMY_ ..__~_dN.                .M}             `  M#}
+    d#NA&&JJ-(-............___~~`_``  ``   ``   `                7HM-  J}db ` `  `     ` _7^?aJD           `  `   d!  ``   .%   `      `   .MM= ......--_(M{ `              .M[                M#}
+    d#KVOwrrwzOzz&&z++z++++<(?<<;<<<(<~_~._` `                  ` .M] `(] TN,`               `                 ` J\  `  `.J^            ` .Mt     ``_~_~~d@`                .M]`          `  ` MN}
+    d#D?<<<<<<<<<<<<<!~~~~~~~~_```                         `      `dN. .b`.M#m,.` `` `  `                  ` `  (%  ` ` .V!         `` ` .M=`          (d@` `            `   `   ` `           M#}
+    d#n-(-_((<<<~~<!!!!!!~~!~____..._- ```       `              `  .ML  X,J##F7WNa..  `                     `  (%`  ` .J=  `           .d#!. ....... .uM=                 `   `   `          ` MN}
+    d#P:<<?<?<<<<<<<<_--____~.__~_~_._.`  ``` ``                 `  (N,`.HMM%   (NTTWMNaJ-.. `` `  ` ` ` `` ..d^  ``.JY          ` `` .MY  ` ```   .MMN, `   `       `  ` `.Mr  dN_        `   M#}
+    d#R1++(((-<<<<<<?!~~~__......-.._._.-..`` ``                    `db ` T%`   K(b?.(MMB=7TMMMmag+JJ((J+gHHH@` ` .J"   `         ` .H@` ` ` ` `````  (TN,               ` d@` .M=             M#}
+    d#L......((<??<<<((((--<??<<<<~~_....   ``    `             ``` (M^   `   ` R ,N.(F  j#6?_,!.=.dgY"`  .J=` ..Y^          `` `..H@!  ` ` ```        `?Mm.             `.F  `(' `         `  M#}
+    d#m(JJzZYYYTTI<<_:<<<<__~!~~ ....._~_~```  ``  `   `  `  `  ` .MD          `?o` Tgb.V!&-(J&VY=dY`  ` .D-.JY=   ``          .gMY``  ` ``   `  `     `_(ML         `  ``(  ` ^ `             MN}
+    d#D??1=z+<<<<?!~_....((++v<<<!_...__~~~._ `` `   `` `  `  ` .dB!      `` j9Xgdm,  T""7!` `..J"`     ,"=!          ` ``` .+M9^        ````  -____--_--_zN_           .M@` J#{          `  ` MN}
+    d#$` .....J+&AwVY77?~-..-(1+++<<<<~_```   ``` `    .+gHHaJj#B^   ` `   ` W    ..Q!` M9XwVT"`  `       `            ...gM9!`    `  ` ````` ``-_~~_..-~?(M}`              `  `               M#}
+    d#HkWVY""^~-...JzOOOzzOI+<<<___--.``      `` `` `.H@<> ? ?W#o...   `  `  H .(Y4#!  `d;                         ` `.M@Tt           `` ``    ...  _!!_(<dM~        `                      `  M#}
+    d#n..J&ZVUXAewUVC<<<__!~-.-~~ ...__..``        ` dN,~,`(.(-~/~+?dMM9GJ-..("! .#-    .b                          `.MM`(\ `     ` ``  ````   ` ..``.~~-.dF           `  `      `             M#}
+    d#NgdU9UV771+_<!~.._<!` .._!~._~` ..__``.. `  `` ?Mr^.^.(-,!,=(Y1,~,^,7.?174HUgQXTY""^  `   `           `    `  .M3H`J:    `  `    .. .     ...._`_..d#``  `                          `  ` M#}
+    d#81&-<?!~..(??~ ...<<<..!!`.._:~~`.._!`.   ..((gMBTA.y.((,:.=.?.,!.>.<.?_J$.>.?.?TYUQ+...`   `  `        ``  .dB!.# d~  `  ` ````   _~-__.. `-__~~(dN+.. ` `                              M#}
+    d#$..-?7!` ..-??_.-?!` ..(<_!`..(?` .(JJ-.-.gMY^(W,   ``?MN,~,`(..__,`- (Y(,_,`(-(._/`-dj7TSa...`  `  `    `.&M^  .F X``  `  ` ``   ...  _<((<-. _~-?77TMm   `                             M#}
+    d#r`...+77_.-??! ..(<+<?~..-?!`.._`..?MMHVTMn   ` 4x     (MMNJs.J(.i,^.?(,-,!,^.((,!,!.@._<,^,?z"4m+-.  ``.+M=  ` .] K  `  ``     `   `-~..`.?7+J<i-. !~(MNe     `   `              ` `` ` M#}
+    d#D?_..?7!  ..<1+??!...v=! ._!`..<!`._?Mm?h.,h.   `W, ...JHMMMMMMMMNgm.ggHp.l.G,?~,'.=d".(!.^.7.?J$!."7U+uM=  d  `j\ K    ` ` . _-.    _. __~..~.?7uJ?1+..MD`          `               ` ..M#}
+    d#D!``...?I&?7` ..z7! ..?!`..(7`..~`._~_dNJW,,b ..JdMMH@"!`()    ...?7"7!.MNM#"h(_.-_+`( (__<`+`(J3-`;`(-?MN,`d`  d~.b   ` _._  ._.~-.  . ~. ~_<_._~.(7GJd#! `` ` ` ` `        `  `` `.JM@TM#}
+    d#mJ7O+?=` ..JY=` ..?! ..J=`..~`..<_~./<-?WMR.MMM"!J: ,]   J: `  d@"WNg.gM""h,  7Wa.o.z./(,~,^.?(?<,!,!.?(,UN.d   H .P _..`` ~- . _~__<-.`_. ~-._~(<-._(dMagMMMMHMHg-, `  ` `       .+M=  ?M#}
+    d#9=` ..JY"! ..J<! ..J=` ._! ._<~~.?<,!_.~.H#Y!.D  J: (\   W  ., HN.. (Wr    ?L  ` /M###Ma,!.=.?-,~,'.=.?b,W#_K  .@ .F  ._.-.- ~-~_._~~-?1(.__. !_. ?((TM=?~._78aJ7TMMMm, .+g,   ` .MD ?73jMN}
+    d#nJV"=` ..?=``..J"! .,?`..?<<(.7<,?_.~_(!-?`.-(D `d~ J}` .#  ,F`,MP7h. ?b   `-b    .H#M###Nkl.+.._,m,x.(NdM{.@  .F ,%  ._.-___.__<__..~<:.?6-._<. _~. _?-?i..?<._78QJvTMM#:(HR.  (Mh-7T&..W#}
+    d#t  .-7^``..J"! ..?! .(1(!(J7i,<`.~-<<_-? ./! (% `X  d~  .F  .]  JMx 4,.Vb    d)   ..M#M9=TWM#agJJHM"YYMY!d`.]  ($ ()_ ._.-_-(<___.<-(_._<;<_?G,._~. _!-. ?iJ7(. ?i._79W&vTWQMMMNM9i._?7&JMN}
+    d#K7!  ..J"! ..?^`..?i?!.J=(-7`.<-(<!./! .?` .~J} `K  W  `(% `J% `J7Mm,Wj}d- ,..m+HMB"!.#`    K``~~d:   K`.F J% `J\`J{_ ._ __.?<(+__~.?-<<- !><-_7n. _<.  ?+. _7(?3-._7i.-7WNJJTWHN.. -?T&.M#}
+    d#[..vY!  .J7` .J7-?~.v=(J=`.?<(1?-J> .J! .___`J:  @  H   g:  d{  d~ ?WMNaJmHMB"=`,]   .]  ` .D    K`  .D .% d: `J: d!_ .~.._.~.?+?i_-~.?i<(i._<<z(?Tn, _<.. ?1.  ?1J7u.._7i..7WNaJ7THm..  W#}
+    dN@^  ..7! ..?1J7-.Z=(J=`./~.1/!.v! .v! .?-/` ,W` .F .@   d`  d~  K  `  W?!`(%    J\  `J:   `(\ ` .@ ` J\ J: X`  d~`d~ ~.~--~.~.~.T,?i.<~-_1J(<. ??+1.?UA, _<..`?7-. ?7(JT&, ?7&,.7TNgJ7THmM#}
+    d#L.v=` .-7+/^.(Y=.J=`.(!-1+^(J=`.(=` .!-?` ,`.K` ,] .b`  K   W` .b   `.K  `d:    d!`  d  `  J:  `.F   d:`W  H`  W` #<_.___._.- _.<.4,?i.i/-.7J<Ji._<v+i,7Wa, _7-.`_7+,`.7O,?4J. ?T&..?TMmJMN}
+    d#t`..vCJ7!.JY^.J=`.-^(Jz?_(f! .J=  .!.?` (!.!.@  ,% .F  .@   K  .]    .P`  K` `  W  ` K   ` X`   (\   K  # .@   K  b.?/-__._.-_._-__.4,?o,1_i.?&<(1. ?11v+_7Ha,`.=(.  71.  (TuJTG.. ?T&,.?MN}
+    d#K7iJ=~.gY!.J"`..7-(1/^.v=` .Z^ .,!.?` ,!./`.JF `(\ .F `.P `.@ `-}  ` .$  .P     K`  .]     P ` `J:   D  F ,D  .@ .@_..+<.(-(.~.<.~.?,(4,?a.1-<.?GJi?i..7z1C-?THa. .7+.  ?4..  70.?4a,  ?4M#}
+    d#8=..dY!.J"`..?~.CJ=-(Y! .JY! .(!.>  ,!.(! ,zd\` J} .]  ,t  .b  (` `  .\  .%   `.P   .\`    !   `J` ` '  \ (%  .b .](__ 1<.<i.~.__- <.<.?N,?n.<,<.(4,1J1, ?1CJI.?UN+. .7i.` _7+,` ?Ta,7U+.M#}
+    d#mdY~.J"` .v!.vu7~.d=` .d=``./!.7  ,^ ,! .1zuW{``J_ ,] `(\ `,P`` `  ``.```(:```  %``` ` ``` `` `  `` ``` ``(:` ,D .8.(/- 1(-((.~.?.<..-.1.?N,?n.7,<..T&?(7+..7JOv&,?WNJ.`.7&,``.7n, `.7UJ(MN}
+    d##H#####H##H###HHH#H#H###H#H##MHHH##H#HHH#H####HHHH###H###H###H##H###H#H#H#HH#H##HHH##H#H#H#H#####HHHH#H#HHH#HH#H#MH#HH#HH#HH#HH#HH##H##H#HH#HH##HH#H###H##HHH##H##HH#H#HHH#HHHMH###H##M####{
+
+*/
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int;
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+
+
+
+int main(void) {
+    int h,n;
+    cin>>h>>n;
+    int sum=0;
+    rep(i,n){
+        int a;
+        cin>>a;
+        sum+=a;
+    }
+    if(sum<h)cout<<"No"<<endl;
+    else fin("Yes");
+}
