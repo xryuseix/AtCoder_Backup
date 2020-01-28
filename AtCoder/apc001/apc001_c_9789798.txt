@@ -1,0 +1,111 @@
+問題文の引用元：https://atcoder.jp/contests/apc001/tasks/apc001_c
+C - Vacant Seat / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 500 点
+問題文 : これはインタラクティブな問題です。N を 3 以上の奇数とします。N 個の席が円状に並んでいます。席には 0 から N - 1 まで番号が振られています。各 i (0 ≤ i ≤ N - 2) について、席 i と席 i + 1 は隣り合っています。また、席 N - 1 と席 0 は隣り合っています。各席の状態は「空席」「男性が座っている」「女性が座っている」のどれかです。ただし、同性どうしが隣り合う席に座っていることはありません。N が 3 以上の奇数の場合、空席が少なくとも 1 つは存在することが示せます。あなたには N のみが与えられ、各席の状態は与えられません。あなたの目標は、どれか 1 つの空席の番号を当てることです。そのために、あなたは次のクエリを繰り返し送ることができます。整数 i (0 ≤ i ≤ N - 1) を選ぶ。 席 i が空席ならば、正答となる。 そうでなければ、席 i に座っている人の性別が知らされる。クエリを高々 20 回まで送ることで、どれか 1 つの空席の番号を当ててください。
+制約N は奇数である。3 ≤ N ≤ 99,999入出力最初に、N が次の形式で標準入力から与えられる。N次に、クエリを繰り返し送る。クエリは次の形式で標準出力へ出力する。行末には改行を出力せよ。iこれに対するクエリの答えは、次の形式で標準入力から与えられる。ss は Vacant, Male, Female のどれかである。これらはそれぞれ、席 i の状態が「空席」「男性が座っている」「女性が座っている」であることを表す。注意出力の度に標準出力を flush せよ。 そうしない場合、TLE の可能性がある。s が Vacant の場合、すぐにプログラムを終了せよ。 そうしない場合、ジャッジ結果は不定である。クエリ回数が 20 を超えた場合、およびクエリの形式が正しくない場合、ジャッジ結果は不定である。入出力例 1このサンプルでは、N = 3 であり、席 0, 1, 2 の状態はそれぞれ「男性が座っている」「女性が座っている」「空席」である。InputOutput30Male1Female2VacantScore : 500 pointsProblem StatementThis is an interactive task.Let N be an odd number at least 3.There are N seats arranged in a circle.The seats are numbered 0 through N-1.For each i (0 ≤ i ≤ N - 2), Seat i and Seat i + 1 are adjacent.Also, Seat N - 1 and Seat 0 are adjacent.Each seat is either vacant, or oppupied by a man or a woman.However, no two adjacent seats are occupied by two people of the same sex.It can be shown that there is at least one empty seat where N is an odd number at least 3.You are given N, but the states of the seats are not given.Your objective is to correctly guess the ID number of any one of the empty seats.To do so, you can repeatedly send the following query:Choose an integer i (0 ≤ i ≤ N - 1). If Seat i is empty, the problem is solved. Otherwise, you are notified of the sex of the person in Seat i.Guess the ID number of an empty seat by sending at most 20 queries.ConstraintsN is an odd number.3 ≤ N ≤ 99 999Input and OutputFirst, N is given from Standard Input in the following format:NThen, you should send queries.A query should be printed to Standart Output in the following format.Print a newline at the end.iThe response to the query is given from Standard Input in the following format:sHere, s is Vacant, Male or Female.Each of these means that Seat i is empty, occupied by a man and occupied by a woman, respectively.NoticeFlush Standard Output each time you print something. Failure to do so may result in TLE.Immediately terminate the program when s is Vacant. Otherwise, the verdict is indeterminate.The verdict is indeterminate if more than 20 queries or ill-formatted queries are sent.Sample Input / Output 1In this sample, N = 3, and Seat 0, 1, 2 are occupied by a man, occupied by a woman and vacant, respectively.InputOutput30Male1Female2Vacant
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int;
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+
+string question1(int m) {
+    cout<<m<<endl;
+    string s;
+    cin>>s;
+    return s;
+}
+
+// int question2(int l, int r) {
+//     cout<<l<<endl;
+//     string s,t;
+//     cin>>s;
+//     if(s=="Vacant")return 2;
+//     if(l==r)return 0;
+//     cout<<r<<endl;
+//     cin>>t;
+//     if(t=="Vacant")return 2;
+//     if((r-l)%2==1&&s==t)return 1;
+//     if((r-l)%2==0&&s!=t)return 1;
+//     return 0;
+// }
+
+int main(void) {
+    
+    int n;
+    cin>>n;
+    string s=question1(n-1);
+    if(s=="Vacant")return 0;
+
+    s=question1(0);
+    if(s=="Vacant")return 0;
+    int l=0,r=n-1;
+    while(1){
+        int m=(l+r)/2;
+        string res=question1(m);
+        if(res=="Vacant")return 0;
+
+        if (res == s) {
+            if (m%2 == 0) {
+                l = m;
+            } else {
+                r= m;
+            }
+        } else {
+            if (m%2 == 1) l = m;
+            else r = m;
+        }
+    }
+}
