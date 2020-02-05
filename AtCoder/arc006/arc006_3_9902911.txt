@@ -1,0 +1,85 @@
+問題文の引用元：https://atcoder.jp/contests/arc006/tasks/arc006_3
+C - 積み重ね / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 64 MB
+問題文 : 　高橋君はもう大人なので、親元を離れて一人暮らしをすることにしました。トラックから引越し先の部屋へと荷物のダンボールを運びたいのですが、部屋の床がダンボールで埋まってしまうと、今日高橋君が寝るための布団がひけません。　そこで、1 箱ずつ広げて置くのではなく、ある程度ダンボールを積み重ねた山を作ることにしました。しかし、ダンボールには重さが決まっており、下にあるダンボールよりも重いダンボールを上に積み重ねると下のダンボールが潰れてしまいます。図：下にあるダンボールは上にあるダンボール以上の重さでなければならない　トラックから運ぶ順にダンボールの重さが与えられるので、ダンボールを潰さないような積み重ね方を考えなさい。そして、その積み重ねた山の個数が最小となる場合の山の個数を求めなさい。入力入力は以下の形式で標準入力から与えられる。Nw_1w_2::w_N入力は N+1 行ある。1 行目には、ダンボールの個数を表す整数 N(1≦N≦50) が与えられる。2 行目からの N 行には、i+1(1≦i≦N) 行目に i 番目に運ぶダンボールの重さを表す整数 w_i(1≦w_i≦100,000) が与えられる。 出力ダンボールを順番に運び、上のダンボールが下のダンボールと同じ重さまたはそれよりも軽くなるように積み重ねたときに、できるダンボールの山の数の最小値を標準出力に 1 行で出力せよ。なお、最後には改行を出力せよ。
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int;
+int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+
+
+
+int main(void) {
+    int n;
+    cin>>n;
+    vi v(n);
+    rep(i,n)cin>>v[i];
+    int ans=0;
+
+    set<int> s;
+    rep(i,v.size()){
+        auto it=s.lower_bound(v[i]);
+        if(it == s.end()){
+            ans++;
+            s.insert(v[i]);
+        } else {
+            s.erase(it);
+            s.insert(v[i]);
+        }
+    }
+    fin(ans);
+}
