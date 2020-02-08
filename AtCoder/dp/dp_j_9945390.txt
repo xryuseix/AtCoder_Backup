@@ -1,0 +1,95 @@
+問題文の引用元：https://atcoder.jp/contests/dp/tasks/dp_j
+J - Sushi / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 100 点
+問題文 : N 枚の皿があります。皿には 1, 2, \ldots, N と番号が振られています。最初、各 i (1 \leq i \leq N) について、皿 i には a_i (1 \leq a_i \leq 3) 個の寿司が置かれています。すべての寿司が無くなるまで、太郎君は次の操作を繰り返し行います。1, 2, \ldots, N の目が等確率で出るサイコロを振り、出目を i とする。 皿 i に寿司がある場合、皿 i の寿司を 1 個食べる。 皿 i に寿司が無い場合、何も行わない。すべての寿司が無くなるまでの操作回数の期待値を求めてください。
+制約入力はすべて整数である。1 \leq N \leq 3001 \leq a_i \leq 3入力入力は以下の形式で標準入力から与えられる。Na_1 a_2 \ldots a_N出力すべての寿司が無くなるまでの操作回数の期待値を出力せよ。相対誤差が 10^{-9} 以下ならば正解となる。
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int;
+int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+
+vector<vector<vector<double>>> dp(310, vector<vector<double>>(310,vd(310,-1)));
+
+int n;
+double rec(double i, double j, double k){
+    double res=0.0;
+    if(dp[i][j][k]>=0)return dp[i][j][k];
+    if(i==0&&j==0&&k==0)return 0.0;
+
+    if (i > 0) res+=rec(i-1,j,k)*i;
+    if (j > 0) res+=rec(i+1,j-1,k)*j;
+    if (k > 0) res+=rec(i,j+1,k-1)*k;
+
+    res+=n;
+    res/=(i+j+k);
+    return dp[i][j][k]=res;
+}
+
+
+int main(void) {
+    
+    
+    cin>>n;
+    vi a(n);
+    rep(i,n)cin>>a[i];
+    int in[3]={0};
+    rep(i,a.size()){
+        in[a[i]-1]++;
+    }
+    printf("%.9f\n",rec(in[0],in[1],in[2]));
+}
