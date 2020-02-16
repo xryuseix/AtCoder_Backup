@@ -1,0 +1,27 @@
+問題文の引用元：https://atcoder.jp/contests/rcl-contest-2020-qual/tasks/rcl_contest_2020_qual_b
+B - イラストレーターXと不思議なペン / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MBMathJax.Hub.Config({messageStyle:"none",tex2jax:{skipTags:["script","noscript","style","textarea","code"],inlineMath:[['\\(','\\)']]}});#fixed-server-timer{height: auto;}img.example {  padding: 10px 0;  max-width: 100%;  height: auto;}            
+問題文 :               イラストレーターのXは、不思議なペンを使って絵を描きます。このペンから出る色は、1秒ごとに赤色 → 青色 → 緑色 → 黄色 の順に繰り返し変わります。                    下の画像は、Xがこれから描こうとしている絵の計画の例です。                            Xは以下の手順で絵を描きます。                              （1）絵を描く紙をN 行 N 列のグリッドに区切ります。上から i 行目、左から j 列目のセルを (i, j) と表します。それぞれのセルについて、ペンのどの色で塗りたいかを計画します。          （2）四隅のセルに色を塗ります。(0, 0) を赤色に、(0, N-1) を青色に、(N-1, 0) を緑色に、(N-1, N-1) を黄色に塗ります。それ以外のセルには色が塗られていません。          （3）M 秒間の間、1秒ごとに以下のいずれかを選んで実行します。初回はペンを使うと赤色で塗ることができます。                           線を塗る: ペンを使って色を塗ります。今から塗ろうとしている色と同じ色のセルを選び、そこから上下左右のいずれかの方向に 5 つ色を塗ります。                               たとえば、(r,c)から上方向に塗った場合、(r-1,c) から (r-5,c) までを塗ります。                  ただし、グリッドからはみでる部分に関しては塗りません。                  塗ろうとしたセルに既に色が塗られている場合、古い色は消えて、塗ろうとしている色で上書きされます。                              何もしない: 次の色に切り替わるのを待ちます。                                                   Xは絵を描く手順の（1）と（2）を終えて、まさに（3）を始めようとしているところです。各セルをどの色で塗る計画かが決められている状態で、うまく塗ることでXの計画通りに着色されたセルの個数を最大化してください。                    各テストケースの得点およびこの問題の得点は、次のように計算されます。                    1つのテストケースでは、Xの計画通りに着色されたセルの個数がそのまま得点になります。        テストケースは全部で 50 個あります。各テストケースの得点の合計が、この問題の得点になります。                                  入力        入力は以下の形式で標準入力から与えられます。\(\begin{array}{lll}    N ~ M & & \\    A_{ 0,0 } & \ldots & A_{ 0,N-1 } \\    \vdots & \ddots & \vdots \\    A_{ N-1,0 } & \ldots & A_{ N-1,N-1 }  \end{array}\)                  N は絵を描く紙の大きさを表す整数で、N = 50 を満たします。          M はXが手順（3）で定められた操作を実行する回数で、M = 500 を満たします。          A_{i,j} は i 行 j 列目にXが塗りたい色を表し、 0 ≤ A_{i,j} ≤ 3 を満たします。 A_{i,j} が  0  なら赤色に、  1  なら青色に、  2  なら緑色に、  3  なら黄色に塗りたいことを表します。          A_{0,0} = 0 , A_{0,N-1} = 1 , A_{N-1,0} = 2 , A_{N-1,N-1} = 3 を満たします。                                    出力                  M 行出力してください。上から順に、実行する操作を出力してください。                      線を塗る場合、選択したセルの位置 (r,c) （ 0 ≤ r,c ≤ N-1  ）と、塗る方向を表す文字をUDLR （それぞれ上下左右に対応します）の中からひとつ、スペース区切りで出力してください。選択したセルの色がこれから塗ろうとしている色と一致しない場合、WA となります。            何もしない場合、-1と出力してください。                                          テストケースの生成について              各ケースはテストケースジェネレータによって生成されています。        テストケースジェネレータはページ下部のリンクより提供しています。        Xの絵の計画の例として挙げた画像は seed = 1, 2, 3 の例です。        テストケースジェネレータは以下の手順でケースを生成します。厳密にはテスターの実装を見てください。説明・実装ともに、必ずしも目を通す必要はありません。                  まず、グリッドのセルおよび生成時に使われるリストを以下のように初期化します。                      最初、全てのセルは色が塗られていません。            四隅を着色します。 (0, 0) を赤色に、(0, N-1) を青色に、(N-1, 0) を緑色に、(N-1, N-1) を黄色に塗ります。            各色について、まだ色が塗られていないセルをランダムに 3 から 10 マス選び、着色します。            着色された各セル (i, j) をピックアップし、そこから上下左右のセルについて、 (i, j) の色とセルの座標をペアにしたものをリストに追加します。                    次に、リストが空になるまで以下の操作を繰り返し、グリッドに色を塗っていきます。                      リストからランダムにペアを取り出し、ペアのセルが既に塗られているならスキップします。そうでなければセルをペアの色で塗った後、塗った色と四近傍のセルを先ほど同様にリストに追加します。                    最後に、グリッドが以下の条件を満たすかチェックします。条件を満たさない場合、このケースの生成を最初からやり直します。                      出力が満たす条件: 各色のセルの数が \( \lfloor N ^ 2 / 6 \rfloor \) 個以上であること。                                            
+
+
+
+#include <iostream>
+#include <vector>
+using namespace std;
+typedef vector<int> vi;
+typedef vector<vector<int> > vvi;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+
+
+int main(void) {
+
+    int n,m;
+    cin>>n>>m;
+    int a;
+    rep(i,n*m)cin>>a;
+    rep(i,m){
+        cout<<-1<<endl;
+    }
+
+}
+
