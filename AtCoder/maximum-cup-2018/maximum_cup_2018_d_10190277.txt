@@ -1,0 +1,98 @@
+問題文の引用元：https://atcoder.jp/contests/maximum-cup-2018/tasks/maximum_cup_2018_d
+D - Many Go Round / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 100 点
+問題文 : ある日 S 君は環状の道路をドライブすることにした。この環状道路には等間隔に休憩所があり、0 から M - 1 までの番号が振られている。S 君は0番の休憩所からスタートし、0 → 1 → 2 → … → (M - 2) → (M - 1) → 0 → 1 → 2 → … と巡回する。S 君の車は，燃料1リットルで休憩所を1つ進むことができる。しかし燃料の補充の際は、あらかじめ用意した、補充量が a_1 , a_2 , a_3 ,…, a_{N-1} , a_{N} である N 個の燃料タンクから 1 つ以上選んで補充しなけらばならない。燃料タンクは補充を行うと空になるため、同じ燃料タンクを2回以上選ぶことはできない。この車は走り出すと燃料を使い切るまで止まらないため、ある特定の休憩所に停まりたい場合は、ぴったりそこで燃料が尽きるように補充する燃料タンクを選ばなければならない。 S 君は番号Lの休憩所で友人と待ち合わせをしており、車の燃料が0の状態で燃料タンクを複数選んで補充し、番号0の休憩所からスタートして番号Lの休憩所に停まりたい。しかし環状道路をX周以上すると市の交通条例違反になってしまう。 S 君がX周以内に番号Lの休憩所に停まることができるような燃料タンクの選び方は存在するかどうかを判定せよ。燃料の補充は最初の1回のみである。また、スタート直後は1周目と定義し、再び番号0の休憩所にたどり着いた時点で次の周回とする。
+制約1 \leq N \leq 100003 \leq M \leq 10001 \leq L \leq M - 12 \leq X \leq 100001 \leq a_i \leq 10000入力入力は以下の形式で標準入力から与えられる。N M L Xa_1 a_2 ... a_N1 行目には、燃料タンクの数 N 、休憩所の個数 M 、目的の休憩所の番号 L 及び条例違反となる周回数 X が与えられる。2 行目には、用意された N 個の燃料タンクそれぞれの補充量が正の整数で与えられる。a_i は i 番目のタンクの補充量を示す。出力 S 君が X 周以内に番号 L の休憩所に停まることができる場合は Yes を、停まることができない場合は No を出力せよ。
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int;
+int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+
+
+
+int main(void) {
+    
+    int n,m,l,x;
+    cin>>n>>m>>l>>x;
+    vb point(1010,0);
+    vb next(1010,0);
+    vi roop(1010,INF);
+    vi a(n);
+    rep(i,n)cin>>a[i];
+    point[0]=1;
+    roop[0]=1;
+    for(int i=0;i<n;i++){
+        rep(j,1010)next[j]=false;
+        for(int j=0;j<m;j++){
+            if(!point[j])continue;
+            if((j+a[i])/m+roop[j]>x)continue;
+            next[j]=point[j];
+            next[(j+a[i])%m]=true;
+            chmin(roop[(j+a[i])%m],(j+a[i])/m+roop[j]);
+        }
+        rep(j,1010)point[j] = next[j];
+        // cout<<"==========="<<endl;
+        // for(int j=0;j<m;j++){
+        //     cout<<i<<" : "<<point[j]<<" "<<roop[j]<<endl;
+        // }
+    }
+    if(point[l])fin("Yes");
+    else fin("No");
+    
+}
