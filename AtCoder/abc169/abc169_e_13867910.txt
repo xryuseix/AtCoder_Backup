@@ -1,0 +1,123 @@
+問題文の引用元：https://atcoder.jp/contests/abc169/tasks/abc169_e
+E - Count Median / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 500 点
+問題文 : N 個の整数 X_1, X_2, \cdots, X_N があり、A_i \leq X_i \leq B_i であることがわかっています。X_1, X_2, \cdots, X_N の中央値として考えられる値はいくつあるか求めてください。注記X_1, X_2, \cdots, X_N の中央値は次のように定義されます。X_1, X_2, \cdots, X_N を昇順に並び替えたものを x_1, x_2, \cdots, x_N とします。N が奇数のとき、中央値は x_{(N+1)/2}N が偶数のとき、中央値は (x_{N/2} + x_{N/2+1}) / 2
+制約2 \leq N \leq 2 \times 10^51 \leq A_i \leq B_i \leq 10^9入力はすべて整数である。入力入力は以下の形式で標準入力から与えられる。NA_1 B_1A_2 B_2:A_N B_N出力答えを出力せよ。
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <random>
+#include <iomanip>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<pair<ll,ll> > vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int,int> mii;
+typedef set<int> si;
+#define rep(i,n) for(ll i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define arep(i,v) for(auto i : v)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+template <class T> inline void dump(T &v){irep(i, v){cout<<*i<<((i==--v.end())?'\n':' ');}}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL<<60;
+constexpr ll MOD = 1000000007;
+constexpr ld EPS = 1e-11;
+
+template<class T>
+void lambdaSort(vector<T> &v) {
+    sort(all(v), [](auto const& l, auto const& r) {
+        return l.se > r.se; // このbool式が成り立つ時入れ替える
+    });
+}
+
+int main() {
+
+    int n;
+    cin>>n;
+    vector<pair<ll,ll>> v(n);
+    rep(i,n){
+        ll a,b;
+        cin>>a>>b;
+        v[i]=mp(a,b);
+    }
+    double l,r;
+    Sort(v);
+    
+    if(n%2==1){
+        l=v[(n-1)/2].first;
+        lambdaSort(v);
+        r=v[n/2].second;
+        cout<<ll(r-l+1)<<endl;
+    } else {
+        l=(v[(n-1)/2].first+(double)v[(n-1)/2+1].first)/2;
+        lambdaSort(v);
+        // for(int i=0;i<n;i++){
+        //     cout<<v[i].se<<" ";
+        // }
+        // cout<<endl;
+        // cout<<(n-1)/2<<endl;
+        r=(v[(n-1)/2].se+(double)v[(n-1)/2+1].se)/2;
+        // cout<<l<<" "<<r<<endl;
+        cout<<ll((r-l+1)+(r-l))<<endl;
+    }
+}
+
+
+// if(n%2==1)l=v[(n-1)/2].first;
+//     else l=v[(n-1)/2+1].first;
+//     lambdaSort(v);
+//     r=v[n/2].second;
+//     cout<<l<<" "<<r<<endl;
