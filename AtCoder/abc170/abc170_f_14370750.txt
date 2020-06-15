@@ -1,0 +1,189 @@
+問題文の引用元：https://atcoder.jp/contests/abc170/tasks/abc170_f
+F - Pond Skater / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 3 sec / Memory Limit : 1024 MB
+配点 : 600 点
+問題文 : アメンボのすぬけ君は南北 H マス東西 W マスの長方形の形をしたグリッド状の池に住んでいます。北から i 番目、西から j 番目のマスをマス (i,j) とします。いくつかのマスには蓮の葉が浮かんでおり、すぬけ君はそれらのマスには入ることができません。c_{ij} が @ のときマス (i,j) に蓮の葉が浮かんでいること、.のときそうでないことを表します。すぬけ君は一回水をかくことで東西南北のいずれかの方向に 1 マス以上 K マス以下移動することができます。移動の途中に蓮の葉のあるマスがあってはいけません。また、蓮の葉のあるマスや池の外に移動することもできません。すぬけ君がマス (x_1,y_1) から (x_2,y_2) まで移動するのに最小で何回水をかく必要があるか求めてください。(x_1,y_1) から (x_2,y_2) まで移動することができない場合、そのことを指摘してください。
+制約1 \leq H,W,K \leq 10^6H \times W \leq 10^61 \leq x_1,x_2 \leq H1 \leq y_1,y_2 \leq Wx_1 \neq x_2 または y_1 \neq y_2c_{i,j} は . または @c_{x_1,y_1} = .c_{x_2,y_2} = .入力される数はすべて整数である。入力入力は以下の形式で標準入力から与えられる。H W Kx_1 y_1 x_2 y_2c_{1,1} c_{1,2} .. c_{1,W}c_{2,1} c_{2,2} .. c_{2,W}:c_{H,1} c_{H,2} .. c_{H,W}出力すぬけ君がマス (x_1,y_1) から (x_2,y_2) まで移動するのに必要な最小の水かきの回数を出力せよ。(x_1,y_1) から (x_2,y_2) まで移動することができない場合、-1を出力せよ。
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <random>
+#include <iomanip>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<pair<ll,ll> > vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int,int> mii;
+typedef set<int> si;
+#define rep(i,n) for(ll i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define arep(i,v) for(auto i : v)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+template <class T> inline void dump(T &v){irep(i, v){cout<<*i<<((i==--v.end())?'\n':' ');}}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL<<60;
+constexpr ll MOD = 1000000007;
+constexpr ld EPS = 1e-11;
+
+int h,w,k;
+int x1,x2,Y1,y2;
+
+// 各座標に格納したい情報を構造体にする
+// 今回はX座標,Y座標,深さ(距離)を記述している
+struct Corr {
+    int x;
+    int y;
+    int muki;
+};
+queue<Corr> q;
+int bfs(vs grid) {
+    vector<vector<vpii>> ans(h,vector<vpii>(w,vpii(4,mp(INF,INF))));
+    int dx[8] = {1, 0, -1, 0};
+    int dy[8] = {0, 1, 0, -1};
+    rep(i,4)ans[Y1][x1][i]=mp(0,k);
+    
+    rep(i,4){
+        Corr c={x1,Y1,(int)i};
+        q.push(c);
+    }
+
+
+    while(!q.empty()) {
+        Corr now = q.front();q.pop();
+        // cout<<now.y<<" "<<now.x<<endl;
+        // rep(i,4)cout<<ans[now.y][now.x][i].fi<<" ";
+        // cout<<endl;
+        for(int i = 0; i < 4; i++) {
+            if(now.muki==i){
+                // fin("A");
+                int nextx = now.x + dx[i];
+                int nexty = now.y + dy[i];
+
+                // 次に探索する場所のX座標がはみ出した時
+                if(nextx >= grid[0].size()) continue;
+                if(nextx < 0) continue;
+
+                // 次に探索する場所のY座標がはみ出した時
+                if(nexty >= grid.size()) continue;
+                if(nexty < 0) continue;
+                if(grid[nexty][nextx]=='@')continue;
+                // 次に探索する場所が既に探索済みの場合
+                pair<int,int> p=ans[now.y][now.x][i];
+                p.se++;
+                if(p.se==k+1){
+                    p.se=1;
+                    p.fi++;
+                }
+                if(ans[nexty][nextx][i]>p){
+                    ans[nexty][nextx][i]=p;
+                    Corr next = {nextx, nexty, i};
+                    q.push(next);
+                }
+            } else {
+                // fin("B");
+                int nextx = now.x;
+                int nexty = now.y;
+
+                // 次に探索する場所のX座標がはみ出した時
+                if(nextx >= grid[0].size()) continue;
+                if(nextx < 0) continue;
+
+                // 次に探索する場所のY座標がはみ出した時
+                if(nexty >= grid.size()) continue;
+                if(nexty < 0) continue;
+
+                pair<int,int> p=ans[now.y][now.x][now.muki];
+                p.fi++;
+                p.se=0;
+                if(ans[nexty][nextx][i]>p){
+                    ans[nexty][nextx][i]=p;
+                    Corr next = {nextx, nexty, i};
+                    q.push(next);
+                }
+            }
+        }
+        // cout<<now.x<<" " <<now.y<<endl;
+        // rep(i,h){
+        //     rep(j,w){
+        //         if(ans[i][j][1].fi==INF)printf("  _");
+        //         // else printf("%3d",ans[i][j][1].fi);
+        //         else printf("%3d",min({ans[i][j][0],ans[i][j][1],ans[i][j][2],ans[i][j][3]}).fi);
+        //     }
+        //     cout<<endl;
+        // }
+        // fin('\n');
+        // rep(i,h){
+        //     rep(j,w){
+        //         if(ans[i][j][1].fi==INF)printf("  _");
+        //         // else printf("%3d",ans[i][j][1].fi);
+        //         else printf("%3d",min({ans[i][j][0],ans[i][j][1],ans[i][j][2],ans[i][j][3]}).se);
+        //     }
+        //     cout<<endl;
+        // }
+        // fin('\n');
+    }
+    return min({ans[y2][x2][0],ans[y2][x2][1],ans[y2][x2][2],ans[y2][x2][3]}).fi;
+}
+
+int main() {
+    
+    cin>>h>>w>>k>>Y1>>x1>>y2>>x2;
+    vs v(h);
+    rep(i,h)cin>>v[i];
+    x1--;Y1--;x2--;y2--;
+
+    int ans=bfs(v);
+    if(ans==INF)fin(-1);
+    else fin(ans);
+}
