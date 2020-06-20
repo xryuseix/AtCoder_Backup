@@ -1,0 +1,139 @@
+問題文の引用元：https://atcoder.jp/contests/arc005/tasks/arc005_3
+C - 器物損壊！高橋君 / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 64 MB
+問題文 : 　良く見てみるとカードの有効期限が切れていたので、高橋君は諦めて魚屋に直接うなぎを買いに行くことにしました。　彼の住む街は長方形の形をしており、格子状の区画に区切られています。区画は道または塀のどちらかであり、高橋君は道を東西南北に移動できますが斜めには移動できません。また、塀の区画は通ることができません。高橋君の家から魚屋までの道のりは非常に複雑なため、単純に歩くだけでは辿り着くことは困難です。　しかし、高橋君は腕力には自信があるので道に上下左右で面している塀を 2 回までなら壊して道にすることができます。　高橋君が魚屋に辿り着くことができるかどうか答えてください。入力入力は以下の形式で標準入力から与えられる。H Wc_{(0,0)}c_{(0,1)} … c_{(0,W-1)}c_{(1,0)}c_{(1,1)} … c_{(1,W-1)}::c_{(H-1,0)}c_{(H-1,1)} … c_{(H-1,W-1)}入力は H+1 行ある。1 行目は、街の南北の長さとして整数 H(1≦H≦500) と東西の長さとして整数 W(1≦W≦500) が空白で区切られて与えられる。2 行目からの H 行には、格子状の街の各区画における状態 c_{(i,j)}(0≦i≦H-1, 0≦j≦W-1) が与えられる。i 行目 j 文字目の文字 c_{(i,j)} はそれぞれ s, g, ., # のいずれかで与えられ、座標 (j,i) が下記のような状態であることを表す。s : その区画が家であることを表す。g : その区画が魚屋であることを表す。. : その区画が道であることを表す。# : その区画が塀であることを表す。高橋君は家・魚屋・道は通ることができるが、塀は通ることができない。与えられた街の外を通ることはできない。s と g はそれぞれ 1 つずつ与えられる。出力塀を 2 回まで越えることで、家から魚屋まで辿り着くことができる場合は YES、辿りつけない場合は NO を標準出力に 1 行で出力せよ。なお、最後には改行を出力せよ。
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <random>
+#include <iomanip>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<pair<ll,ll> > vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int,int> mii;
+typedef set<int> si;
+#define rep(i,n) for(ll i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define arep(i,v) for(auto i : v)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+template <class T> inline void dump(T &v){irep(i, v){cout<<*i<<((i==--v.end())?'\n':' ');}}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL<<60;
+constexpr ll MOD = 1000000007;
+constexpr ld EPS = 1e-11;
+
+// 各座標に格納したい情報を構造体にする
+// 今回はX座標,Y座標,深さ(距離)を記述している
+struct Corr {
+    int x;
+    int y;
+    int d;
+};
+queue<Corr> q;
+int bfs(vs &s,vector<vvi> &v) {
+    int dx[8] = {1, 0, -1, 0};
+    int dy[8] = {0, 1, 0, -1};
+    while(!q.empty()) {
+        Corr now = q.front();q.pop();
+        if(s[now.y][now.x]=='g')return 1;
+        // cout<<now.y<<" "<<now.x<<" "<<now.d<<endl;
+        for(int i = 0; i < 4; i++) {
+            int nextx = now.x + dx[i];
+            int nexty = now.y + dy[i];
+
+            // 次に探索する場所のX座標がはみ出した時
+            if(nextx >= s[0].size()) continue;
+            if(nextx < 0) continue;
+
+            // 次に探索する場所のY座標がはみ出した時
+            if(nexty >= s.size()) continue;
+            if(nexty < 0) continue;
+            int nextd = now.d + (s[nexty][nextx] == '#');
+            if(nextd >= 3)continue;
+            
+
+            // 次に探索する場所が既に探索済みの場合
+            if(v[nextd][nexty][nextx]) continue;
+
+            v[nextd][nexty][nextx] = 1;
+            Corr next = {nextx, nexty, nextd};
+            q.push(next);
+        }
+    }
+    return 0;
+}
+
+int main() {
+    
+    int h,w;
+    cin>>h>>w;
+    vector<string> s(h);
+    vector<vvi> v(3,vvi(h,vi(w,0)));
+    rep(i,h){
+        cin>>s[i];
+    }
+    int sx=0,sy=0;
+    rep(i,h)rep(j,w)if(s[i][j]=='s'){
+        sx=j;
+        sy=i;
+    }
+    v[0][sy][sx]=1;
+    Corr c={sx,sy,0};
+    q.push(c);
+    int ans=bfs(s,v);
+    YN(ans);
+}
+
+
