@@ -1,0 +1,91 @@
+問題文の引用元：https://atcoder.jp/contests/abc171/tasks/abc171_e
+E - Red Scarf / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 500 点
+問題文 : 猫のすぬけくんが N (\textbf{偶数}) 匹います。各すぬけくんには 1, 2, \ldots, N の番号が振られています。各すぬけくんは首に赤いスカーフを巻いており、スカーフにはそのすぬけくんが一番好きな非負整数が 1 つ書き込まれています。すぬけくんたちは最近、整数の xor（排他的論理和）と呼ばれる演算を覚えました。xor とはn 個の非負整数 x_1,x_2, \ldots, x_n について、それらの xor、 x_1~\textrm{xor}~x_2~\textrm{xor}~\ldots~\textrm{xor}~x_n は以下のように定義されます。 x_1~\textrm{xor}~x_2~\textrm{xor}~\ldots~\textrm{xor}~x_n を二進表記した際の 2^k(k \geq 0) の位の数は、x_1,x_2, \ldots, x_n のうち、二進表記した際の 2^k(k \geq 0) の位の数が 1 となるものの個数が奇数ならば 1、そうでなければ 0 となる。例えば、3~\textrm{xor}~5 = 6 となります。早速この演算を使いたくなったすぬけくんたちは、自分以外のすぬけくんのスカーフに書かれた整数の xor を計算することにしました。番号 i が振られたすぬけくんが計算した、自分以外のすぬけくんのスカーフに書かれた整数の xor が a_i であることが分かっています。この情報を元に、各すぬけくんのスカーフに書かれた整数を特定してください。
+制約入力はすべて整数である2 \leq N \leq 200000N は\textbf{偶数}0 \leq a_i \leq 10^9与えられた情報と整合するようなスカーフ上の整数の組合せが存在する入力入力は以下の形式で標準入力から与えられる。Na_1 a_2 \ldots a_N出力1 行に N 個の整数を空白区切りで出力せよ。このうち左から i 番目の整数は、番号 i が振られたすぬけくんのスカーフに書かれた整数を表すものとする。与えられた条件を満たす解が複数存在する場合、どれを出力しても構わない。
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <random>
+#include <iomanip>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<pair<ll,ll> > vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int,int> mii;
+typedef set<int> si;
+#define rep(i,n) for(ll i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define arep(i,v) for(auto i : v)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+template <class T> inline void dump(T &v){irep(i, v){cout<<*i<<((i==--v.end())?'\n':' ');}}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL<<60;
+constexpr ll MOD = 1000000007;
+constexpr ld EPS = 1e-11;
+
+
+
+int main() {
+    
+    ll n;
+    cin>>n;
+    vi v(n);
+    rep(i,n)cin>>v[i];
+    ll xo=0;
+    rep(i,n)xo^=v[i];
+    rep(i,n)v[i]^=xo;
+    dump(v);
+}
