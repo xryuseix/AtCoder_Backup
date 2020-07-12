@@ -1,0 +1,167 @@
+問題文の引用元：https://atcoder.jp/contests/iroha2019-day1/tasks/iroha2019_day1_i
+I - リスのお仕事 / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点: 500 点この問題の解説はこちら。            
+問題文 :                     今日のリスの仕事は、どんぐりをある木からある木まで運ぶことです。            リスの住んでいる森には全部で N 本の木があり、それぞれの木には 1 から N までの整数の名前が付けられています。            また、それぞれの木を行き来できる枝が全部で \(M\) 本あり、\(i\) 本目(1 \leq i \leq M)の枝を使って            木 A_i と木 B_i の間を双方向に渡れます。            それぞれの枝から次の木までは大きさ C_i の隙間があり、リスがジャンプしないといけません。            リスは同じ大きさの隙間はノリノリで渡りますが、どんぐりをもちながらジャンプするのは疲れるので、            前に跳んだ隙間と違う大きさの隙間をジャンプする前に休憩をすることにしました。ただし、最初のジャンプでは休憩をしません。            リスは木 1 にあるどんぐりを持って、休憩回数が最少となるようなルートを通って木 N まで運びます。            森の精霊であるいろはちゃんは、リスが休憩する場所とゴールの木におやつの木の実を K 個ずつおいてあげたいです。            いろはちゃんはいくつの木の実を用意すればいいでしょう。                        
+制約                     2 \leq N \leq 10^5              0 \leq M \leq 10^5              1 \leq K \leq 10^4              1 \leq A_i, B_i \leq N              A_i \neq B_i              i \neq j  について (A_i, B_i, C_i) \neq (A_j, B_j, C_j)             1 \leq C_i \leq 10^5             入力以下の形式で与えられます。N \ M \ KA_1 \ B_1 \ C_1\vdotsA_M \ B_M \ C_M            出力                    必要な木の実の数の最小値を出力してください。リスが木 N にたどり着けない場合は-1と出力してください。            そうでない場合、リスは全員同じルートを通るので、(最少の休憩回数+1) \times Kを出力してください。            
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <random>
+#include <iomanip>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<pair<ll,ll> > vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int,int> mii;
+typedef set<int> si;
+#define rep(i,n) for(ll i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define arep(i,v) for(auto i : v)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+template <class T> inline void dump(T &v){irep(i, v){cout<<(*i)<<((i==--v.end())?'\n':' ');}}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL<<60;
+constexpr ll MOD = 1000000007;
+constexpr ld EPS = 1e-11;
+
+template <typename T>
+class DIJKSTRA {
+public:
+    int V;
+
+    struct dk_edge {
+        int to;
+        T cost;
+    };
+
+    typedef pair<T, int> PI; //firstは最短距離、secondは頂点の番号
+    vector<vector<dk_edge> >G;
+    vector<T> d; //これ答え。d[i]:=V[i]までの最短距離
+    vector<int> prev; //経路復元
+    vector<int> last;
+
+    DIJKSTRA(int size) {
+        V = size;
+        G = vector<vector<dk_edge> >(V);
+        prev = vector<int> (V, -1);
+        last = vector<int> (V, -1);
+    }
+
+    void add(int from, int to, T cost) {
+        dk_edge e = {to, cost};
+        G[from].push_back(e);
+    }
+
+    void dijkstra(int s) {
+        //greater<P>を指定することでfirstが小さい順に取り出せるようにする
+        priority_queue<PI, vector<PI>, greater<PI> > que;
+        d = vector<T> (V, LLINF);
+        d[s] = 0;
+        que.push(PI(0, s));
+
+        while(!que.empty()) {
+            PI p = que.top();
+            que.pop();
+            int v = p.second;
+            if(d[v] < p.first) continue;
+            for(int i = 0; i < G[v].size(); i++) {
+                dk_edge e = G[v][i];
+                if(e.cost == last[v] && d[e.to] > d[v]){
+                    last[e.to] = e.cost;
+                    d[e.to] = d[v];
+                    que.push(PI(d[e.to], e.to));
+                }
+                else if(e.cost != last[v] && d[e.to] > d[v] + 1) {
+                    d[e.to] = d[v] + 1;
+                    last[e.to] = e.cost;
+                    que.push(PI(d[e.to], e.to));
+                }
+            }
+        }
+    }
+    vector<int> get_path(int t) {
+        vector<int> path;
+        for(;t != -1; t = prev[t]) {
+            //tがsになるまでprev[t]をたどっていく
+            path.push_back(t);
+        }
+        //このままだとt->sの順になっているので逆順にする
+        reverse(path.begin(),path.end());
+        return path;
+    }
+    void show(void) {
+        for(int i = 0; i < d.size()-1; i ++) {
+            cout << d[i] << " ";
+        }
+        cout << d[d.size()-1] << endl;
+    }
+};
+
+
+int main() {
+    
+    int n,m,k;
+    cin>>n>>m>>k;
+    DIJKSTRA<ll> dk(n);
+    rep(i,m){
+        int a,b,c;
+        cin>>a>>b>>c;
+        dk.add(a-1,b-1,c);
+        dk.add(b-1,a-1,c);
+    }
+    dk.dijkstra(0);
+    fin(dk.d[n - 1] == LLINF ? -1 : (dk.d[n - 1])*k);
+}
+
