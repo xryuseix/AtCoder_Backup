@@ -1,0 +1,95 @@
+問題文の引用元：https://atcoder.jp/contests/m-solutions2020/tasks/m_solutions2020_a
+A - Kyu in AtCoder / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点: 100 点
+問題文 : M 君は AtCoder に参加している選手の 1 人です。彼の最高レーティングは X です。AtCoder では、最高レーティングに応じて選手に級位が与えられます。レーティング 400 以上 1999 以下については、以下の通りです。  400 以上 599 以下：8 級600 以上 799 以下：7 級800 以上 999 以下：6 級1000 以上 1199 以下：5 級1200 以上 1399 以下：4 級1400 以上 1599 以下：3 級1600 以上 1799 以下：2 級1800 以上 1999 以下：1 級M 君は何級を持っていますか。  
+制約400 \leq X \leq 1999X は整数入力入力は以下の形式で標準入力から与えられます。  X出力M 君が持っている級を整数として出力してください。例えば 8 級の場合は 8 と出力してください。  
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <random>
+#include <iomanip>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<pair<ll,ll> > vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int,int> mii;
+typedef set<int> si;
+#define rep(i,n) for(ll i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define arep(i,v) for(auto i : v)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+template <class T> inline void dump(T &v){irep(i, v){cout<<(*i)<<((i==--v.end())?'\n':' ');}}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL<<60;
+constexpr ll MOD = 1000000007;
+constexpr ld EPS = 1e-11;
+
+
+
+
+
+
+int main() {
+    int n;
+    cin>>n;
+    if(n<600)fin(8);
+    else if(n<800)fin(7);
+    else if(n<1000)fin(6);
+    else if(n<1200)fin(5);
+    else if(n<1400)fin(4);
+    else if(n<1600)fin(3);
+    else if(n<1800)fin(2);
+    else if(n<2000)fin(1);
+}
