@@ -1,0 +1,109 @@
+問題文の引用元：https://atcoder.jp/contests/m-solutions2020/tasks/m_solutions2020_d
+D - Road to Millionaire / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点: 400 点
+問題文 : M 君は億万長者を目指して、明日から N 日間は投資で稼ごうと考えました。現在の彼の所持金は 1000 円であり、株は持っていません。なお、M 君の住んでいる国で発行されている株は一種類です。  彼は全国に知られる未来予知能力者であり、今後 N 日間の株価が以下のようになることをすでに知っています。  1 日目の株価は A_1 円、2 日目の株価は A_2 円、・・・、N 日目の株価は A_N 円i 日目には、その時点で所持する金と株の範囲内で、M 君は次の取引を何回でも行えます。何も取引しない日があっても構いません。  株式購入：A_i 円を支払って、1 株を受け取る。株式売却：1 株を売却し、A_i 円を受け取る。さて、M 君がうまく取引を行ったとき、彼の最終的な所持金は最大でいくらになるでしょうか？  
+制約2 \leq N \leq 80100 \leq A_i \leq 200入力はすべて整数入力入力は以下の形式で標準入力から与えられます。  NA_1 A_2 \cdots A_N出力M 君の最終的な所持金としてありうる最大の金額を整数として出力してください。  
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <random>
+#include <iomanip>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<pair<ll,ll> > vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int,int> mii;
+typedef set<int> si;
+#define rep(i,n) for(ll i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define arep(i,v) for(auto i : v)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+template <class T> inline void dump(T &v){irep(i, v){cout<<(*i)<<((i==--v.end())?'\n':' ');}}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL<<60;
+constexpr ll MOD = 1000000007;
+constexpr ld EPS = 1e-11;
+
+
+
+
+
+
+int main() {
+    
+    int n;
+    cin>>n;
+    vll v(n);
+    rep(i,n)cin>>v[i];
+    ll m=1000;
+    ll k=0;
+    rep(i,n){
+        // cout<<m<<" "<<k<<endl;
+        if(i==n-1){
+            m+=k*v[i];
+            break;
+        } else if(v[i]==v[i+1]){
+            continue;
+        } else if(v[i]<v[i+1]) {
+            if(v[i]>m)continue;
+            k+=m/v[i];
+            m=m-m/v[i]*v[i];
+        } else {
+            m+=k*v[i];
+            k=0;
+        }
+    }
+    fin(m);
+}
