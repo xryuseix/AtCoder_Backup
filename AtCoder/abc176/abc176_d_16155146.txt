@@ -1,0 +1,176 @@
+問題文の引用元：https://atcoder.jp/contests/abc176/tasks/abc176_d
+D - Wizard in MazeEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 400 点
+問題文 : 縦 H マス、横 W マスの H\times W マスからなる迷路があります。上から i 行目、左から j 列目のマス (i,j) は、S_{ij} が # のとき壁であり、.のとき道です。マス (C_h,C_w) に魔法使いがいます。魔法使いは次の 2 種類の方法で移動することができます。移動A：現在いるマスと上下左右に隣接する道のマスへ歩いて移動する。移動B：現在いるマスを中心とする 5\times 5 の範囲内にある道のマスへワープ魔法で移動する。どちらの行動でも、迷路の外へ移動することはできません。マス (D_h,D_w) まで移動するには、ワープ魔法を最低で何度使う必要があるでしょうか。
+制約1 \leq H,W \leq 10^31 \leq C_h,D_h \leq H1 \leq C_w,D_w \leq WS_{ij} は # か .S_{C_h C_w} と S_{D_h D_w} は .(C_h,C_w) \neq (D_h,D_w)入力入力は以下の形式で標準入力から与えられる。H WC_h C_wD_h D_wS_{11}\ldots S_{1W}\vdotsS_{H1}\ldots S_{HW}出力ワープ魔法を使う最小回数を出力せよ。(D_h,D_w) に到達不可能な場合、かわりに -1 と出力せよ。
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define arep(i, v) for (auto i : v)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T>
+inline bool chmax(T& a, T b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline bool chmin(T& a, T b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+inline string getline() {
+    string s;
+    getline(cin, s);
+    return s;
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+struct io {
+    io() {
+        ios::sync_with_stdio(false);
+        cin.tie(0);
+    }
+};
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 60;
+constexpr ll MOD = 1000000007;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+
+
+
+struct Corr {
+    int x;
+    int y;
+    int depth;
+};
+deque<Corr> q;
+
+int bfs(int sx, int sy, int gx, int gy, int h, int w, vector<string>& grid) {
+    vvi pass(h, vi(w, 0));
+    q.push_back({sx, sy, 0});
+    vi dx{1, 0,  -1, 0,  -2, -1, 0, 1,  2,  -2, -2, 1,
+          2, -2, 2,  -2, -1, 1,  2, -2, -1, 0,  1,  2};
+    vi dy{0,  1, 0, -1, -2, -2, -2, -2, -2, -1, -1, -1,
+          -1, 0, 0, 1,  1,  1,  1,  2,  2,  2,  2,  2};
+    while (!q.empty()) {
+        Corr now = q.front();
+        // cout << now.x << " " << now.y << " " << now.depth << endl;
+        q.pop_front();
+
+        if (pass[now.y][now.x]) continue;
+        pass[now.y][now.x] = 1;
+
+        if (now.x == gx && now.y == gy) return now.depth;
+        for (int i = 0; i < dx.size(); i++) {
+            int nextx = now.x + dx[i];
+            int nexty = now.y + dy[i];
+
+            // 次に探索する場所のX座標がはみ出した時
+            if (nextx >= w) continue;
+            if (nextx < 0) continue;
+
+            // 次に探索する場所のY座標がはみ出した時
+            if (nexty >= h) continue;
+            if (nexty < 0) continue;
+
+            // 次に探索する場所が既に探索済みの場
+            if (grid[nexty][nextx] == '#') continue;
+            if(pass[nexty][nextx])continue;
+
+            Corr next = {nextx, nexty, now.depth + (i >= 4)};
+            if (i < 4)
+                q.push_front(next);
+            else
+                q.push_back(next);
+        }
+    }
+    return -1;
+}
+
+int main() {
+    int h, w;
+    cin >> h >> w;
+    int x, y, gx, gy;
+    cin >> y >> x >> gy >> gx;
+    y--;
+    x--;
+    gy--;
+    gx--;
+    vs v(h);
+    rep(i, h) cin >> v[i];
+    ll ans = bfs(x, y, gx, gy, h, w, v);
+    if (ans != LLINF)
+        fin(ans);
+    else
+        fin(-1);
+}
