@@ -1,0 +1,149 @@
+問題文の引用元：https://atcoder.jp/contests/abc176/tasks/abc176_e
+E - BomberEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 3 sec / Memory Limit : 1024 MB
+配点 : 500 点
+問題文 : H \times W マスの二次元グリッドがあります。この中には M 個の爆破対象があります。 i 個目の爆破対象の位置は \left(h_i, w_i \right)です。高橋君は 1 つのマスを選び、そのマスに爆弾を設置し、起爆します。爆弾と同じ行または同じ列に存在する爆破対象が爆破されます。爆破対象が存在するマスに爆弾を設置することも出来ます。高橋君は、爆破する爆破対象の数を最大化しようとしています。最大でいくつの爆破対象を爆破出来るか答えてください。
+制約入力は全て整数1 \leq H, W \leq 3 \times 10^51 \leq M \leq \min\left(H\times W, 3 \times 10^5\right)1 \leq h_i \leq H1 \leq w_i \leq W\left(h_i, w_i\right) \neq \left(h_j, w_j\right) \left(i \neq j\right)入力入力は以下の形式で標準入力から与えられる。H W Mh_1 w_1\vdotsh_M w_M出力答えを出力せよ。
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define arep(i, v) for (auto i : v)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+// #include <atcoder/all>
+// using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T>
+inline bool chmax(T& a, T b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline bool chmin(T& a, T b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+}
+inline string getline() {
+    string s;
+    getline(cin, s);
+    return s;
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+struct io {
+    io() {
+        ios::sync_with_stdio(false);
+        cin.tie(0);
+    }
+};
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 1000000007;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+int solve(int h, int w, int m, vi x, vi y) {
+    set<pair<int, int>> xy;
+    rep(i, m) { xy.insert(mp(x[i], y[i])); }
+    map<int, int> ym;
+    rep(i, m) ym[y[i]]++;
+    vpii xa(w + 1, mp(0, 0));  // 個数, idx
+    rep(i, w + 1) xa[i].second = i;
+    rep(i, m) { xa[x[i]].first++; }
+    Sort(xa);
+
+    int ans = 0;
+    irep(i, ym) {
+        int t = i->second;
+        // fin(t);
+        int Y = i->first;
+        int X = (*xa.rbegin()).second;
+        t += (*xa.rbegin()).first;
+        // fin(t);
+        t -= (xy.count(mp(X, Y)));
+        // fin(t);
+        chmax(ans, t);
+        // cout << Y << " " << X << " " << t << endl;
+    }
+    return ans;
+}
+
+int main() {
+    int h, w, m;
+    cin >> h >> w >> m;
+    vi x(m), y(m);
+    rep(i, m) { cin >> y[i] >> x[i]; }
+    int ans = 0;
+    chmax(ans, solve(h, w, m, x, y));
+    chmax(ans, solve(w, h, m, y, x));
+    fin(ans);
+}
