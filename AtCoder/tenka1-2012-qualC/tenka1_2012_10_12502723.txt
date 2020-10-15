@@ -1,0 +1,179 @@
+問題文の引用元：https://atcoder.jp/contests/tenka1-2012-qualC/tasks/tenka1_2012_10
+B - ロイヤルストレートフラッシュEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 64 MB
+問題文 : シャッフルされたトランプの山札が与えられる。ここからロイヤルストレートフラッシュを作りたい。山札からカードを 1 枚ずつめくり、手札に入れるか捨てるという操作を繰り返す。最短でロイヤルストレートフラッシュが完成したときの捨て札を、カードを捨てた順に出力せよ。なお、初期状態で手札は空とし、ロイヤルストレートフラッシュが完成したとき、手札に余分なカードが存在してはならない。与えられる山札を表す文字列は、以下のBNFに従う。   ::=  |   ::=   ::= "S" | "H" | "D" | "C"   ::= "A" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "J" | "Q" | "K"ロイヤルストレートフラッシュとは、同じマークの「10、J、Q、K、A」の組み合わせのことを言う。すなわち、「S10, SJ, SQ, SK, SA」、「H10, HJ, HQ, HK, HA」、「D10, DJ, DQ, DK, DA」、「C10, CJ, CQ, CK, CA」のカードの組み合わせ 4 種類がロイヤルストレートフラッシュである。入力入力は以下の形式で標準入力から与えられる。s山札のカードを表す文字列 s が 1 行で与えられる。山札にはマークと番号の両方が等しいカードの組は存在しない。ロイヤルストレートフラッシュを作ることが可能であることが保証される。出力ロイヤルストレートフラッシュを最短で作ったときの捨て札を表す文字列を 1 行で出力せよ。捨て札はカードを捨てた順に記述する必要がある。捨て札が無い場合は、 0 (数字のゼロ) を出力せよ。なお、行の終端には改行が必要である。
+// ソースコードの引用元 : https://atcoder.jp/contests/tenka1-2012-qualC/submissions/12502723
+// 提出ID : 12502723
+// 問題ID : tenka1_2012_10
+// コンテストID : tenka1-2012-qualC
+// ユーザID : xryuseix
+// コード長 : 4398
+// 実行時間 : 1
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <random>
+#include <iomanip>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<pair<ll,ll> > vpll;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define arep(i,v) for(auto i : v)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+// #define endl '\n';
+#define fi first
+#define se second
+#define NONVOID [[nodiscard]]
+const int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+const int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+template <class T> inline void dump(T &v){irep(i, v){cout<<*i<<((i==--v.end())?'\n':' ');}}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+
+
+
+int main() {
+
+    string s;
+    cin>>s;
+    vpii v;
+    map<char,int> so;
+    so['S']=0;
+    so['H']=1;
+    so['D']=2;
+    so['C']=3;
+    map<int,char> revso;
+    revso[0]='S';
+    revso[1]='H';
+    revso[2]='D';
+    revso[3]='C';
+    rep(i,s.size()){
+        int j=i+1;
+        while(j<s.size()&&s[j]!='S'&&s[j]!='H'&&s[j]!='D'&&s[j]!='C'){
+            j++;
+        }
+        string t=s.substr(i,j-i);
+        i=j-1;
+        int num;
+        switch (t[1]) {
+        case 'A':
+            num=1;
+            break;
+        case 'J':
+            num=11;
+            break;
+        case 'Q':
+            num=12;
+            break;
+        case 'K':
+            num=13;
+            break;
+        default:
+            num = STLL(t.substr(1));
+        }
+        v.pb(mp(so[t[0]],num));
+    }
+    int finmark = -1;
+    vvi w(4,vi(5,-1));
+    rep(i,v.size()){
+        int H=-1,W=-1;
+        if(v[i].se==1){
+            H=v[i].fi;
+            W=4;
+        } else if(v[i].se>=10){
+            H=v[i].fi;
+            W=v[i].se-10;
+        } else{
+            continue;
+        }
+        if(w[H][W]==-1){
+            w[H][W]=i;
+        }
+        bool ch=1;
+        rep(j,5){
+            if(w[H][j]==-1)ch=0;
+        }
+        if(ch){
+            finmark=H;
+            break;
+        }
+    }
+    vi huda(1,-1);
+    rep(i,5)huda.pb(w[finmark][i]);
+    Sort(huda);
+    bool sute=0;
+    for(int i=0;i<huda.size()-1;i++){
+        for(int j=huda[i]+1;j<huda[i+1];j++){
+            sute=1;
+            cout<<revso[v[j].fi];
+            if(v[j].se==1)cout<<"A";
+            else if(v[j].se>10){
+                if(v[j].se==11){
+                    cout<<"J";
+                } else if(v[j].se==12){
+                    cout<<"Q";
+                } else if(v[j].se==13){
+                    cout<<"K";
+                }
+            } else {
+                cout<<v[j].se;
+            }
+        }
+    }
+    if(!sute)cout<<"0";
+    cout<<endl;
+}

@@ -1,0 +1,72 @@
+問題文の引用元：https://atcoder.jp/contests/abc125/tasks/abc125_b
+B - ResaleEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 200 点
+問題文 : N 個の宝石があり、i 番目の宝石の価値は V_i です。あなたはこれらの宝石の中からいくつかを選んで手に入れます。このとき、1 つも選ばなくとも、全て選んでも構いません。ただし、i 番目の宝石を手に入れる場合コスト C_i を支払わなければいけません。手に入れた宝石の価値の合計を X、支払ったコストの合計を Y とします。X-Y の最大値を求めてください。
+制約入力は全て整数である。1 \leq N \leq 201 \leq C_i, V_i \leq 50入力入力は以下の形式で標準入力から与えられる。NV_1 V_2 ... V_NC_1 C_2 ... C_N出力X-Y の最大値を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc125/submissions/5150893
+// 提出ID : 5150893
+// 問題ID : abc125_b
+// コンテストID : abc125
+// ユーザID : xryuseix
+// コード長 : 1166
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#include<bits/stdc++.h>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+#define vvi vector<vector<int> >
+#define vvc vector<vector<char> >
+#define vvs vector<vector<string> >
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	int i,n;
+	ll ans=0;
+	cin>>n;
+	int v[n],c[n];
+	rep(i,n)cin>>v[i];
+	rep(i,n)cin>>c[i];
+	rep(i,n){
+		if(v[i]-c[i]>0)ans+=v[i]-c[i];
+	}
+	cout<<ans<<endl;
+	
+//////////////////////////////////////////////////////
+	return 0;
+}
+
+
+
+
+
+

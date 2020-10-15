@@ -1,0 +1,95 @@
+問題文の引用元：https://atcoder.jp/contests/arc097/tasks/arc097_a
+C - K-th SubstringEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 300 点
+問題文 : 文字列 s が与えられます。s の異なる substring のうち、辞書順で K 番目に小さいものを出力してください。ただし、s の substring とは、 s の空でない連続した部分を取り出してできる文字列とします。例えば、 s = ababc とすると、 a, bab, ababc は s の substring ですが、 ac, z, 空文字列 は s の substring ではありません。また、substring が異なるとは、文字列として異なることを指します。なお、X = x_{1}x_{2}...x_{n}, Y = y_{1}y_{2}...y_{m} を二つの異なる文字列とするとき、Y が X の接頭辞であるか、j を x_{j} \neq y_{j} であるような最小の整数として x_{j} > y_{j} である場合、そしてその場合に限って X は Y より辞書順で大きいといいます。
+制約1 ≤ |s| ≤ 5000s は英小文字からなる1 ≤ K ≤ 5s は異なる substring を K 個以上持つ部分点|s| ≤ 50 を満たすデータセットに正解した場合は、部分点として 200 点が与えられる。入力入力は以下の形式で標準入力から与えられる。sK出力辞書順で K 番目に小さい s の substring を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/arc097/submissions/6202540
+// 提出ID : 6202540
+// 問題ID : arc097_a
+// コンテストID : arc097
+// ユーザID : xryuseix
+// コード長 : 2092
+// 実行時間 : 198
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <string>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <bitset>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define P 1000000007
+#define STI(s) atoi(s.c_str())//string to int
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define Sort(a) sort(a.begin(),a.end())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int INF = INT_MAX;
+const long long LLINF = 1LL<<60;
+//g++ -std=c++1z temp.cpp
+//./a.out
+
+vs makestr(string s,int k){
+    vs v(s.length()*s.length()+100,"");
+    string t;
+    int p=0;
+    for(int i=0;i<s.length();i++){
+        t="";
+        for(int j=0;i+j<s.length();j++){
+            t+=s[i+j];
+            if(t.length()>k)break;
+            v[p]=t;
+            // cout<<"t:"<<t<<"/"<<endl;
+            p++;
+        }
+    }
+    return v;
+}
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+    
+    string s;
+    
+    int k;
+    cin>>s>>k;
+    vs v=makestr(s,k);
+    set<string> se;
+    for(int i=0;i<v.size();i++){
+        if(v[i].size()>0)se.insert(v[i]);
+    }
+    vs ans;
+    for(auto it=se.begin();it!=se.end();it++){
+        ans.push_back(*it);
+    }
+    Sort(ans);
+    cout<<ans[k-1]<<endl;
+    
+//////////////////////////////////////////////////////
+return 0;}

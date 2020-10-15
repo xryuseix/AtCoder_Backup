@@ -1,0 +1,107 @@
+問題文の引用元：https://atcoder.jp/contests/cpsco2019-s3/tasks/cpsco2019_s3_d
+D - Decode RGB SequenceEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 400 点
+問題文 : 長さ N のマス目があり、最初はすべてのマスが白く塗られています。各マスは左から順に 1, 2, \ldots, N の番号が付けられています。このマス目内の連続する 3 マスに対し、左から順に赤色・緑色・青色に上塗りするスタンプを次々と押して行きます。より正確に言えば、整数 i ( = 1, 2, \ldots, N-2) を一つ選んで、マス i を赤色に、マス i+1 を緑色に、マス i+2 を青色に塗る操作を行います。このときすでにスタンプが押されているマスの上にもスタンプを押すことができて、スタンプを押された各マスの色は新たなスタンプの色に上塗りされます。青木さんは白色マスがなくなるまでこの操作を行いました。白色マスがなくなっても操作を続けることができて、好きなタイミングで操作を終了することができます。操作終了時に好みの色合いを実現することができるかどうかを判定するプログラムを書いてください。好みの色合いは長さ N の文字列 S で表され、i = 1, 2, \ldots, N に対して、S_i = 'R' のとき i マス目を赤色にしたいことを表し、S_i = 'G' のとき i マス目を緑色にしたいことを表し、S_i = 'B' のとき i マス目を青色にしたいことを表します。
+制約3 \le N \le 10^5|S| = NS は 'R', 'G', 'B' からなる文字列です。入力入力は以下の形式で標準入力から与えられます。NS  出力文字列 S で表される色合いが実現できるならば "Yes" を、実現不可能ならば "No" を一行に出力してください。
+// ソースコードの引用元 : https://atcoder.jp/contests/cpsco2019-s3/submissions/5408068
+// 提出ID : 5408068
+// 問題ID : cpsco2019_s3_d
+// コンテストID : cpsco2019-s3
+// ユーザID : xryuseix
+// コード長 : 1792
+// 実行時間 : 3
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#include<bits/stdc++.h>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+#define vi vector<int>
+#define vc vector<char>
+#define vs vector<string>
+#define vpii vector<pair<int,int> >
+#define vvi vector<vector<int> >
+#define vvc vector<vector<char> >
+#define vvs vector<vector<string> >
+#define P 1000000007
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	int n,i;
+	cin>>n;
+	string s;
+	cin>>s;
+	if(s.find("GG")!=std::string::npos){
+		cout<<"No"<<endl;
+		return 0;
+	}
+	if(s.find("RB")!=std::string::npos){
+		cout<<"No"<<endl;
+		return 0;
+	}
+	if(s.find('R')== std::string::npos){
+		cout<<"No"<<endl;
+		return 0;
+	}
+	if(s.find('G')== std::string::npos){
+		cout<<"No"<<endl;
+		return 0;
+	}
+	if(s.find('B')== std::string::npos){
+		cout<<"No"<<endl;
+		return 0;
+	}
+	if(s[0]!='R'){
+		cout<<"No"<<endl;
+		return 0;
+	}
+	if(s[s.length()-1]!='B'){
+		cout<<"No"<<endl;
+		return 0;
+	}
+	if(s.find("RGB") != std::string::npos){
+	
+		cout<<"Yes"<<endl;
+	}
+	else cout<<"No"<<endl;
+	
+	
+	
+//////////////////////////////////////////////////////
+return 0;}
+
+
+
+
+
+
+
+
+

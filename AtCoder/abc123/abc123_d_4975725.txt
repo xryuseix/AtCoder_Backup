@@ -1,0 +1,101 @@
+問題文の引用元：https://atcoder.jp/contests/abc123/tasks/abc123_d
+D - Cake 123Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB﻿
+配点: 400 点
+問題文 : AtCoder 洋菓子店は数字の形をしたキャンドルがついたケーキを販売しています。ここには 1, 2, 3 の形をしたキャンドルがついたケーキがそれぞれ X 種類、Y 種類、Z 種類あります。それぞれのケーキには「美味しさ」という整数の値が以下のように割り当てられています。  1 の形のキャンドルがついたケーキの美味しさはそれぞれ A_1, A_2, ..., A_X2 の形のキャンドルがついたケーキの美味しさはそれぞれ B_1, B_2, ..., B_Y3 の形のキャンドルがついたケーキの美味しさはそれぞれ C_1, C_2, ..., C_Z高橋君は ABC 123 を記念するために、1, 2, 3 の形のキャンドルがついたケーキを 1 つずつ買うことにしました。そのようにケーキを買う方法は X \times Y \times Z 通りあります。  これらの選び方を 3 つのケーキの美味しさの合計が大きい順に並べたとき、1, 2, ..., K 番目の選び方でのケーキの美味しさの合計をそれぞれ出力してください。  
+制約1 \leq X \leq 1 \ 0001 \leq Y \leq 1 \ 0001 \leq Z \leq 1 \ 0001 \leq K \leq \min(3 \ 000, X \times Y \times Z)1 \leq A_i \leq 10 \ 000 \ 000 \ 0001 \leq B_i \leq 10 \ 000 \ 000 \ 0001 \leq C_i \leq 10 \ 000 \ 000 \ 000入力中の値はすべて整数である。入力入力は以下の形式で標準入力から与えられる。  X Y Z KA_1 \ A_2 \ A_3 \ ... \ A_XB_1 \ B_2 \ B_3 \ ... \ B_YC_1 \ C_2 \ C_3 \ ... \ C_Z出力i 行目に、
+問題文 : 中の i 番目の値を出力せよ。  
+// ソースコードの引用元 : https://atcoder.jp/contests/abc123/submissions/4975725
+// 提出ID : 4975725
+// 問題ID : abc123_d
+// コンテストID : abc123
+// ユーザID : xryuseix
+// コード長 : 1562
+// 実行時間 : 15
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	ll max,maxnum,pm,x,y,z,k,i,j,m;
+	cin>>x>>y>>z>>k;
+	vector<ll> a,b,c;
+	rep(i,x){
+		cin>>pm;
+		a.push_back(pm);
+	}
+	sort(a.begin(),a.end());
+	reverse(a.begin(),a.end());
+	
+	rep(i,y){
+		cin>>pm;
+		b.push_back(pm);
+	}
+	sort(b.begin(),b.end());
+	reverse(b.begin(),b.end());
+	
+	rep(i,z){
+		cin>>pm;
+		c.push_back(pm);
+	}
+	sort(c.begin(),c.end());
+	reverse(c.begin(),c.end());
+	
+	
+	vector<ll> v;
+	for(i=0;i<x;i++){
+		for(j=0;j<y;j++){
+			for(m=0;m<z;m++){
+				if((i+1)*(j+1)*(m+1)>k)break;
+				else v.push_back(a[i]+b[j]+c[m]);
+			}
+		}
+	}
+	sort(v.begin(),v.end());
+	reverse(v.begin(),v.end());
+	for(i=0;i<k;i++){
+		cout<<v[i]<<endl;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//////////////////////////////////////////////////////
+	return 0;
+}

@@ -1,0 +1,104 @@
+問題文の引用元：https://atcoder.jp/contests/arc041/tasks/arc041_b
+B - アメーバEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 縦 N マス、横 M マスの盤面がある。上から i (1≦i≦N) マス目、左から j (1≦j≦M) マス目の位置を (i,j) と表す。はじめ、マス (i,j) には a_{ij} 匹のアメーバがいた。ただし、盤面の端にアメーバはいなかった。すなわち、i=1,N または j=1,M ならば a_{ij}=0 である。高橋君が大声を出すと、アメーバたちは驚いてそれぞれ次の行動をとった。1 匹のアメーバが 4 匹に分裂し、上下左右のマスへ 1 匹ずつ移動した。その結果、マス (i,j) には b_{ij} 匹のアメーバがいることになった。今のアメーバの配置 (b_{ij}) が与えられるので、はじめのアメーバの配置 (a_{ij}) を 1 つ求めよ。ただし、(a_{ij}) は少なくとも 1 つ存在する。入力入力は以下の形式で標準入力から与えられる。N Mb_{11}b_{12}..b_{1M}b_{21}b_{22}..b_{2M}:b_{N1}b_{N2}..b_{NM}1 行目には、盤面の縦のマス数 N (3≦N≦500) と横のマス数 M (3≦M≦500) が空白区切りで与えられる。2 行目からの N 行には、今のアメーバの配置が与えられる。このうち i 行目の j 文字目の数字が b_{ij} (0≦b_{ij}≦9) を表す。出力はじめのアメーバの配置を 1 つ、以下の形式で N 行に出力せよ。ただし、i 行目の j 文字目の数字が a_{ij} を表す。出力の末尾に改行を入れること。a_{11}a_{12}..a_{1M}a_{21}a_{22}..a_{2M}:a_{N1}a_{N2}..a_{NM}
+// ソースコードの引用元 : https://atcoder.jp/contests/arc041/submissions/8402822
+// 提出ID : 8402822
+// 問題ID : arc041_b
+// コンテストID : arc041
+// ユーザID : xryuseix
+// コード長 : 2344
+// 実行時間 : 24
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const int MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<62;
+
+
+
+int main(void) {
+
+    int n,m;
+    cin>>n>>m;
+    vvi a(n,vi(m,0)),b(n,vi(m));
+    rep(i,n){
+        string s;
+        cin>>s;
+        rep(j,m)b[i][j]=int(s[j]-'0');
+    }
+    // for(int i=0;i<n;i++){
+    //     for(int j=0;j<m;j++){
+    //         cout<<b[i][j];
+    //     }
+    //     cout<<endl;
+    // }
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            if(b[i][j]>0){
+                // cout<<i<<" "<<j<<endl;
+                a[i+1][j]=b[i][j];
+                b[i+1][j-1]-=b[i][j];
+                b[i+1][j+1]-=b[i][j];
+                b[i+2][j]-=b[i][j];
+                b[i][j]=0;
+            }
+        }
+    }
+
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            cout<<a[i][j];
+        }
+        cout<<endl;
+    }
+
+}

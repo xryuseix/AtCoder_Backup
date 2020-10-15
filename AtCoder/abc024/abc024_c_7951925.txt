@@ -1,0 +1,109 @@
+問題文の引用元：https://atcoder.jp/contests/abc024/tasks/abc024_c
+C - 民族大移動Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 高橋王国には N 個の街があり、それぞれ 1 ～ N の整数によって番号付けされています。高橋王国には K 種類の民族が住んでおり、i 番目の民族は街 S_i に住んでいます。高橋王国の民族たちには、百年に一回住む街を変える「民族大移動」という文化が有ります。基本的には全民族が同時期に「民族大移動」を行うのですが、全く同じ日に全民族が移動すると混雑が予想されるため、 以下の様な移動制限を毎日設けて、 D 日かけて行います。i 日目は 街の番号が L_i 以上 R_i 以下であるよう街の間を自由に行き来できる。それ以外の行き来は禁止される。各民族はこの移動制限を守り、いくつかの街を経由しながら目的地の街まで移動します。i 番目の民族の目的地は街 T_i です。どの民族もできるだけ早く目的地に到着したいと思っています。各民族について、目的地に到着できる最も早い日を求めてください。なお、どの民族も D 日以内に目的地に到着できることが保証されています。入力入力は以下の形式で標準入力から与えられる。N D KL_1 R_1L_2 R_2:L_D R_DS_1 T_1S_2 T_2:S_K T_K1 行目には高橋王国の街の個数 N(1 ≦ N ≦ 10^9) 、大移動にかける日数 D(1 ≦ D ≦ 10^4) 、高橋王国に住む民族の個数 K(1 ≦ K ≦ 100) が空白区切りで与えられる。2 行目からの D 行のうち i 行目には i 日目の移動制限の内容を表す 2 つの整数 L_i, R_i(1 ≦ L_i ≦ R_i ≦ N) が空白区切りで与えられる。D+2 行目からの K 行のうち i 行目には i 番目の民族の初め住んでいる街 S_i( 1 ≦ S_i ≦ N)、目的地の街 T_i (1 ≦ T_i ≦ N) が空白区切りで与えられる。このとき S_i ≠ T_i が成り立つ。どの民族も D 日以内に目的地に到着できることが保証されている。出力出力は K 行からなる。i 行目には i 番目の民族が目的地に到着できる最初の日を出力せよ。出力の末尾にも改行を入れること。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc024/submissions/7951925
+// 提出ID : 7951925
+// 問題ID : abc024_c
+// コンテストID : abc024
+// ユーザID : xryuseix
+// コード長 : 2538
+// 実行時間 : 13
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const int MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+
+
+int main(void) {
+
+    int n,d,k;
+    cin>>n>>d>>k;
+    vector<pair<int,int>> v(d);
+    rep(i,d){
+        int a,b;
+        cin>>a>>b;
+        v[i]=mp(a,b);
+    }
+    rep(j,k){
+        int s,t;
+        cin>>s>>t;
+        int ans=0;
+        if(s<t){
+            while(s!=t){
+                for(int i=0;i<d;i++){
+                    if(v[i].first<=s && s<=v[i].second){
+                        s=v[i].second;
+                    }
+                    if(s>=t){
+                        s=t;
+                        ans=i+1;
+                        break;
+                    }
+                }
+            }
+        } else {
+            while(s!=t){
+                for(int i=0;i<d;i++){
+                    if(v[i].first<=s && s<=v[i].second){
+                        s=v[i].first;
+                    }
+                    if(s<=t){
+                        s=t;
+                        ans=i+1;
+                        break;
+                    }
+                }
+            }
+        }
+        fin(ans);
+    }
+
+}

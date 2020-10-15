@@ -1,0 +1,56 @@
+問題文の引用元：https://atcoder.jp/contests/abc006/tasks/abc006_2
+B - トリボナッチ数列Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 :             トリボナッチ数列というものがあります。この数列は3つ前までの数字を足したものです。            厳密には、                                                                        a_1 = 0, a_2 = 0, a_3 = 1                                                                a_n = a_{n-1} + a_{n-2} + a_{n-3}                                                            と定義されています。参考までに、トリボナッチ数列表を掲載します。                                                        #                a_1                a_2                a_3                a_4                a_5                a_6                a_7                a_8                ...                a_n                                                                値                0                0                1                1                2                4                7                13                ...                a_{n-1}+a_{n-2}+a_{n-3}                                                    この数列の第 n 項、a_n を 10007 で割った余りを求めてください。        入力            入力は以下の形式で標準入力から与えられる。n        整数 n(1≦n≦10^6) が 1 行で与えられる。    出力                    トリボナッチ数列の第 n 項、a_n を 10007 で割った余りを 1 行で出力してください。        また、出力の末尾には改行を入れること。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc006/submissions/4551181
+// 提出ID : 4551181
+// 問題ID : abc006_2
+// コンテストID : abc006
+// ユーザID : xryuseix
+// コード長 : 1001
+// 実行時間 : 14
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX;
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+    
+	int i,n;
+    cin>>n;
+    vector<ll> dp;
+    dp.push_back(0);
+	dp.push_back(0);
+	dp.push_back(1);
+    n--;
+    for(i=3;i<=n;i++){
+    	dp.push_back((dp[i-3]+dp[i-1]+dp[i-2])%10007);
+	}
+//    for(i=0;i<n;i++)cout<<dp[i]%10007<<" "<<endl;
+    cout<<dp[n]<<endl;
+	return 0;
+}

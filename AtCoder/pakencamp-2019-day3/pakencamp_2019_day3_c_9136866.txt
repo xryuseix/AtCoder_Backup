@@ -1,0 +1,90 @@
+問題文の引用元：https://atcoder.jp/contests/pakencamp-2019-day3/tasks/pakencamp_2019_day3_c
+C - カラオケEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 1 sec / Memory Limit : 1024 MB﻿
+配点: 100 点
+問題文 : 1, 2, ..., N と番号づけられている N 人の生徒から成るグループが，「全国統一カラオケコンテスト」に出場することとなりました．  このコンテストで歌える曲は，曲 1，曲 2，...，曲 M の M 曲あります．また，番号 i の生徒が曲 j を歌うと，必ず A_{i, j} 点を取ります．  さて，コンテストのルールは，以下のようになります．M 曲の中から 2 つの曲を選ぶ．（それぞれ T_1 と T_2 とする．）それぞれの生徒が，曲 T_1 と曲 T_2 の両方を歌う．各生徒の得点は，その生徒が歌った 2 つの曲の点数のうち高い方となる．グループの得点は，生徒 1, 2, ..., N の得点の合計となる．そのとき，グループの得点として考えられる最大の値を求めてください．  
+制約1 \leq N \leq 1002 \leq M \leq 1000 \leq A_{i, j} \leq 100 \ 000 \ 000入力はすべて整数部分点この問題はいくつかの小課題に分けられ，その小課題のすべてのテストケースに正解した場合に「この小課題に正解した」とみなされます．提出したソースコードの得点は，正解した小課題の点数の合計となります．  (10 点) N = 1，M = 2．  (25 点) M = 2．  (35 点) N = 1．  (30 点) 追加の
+制約はない．  入力入力は以下の形式で標準入力から与えられます．  N MA_{1, 1} A_{1, 2} A_{1, 3} ... A_{1, M}A_{2, 1} A_{2, 2} A_{2, 3} ... A_{2, M}A_{3, 1} A_{3, 2} A_{3, 3} ... A_{3, M}:A_{N, 1} A_{N, 2} A_{N, 3} ... A_{N, M}出力グループの得点として考えられる最大の値を，整数で出力してください．  注意この問題におけるカラオケは，通常のカラオケとは違い，100 \ 000 \ 000 点までの点数が出ることがあります．また，点数は必ず整数となり，314159.265 点のような整数でない点数が出ることはありません．  
+// ソースコードの引用元 : https://atcoder.jp/contests/pakencamp-2019-day3/submissions/9136866
+// 提出ID : 9136866
+// 問題ID : pakencamp_2019_day3_c
+// コンテストID : pakencamp-2019-day3
+// ユーザID : xryuseix
+// コード長 : 1982
+// 実行時間 : 8
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+
+
+int main(void){
+
+    int n,m;
+    cin>>n>>m;
+    ll ans=0;
+    vvll v(n,vll(m));
+    rep(i,n)rep(j,m)cin>>v[i][j];
+    for(int k1=0;k1<m;k1++){
+        for(int k2=k1+1;k2<m;k2++){
+            ll sum=0;
+            for(int i=0;i<n;i++){
+                sum+=max(v[i][k1],v[i][k2]);
+            }
+            ans=max(ans,sum);
+        }
+    }
+    fin(ans);
+}

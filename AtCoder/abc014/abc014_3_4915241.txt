@@ -1,0 +1,72 @@
+問題文の引用元：https://atcoder.jp/contests/abc014/tasks/abc014_3
+C - AtColorEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 3 sec / Memory Limit : 256 MB
+問題文 : 　AtColor社は，0 から 1,000,000 まで 1,000,001 通りの濃さがある灰色の絵の具を販売することにしました．0 が最も黒く，1,000,000 が最も白い絵の具です．　しかし，途方も無い数の濃さのバリエーションがある一方，消費者には細かい違いが分からないということが判明しました．これを知ったAtColor社は，売れない濃さの絵の具を生産するのはやめて，最も人気のある濃さの色の絵の具1つだけを販売することにしました．　AtColor社は上記を達成するために，最も人気な絵の具がどのくらい売れるかをアンケート調査で調べることにしました．AtColor社がどの範囲の濃さの絵の具なら購入したいかというアンケートを消費者に対して行ったところ， 「a ≦ x ≦ b を満たす濃さ x の絵の具ならば購入する」という形式の情報が n 件得られました．　あなたの仕事は，これらの情報から，最も多くの消費者に購入される濃さの絵の具について，その絵の具を購入する消費者の数を出力するプログラムを作ることです．入力入力は以下の形式で標準入力から与えられる．na_{1}\ b_{1}a_{2}\ b_{2}:a_{n}\ b_{n}1 行目には，アンケート情報の数 n (1 ≦ n ≦ 100,000) が与えられる．続く 2 行目から n行は，各アンケート情報を表す． a_i,b_i(0≦a_i≦b_i≦1,000,000) はそれぞれ i 番目のアンケート情報における濃さの下限と上限(端を含む)を表す整数で，空白区切りで与えられる．部分点この問題には2つのデータセットがあり，データセット毎に部分点が設定されている．1≦n≦2,000 を満たすデータセット 1 に正解した場合は 30 点が与えられる．追加
+制約のないデータセット 2 に正解した場合は，上記のデータセットとは別に 70 点が与えられる．出力最も多くの消費者に購入される濃さの絵の具について，それを購入する消費者の数を 1 行に出力せよ．出力の末尾に改行を入れること．
+// ソースコードの引用元 : https://atcoder.jp/contests/abc014/submissions/4915241
+// 提出ID : 4915241
+// 問題ID : abc014_3
+// コンテストID : abc014
+// ユーザID : xryuseix
+// コード長 : 1157
+// 実行時間 : 36
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	ll n,i;
+	cin>>n;
+	vector<int> s(1000002,0);
+	int a,b;
+	rep(i,n){
+		cin>>a>>b;
+		s[a]++;
+		s[b+1]--;
+	}
+	vector<ll> vsum(1000003,0);
+	vsum[0]=0;
+	rep(i,1000002){
+		vsum[i+1]=vsum[i]+s[i];
+	}
+	ll ans=-INF;
+	rep(i,1000002){
+		ans=max(vsum[i],ans);
+	}
+	cout<<ans<<endl;
+	
+	
+	
+	
+	
+	
+//////////////////////////////////////////////////////
+	return 0;
+}

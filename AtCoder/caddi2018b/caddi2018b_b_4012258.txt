@@ -1,0 +1,30 @@
+問題文の引用元：https://atcoder.jp/contests/caddi2018b/tasks/caddi2018b_b
+B - AtCoder AlloyEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 200 点
+問題文 : AtCoder 合金と呼ばれる特殊な金属でできた，長方形の板状の素材が N 枚あります．i 番目の素材の縦の長さは A_i，横の長さは B_i です．高橋君は，AtCoder 合金でできた，縦の長さがちょうど H，横の長さがちょうど W の長方形の板が欲しいです．そのため，N 枚の素材のうち 1 枚を選び，それを必要に応じて切断して，求める長方形の板を得ようとしています．素材を切断する際には，長方形の辺に平行な線でしか切断することができません．また，素材には向きが定まっているので，回転させることはできません．そのため，例えば縦 5，横 3 の素材を，縦 3，横 5 の板として使うことはできません．適切に切断することで，長さが縦 H，横 W の板が得られるような素材は N 枚中何枚あるでしょうか？
+制約1 \leq N \leq 10001 \leq H \leq 10^91 \leq W \leq 10^91 \leq A_i \leq 10^91 \leq B_i \leq 10^9入力はすべて整数入力入力は以下の形式で標準入力から与えられる．N H WA_1 B_1A_2 B_2:A_N B_N出力答えを出力せよ．
+// ソースコードの引用元 : https://atcoder.jp/contests/caddi2018b/submissions/4012258
+// 提出ID : 4012258
+// 問題ID : caddi2018b_b
+// コンテストID : caddi2018b
+// ユーザID : xryuseix
+// コード長 : 200
+// 実行時間 : 2
+
+
+
+#include<iostream>
+using namespace std;
+int main(void){
+	
+	int n,h,w,i,ans=0,a,b;
+	cin>>n>>h>>w;
+	for(i=0;i<n;i++){
+		cin>>a>>b;
+		if(h<=a&&w<=b)ans++;
+	}
+	cout<<ans<<endl;
+	
+	return 0;
+}

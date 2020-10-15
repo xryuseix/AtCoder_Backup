@@ -1,0 +1,55 @@
+問題文の引用元：https://atcoder.jp/contests/abc025/tasks/abc025_b
+B - 双子とスイカ割りEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 直大くんと直子さんは双子の兄妹です。今日は家の廊下でスイカ割りの練習をすることになりました。廊下は東西方向に無限に長く、途中の 1 箇所に直大くんの部屋の入り口があります。最初、直大くんの部屋の前に直大くんと直子さんがいます。スイカ割りの練習では、以下の N 回の移動を順に実行します。i 番目の移動 : 最初に直子さんが方角とメートル単位の距離 d_iを指定します。指定する方角は東か西で、d_i は正整数です。その後、直大くんが指定された方向を向いて、距離 d_i を目標に移動します。直大くんは 1 回の移動において A メートルよりも少ない距離を移動することと、B メートルよりも多い距離を移動することが苦手です。そのため、目標移動距離が d_i メートルだったときの最終移動距離は以下のようになります。d_i ＜ A のとき、直大くんは向いている方向に A メートル進む。A ≦d_i ≦ B のとき、直大くんは向いている方向に d_i メートル進む。d_i ＞ B のとき、直大くんは向いている方向に B メートル進む。あなたの課題は、直大くんが N 回の移動を終えたときにどこにいるのかを求めることです。入力入力は以下の形式で標準入力から与えられる。N A Bs_1 d_1s_2 d_2:s_N d_N1 行目には、3 つの整数 N (1 ≦ N ≦ 100) と A と B (1 ≦ A ≦ B ≦ 100) が空白区切りで書かれている。2 行目からの N 行には、移動の情報が書かれている。N 行のうちの i (1 ≦ i ≦ N) 行目には、文字列 s_i と整数 d_i (1 ≦ d_i ≦ 100) が空白区切りで書かれている。文字列 s_i は East または West であり、直子さんが指定する方角がそれぞれ東、西であることを表す。出力直大くんの最終的な位置が直大くんの部屋の前よりも X (1 ≦ X) メートル東になったとき、文字列 East と X をこの順に空白区切りで 1 行に出力せよ。直大くんの最終的な位置が直大くんの部屋の前よりも X (1 ≦ X) メートル西になったとき、文字列 West と X をこの順に空白区切りで 1 行に出力せよ。直大くんの最終的な位置が直大くんの部屋の前と同じ場所になったとき、整数 0 を 1 行に出力せよ。いずれの場合においても、出力の末尾に改行を入れること。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc025/submissions/4345975
+// 提出ID : 4345975
+// 問題ID : abc025_b
+// コンテストID : abc025
+// ユーザID : xryuseix
+// コード長 : 843
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<cctype>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF=1LL<<60;
+//set<int>::iterator it;
+
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	int i,d,e=0,w=0,a,b,n;
+	string s;
+	cin>>n>>a>>b;
+	for(i=0;i<n;i++){
+		cin>>s>>d;
+		if(d>b)d=b;
+		else if(d<a)d=a;
+		if(s=="East")e+=d;
+		else w+=d;
+	}
+	if(w-e==0)cout<<0<<endl;
+	else if(w-e>0)cout<<"West "<<w-e<<endl;
+	else cout<<"East "<<e-w<<endl;
+	
+	
+	
+	
+	return 0;
+}

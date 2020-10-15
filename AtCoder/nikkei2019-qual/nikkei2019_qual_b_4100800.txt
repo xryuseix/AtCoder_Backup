@@ -1,0 +1,41 @@
+問題文の引用元：https://atcoder.jp/contests/nikkei2019-qual/tasks/nikkei2019_qual_b
+B - TouitsuEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 200 点
+問題文 : 三つの文字列 A, B, C が与えられます。これらはそれぞれ、英小文字からなる長さ N の文字列です。私たちの目標は、これら三つの文字列をすべて等しくすることです。そのために、あなたは次の操作を繰り返し行うことができます。操作: 文字列 A, B, C のうち一つを選び、さらに 1 以上 N 以下の整数 i を指定する。そして、選んだ文字列の先頭から i 文字目を別の何らかの英小文字に変更する。目標を達成するためには最小で何回の操作が必要でしょうか？
+制約1 \leq N \leq 100A, B, C はそれぞれ長さ N の文字列である。A, B, C の各文字は英小文字である。入力入力は以下の形式で標準入力から与えられる。NABC出力必要な最小の操作回数を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/nikkei2019-qual/submissions/4100800
+// 提出ID : 4100800
+// 問題ID : nikkei2019_qual_b
+// コンテストID : nikkei2019-qual
+// ユーザID : xryuseix
+// コード長 : 480
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+using namespace std;
+
+int main(void){
+	std::ios::sync_with_stdio(false);
+    std::cin.tie(0);
+	
+	int n,i,ans=0;
+	string a,b,c;
+	cin>>n>>a>>b>>c;
+	for(i=0;i<n;i++){
+		if(a[i]==b[i]&&b[i]==c[i])continue;
+		else if(a[i]==b[i]&&b[i]!=c[i]||a[i]==c[i]&&b[i]!=c[i]||c[i]==b[i]&&b[i]!=a[i]){
+			ans+=1;
+		}
+		else ans+=2;
+	}
+	cout<<ans<<endl;
+	return 0;
+}

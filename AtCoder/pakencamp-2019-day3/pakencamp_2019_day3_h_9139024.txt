@@ -1,0 +1,100 @@
+問題文の引用元：https://atcoder.jp/contests/pakencamp-2019-day3/tasks/pakencamp_2019_day3_h
+H - パ研王国を守れ！Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 1 sec / Memory Limit : 1024 MB﻿
+配点: 100 点
+問題文 : ついにパ研戦争が始まりました！  パ研戦争の戦場は，N \times N のマス目で表されます．この戦場の，上から i 番目，左から j 番目のマスを (i, j) で表すことにします．  ここに，パ研王国の兵士が M 人，敵国の兵士が M 人立っています．より具体的には，S_{i, j} が X のときマス (i, j) にはパ研王国の兵士が立っており，Q のとき敵国の兵士が立っています．. のときは何もないマスです．  敵国の兵士は，銃を上下左右斜めの 8 方向に撃つことができます．(具体的には，下図のようになっています)  敵国の兵士がパ研王国の兵士を直接撃てる状況にしないために，銃を通さないブロックをいくつかのマスに設置することにしました．ブロックを置ける条件は以下の通りです．  パ研王国の兵士も敵国の兵士もいない，何もないマスであること．できるだけ少ない数のブロックで，どの敵国の兵士もパ研王国の兵士を直接撃つことができないようにする方法を 1 つ求めてください．  ただし，置いたブロックの個数に応じてこの問題の得点が決まるので，ブロックの個数を完全に最小化する必要はないことに注意してください．  
+制約すべての入力データは，以下の
+制約を満たします．  N = 100M = 300S_{i, j} は Q，X，. のいずれかS_{i, j} が Q となるマスは，ちょうど M 個S_{i, j} が X となるマスは，ちょうど M 個テストケース生成についてパ研王国の兵士と敵国の兵士の位置は，「パ研王国の兵士と敵国の兵士が上下左右斜めに隣り合うことはない」という条件を満たす中でほぼランダムに生成されます．具体的には、こちら の生成コードを元に作られております．得点提出に対する得点は，以下のように決定されます．  採点に使われる 20 個のテストケースのうち，1 つでも条件を満たさない出力（不正なフォーマット・敵国の兵士がパ研王国の兵士を直接撃てるような出力）があれば，0 点となります．そうでない場合，i 個目のテストケースの得点を a_i 点とするとき，提出に対する得点は floor(\frac{a_{1}+a_{2}+a_{3}+...+a_{20}}{20}) 点となります．なお，各テストケースに対する得点は，置いたブロックの個数を L とするとき，以下のように定められます．  2 \ 401 \leq L のとき，5 点．1 \ 901 \leq L \leq 2 \ 400 のとき，14 点．1 \ 501 \leq L \leq 1 \ 900 のとき，17 点．1 \ 201 \leq L \leq 1 \ 500 のとき，20 点．1 \ 001 \leq L \leq 1 \ 200 のとき，23 点．481 \leq L \leq 1 \ 000 のとき，50 - (L - 480) \times 0.05 点．431 \leq L \leq 480 のとき，100 - (L - 430) \times 1 点．L \leq 430 のとき，100 点．入力入力は以下の形式で標準入力から与えられます．  N MS_{1, 1} S_{1, 2} S_{1, 3} \cdots S_{1, N}S_{2, 1} S_{2, 2} S_{2, 3} \cdots S_{2, N}S_{3, 1} S_{3, 2} S_{3, 3} \cdots S_{3, N} :  :  :S_{N, 1} S_{N, 2} S_{N, 3} \cdots S_{N, N}出力マス (i, j) の状態 V_{i, j} を，次のような文字とします．  マス (i, j) にブロックが置かれない場合，V_{i, j} = S_{i, j}マス (i, j) にブロックが置かれる場合，V_{i, j} =  #このとき，次のような形式で答えを出力してください．  V_{1, 1} V_{1, 2} V_{1, 3} \cdots V_{1, N}V_{2, 1} V_{2, 2} V_{2, 3} \cdots V_{2, N}V_{3, 1} V_{3, 2} V_{3, 3} \cdots V_{3, N} :  :  :V_{N, 1} V_{N, 2} V_{N, 3} \cdots V_{N, N}入出力例例えば，以下の
+// ソースコードの引用元 : https://atcoder.jp/contests/pakencamp-2019-day3/submissions/9139024
+// 提出ID : 9139024
+// 問題ID : pakencamp_2019_day3_h
+// コンテストID : pakencamp-2019-day3
+// ユーザID : xryuseix
+// コード長 : 2329
+// 実行時間 : 2
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+
+
+int main(void){
+
+    int n,m;
+    cin>>n>>m;
+    vs v(n);
+    rep(i,n)cin>>v[i];
+    rep(i,n)rep(j,n){
+        if(v[i][j]=='Q'){
+            int dx[]={0,1,1,1,0,-1,-1,-1};
+            int dy[]={-1,-1,0,1,1,1,0,-1};
+            for(int k=0;k<8;k++){
+                int X=j+dx[k],Y=i+dy[k];
+                while(X>=0&&X<n&&Y>=0&&Y<n){
+                    if(v[Y][X]=='#'||v[Y][X]=='Q')break;
+                    if(v[Y][X]=='X'&&v[i+dy[k]][j+dx[k]]=='.'){
+                        v[i+dy[k]][j+dx[k]]='#';
+                        break;
+                    }
+                    X+=dx[k];Y+=dy[k];
+                }
+            }
+        }
+    }
+    rep(i,n){
+        cout<<v[i]<<endl;
+    }
+
+}

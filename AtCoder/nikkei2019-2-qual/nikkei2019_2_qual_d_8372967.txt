@@ -1,0 +1,151 @@
+問題文の引用元：https://atcoder.jp/contests/nikkei2019-2-qual/tasks/nikkei2019_2_qual_d
+D - Shortest Path on a LineEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 600 点
+問題文 : 一直線上に N 個の点があり、順に 1 から N までの番号がついています。高橋君はこれらの点を頂点として無向グラフを作ることにしました。はじめはグラフに辺はないですが、M 回の操作によって辺を追加します。i 回目の操作では次のように辺を追加します。1 以上 N 以下の整数 L_i, R_i 及び正整数 C_i を用いる。  L_i ≦ s < t ≦ R_i なる整数の組 (s,t) すべてに対し、頂点 s と頂点 t の間に長さ C_i の辺を追加する。ただし、L_1,...,L_M, R_1,...,R_M, C_1,...,C_M はすべて入力で与えられます。高橋君は最終的に得られたグラフ上で最短路問題を解きたいです。得られたグラフ上での頂点 1 から頂点 N までの最短路の長さを求めてください。
+制約2 ≦ N ≦ 10^51 ≦ M ≦ 10^51 ≦ L_i < R_i ≦ N1 ≦ C_i ≦ 10^9入力入力は以下の形式で標準入力から与えられる。N ML_1 R_1 C_1:L_M R_M C_M出力頂点 1 から頂点 N までの最短路の長さを出力せよ。ただし、最短路が存在しない場合は -1 を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/nikkei2019-2-qual/submissions/8372967
+// 提出ID : 8372967
+// 問題ID : nikkei2019_2_qual_d
+// コンテストID : nikkei2019-2-qual
+// ユーザID : xryuseix
+// コード長 : 3682
+// 実行時間 : 129
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const int MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<62;
+
+class DIJKSTRA {
+public:
+    ll V;
+
+    struct edge {
+        ll to;
+        ll cost;
+    };
+
+    typedef pair<ll, ll> PI; //firstは最短距離、secondは頂点の番号
+    vector<vector<edge> >G;
+    vector<ll> d; //これ答え。d[i]:=V[i]までの最短距離
+    vector<ll> prev; //経路復元
+
+    DIJKSTRA(ll size) {
+        V = size;
+        G = vector<vector<edge> >(V);
+        prev = vector<ll> (V, -1);
+    }
+
+    void add(ll from, ll to, ll cost) {
+        edge e = {to, cost};
+        G[from].push_back(e);
+    }
+
+    void dijkstra(ll s) {
+        //greater<P>を指定することでfirstが小さい順に取り出せるようにする
+        priority_queue<PI, vector<PI>, greater<PI> > que;
+        d = vector<ll> (V, LLINF);
+        d[s] = 0;
+        que.push(PI(0, s));
+
+        while(!que.empty()) {
+            PI p = que.top();
+            que.pop();
+            ll v = p.second;
+            if(d[v] < p.first) continue;
+            for(ll i = 0; i < G[v].size(); i++) {
+                edge e = G[v][i];
+                if(d[e.to] > d[v] + e.cost) {
+                    d[e.to] = d[v] + e.cost;
+                    prev[e.to] = v;
+                    que.push(PI(d[e.to], e.to));
+                }
+            }
+        }
+    }
+    vector<ll> get_path(ll t) {
+        vector<ll> path;
+        for(;t != -1; t = prev[t]) {
+            //tがsになるまでprev[t]をたどっていく
+            path.push_back(t);
+        }
+        //このままだとt->sの順になっているので逆順にする
+        reverse(path.begin(),path.end());
+        return path;
+    }
+    void show() {
+        for(ll i = 0; i < d.size()-1; i ++) {
+            cout << d[i] << " ";
+        }
+        cout << d[d.size()-1] << endl;
+    }
+};
+
+int main(void) {
+
+    ll n,m;
+    cin>>n>>m;
+    DIJKSTRA dj(n);
+
+    for(ll i=0;i<m;i++){
+        ll l,r,c;
+        cin>>l>>r>>c;
+        dj.add(l-1,r-1,c);
+    }
+    for(ll i=0;i<n-1;i++){
+        dj.add(i+1,i,0);
+    }
+    dj.dijkstra(0);
+    cout<<((dj.d[n-1]==LLINF)?-1:dj.d[n-1])<<endl;
+
+
+}

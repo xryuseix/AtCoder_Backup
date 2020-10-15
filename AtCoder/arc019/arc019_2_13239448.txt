@@ -1,0 +1,127 @@
+問題文の引用元：https://atcoder.jp/contests/arc019/tasks/arc019_2
+B - こだわりの名前Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : ゲームも中盤にさしかかり、ちょうど海に出るための船を手に入れた。早く新たなダンジョンへ挑戦したいところだが、その前に船にかっこいい名前をつけねばならない。早く先に進みたいので船の名前はデフォルトのものでいいかと思ったが、さすがにそれでは面白くないのでデフォルトの名前から 1 文字だけ変更することにしよう。ところで、こういう場面でプログラミングコンテストの
+問題文 : の登場人物はなぜか「名前が回文になるようにしよう」とかいう訳のわからないこだわりを発揮することが多いのだが、私はそういう普通の登場人物とは違うのだ。私に変なこだわりはないので、船の名前は 回文でない ものにしたい。さて、デフォルトの名前を 1 文字だけ変更することで、回文でない名前は何通りぐらい作ることができるのだろうか？プログラムを書いて確かめることとしよう。ちなみに船の名前として使える文字はアルファベットの大文字だけだ。え？「回文でない名前にしたい」というのは「変なこだわり」ではないのかって？言われてみれば確かにその通りだし、やはり私はプログラミングコンテストの登場人物としての宿命から逃れることはできないのかもしれない。しかし、私のような者がこうして変なこだわりを持つことで多くの人がプログラミングコンテストを楽しんでくれるのであれば、それはそれで良いことなのだろう。入力入力は以下の形式で標準入力から与えられる。A1 行目には、船のデフォルトの名前 A が書かれている。A は 1 文字以上 3 \times 10^5 文字以下のアルファベットの大文字のみからなる文字列である。出力デフォルトの名前から 1 文字を選び、その文字を別の大文字アルファベットに変更することで得られる 回文でない 文字列が何通りあるかを表す数値を 1 行に出力せよ。なお、回文とは前から読んでも後ろから読んでも同じとなる文字列のことである。たとえば ANNA, MADAM, X は回文だが、AB, ARC は回文ではない。出力の末尾にも改行をいれること。
+// ソースコードの引用元 : https://atcoder.jp/contests/arc019/submissions/13239448
+// 提出ID : 13239448
+// 問題ID : arc019_2
+// コンテストID : arc019
+// ユーザID : xryuseix
+// コード長 : 3066
+// 実行時間 : 19
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <random>
+#include <iomanip>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<pair<ll,ll> > vpll;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+typedef map<int,int> mii;
+typedef set<int> si;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define arep(i,v) for(auto i : v)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+// #define endl '\n';
+#define fi first
+#define se second
+#define NONVOID [[nodiscard]]
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+template <class T> inline void dump(T &v){irep(i, v){cout<<*i<<((i==--v.end())?'\n':' ');}}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL<<60;
+constexpr ll MOD = 1000000007;
+constexpr double EPS = 1e-9;
+
+
+
+
+int main() {
+
+    string s;
+    cin>>s;
+    int ans=0;
+    set<char> se;
+    rep(i,s.size())se.insert(s[i]);
+    if(s.size()<=2){
+        if(s.size()==1)fin(0);
+        else {
+            if(s[0]!=s[1]){
+                fin(48);
+            } else {
+                fin(50);
+            }
+        }
+        return 0;
+    }
+    // fin(s);
+    string t=s;
+    reverse(all(t));
+    int di=0;
+    rep(i,s.size())di+=s[i]!=t[i];
+    if(di==0){
+        ans+=25*s.size();
+        if(s.size()%2==1)ans-=25;
+        fin(ans);
+    } else if(di==2) {
+        ans+=25*(s.size()-2)+48;
+        fin(ans);
+    } else {
+        ans+=25*s.size();
+        fin(ans);
+    }
+
+
+
+}

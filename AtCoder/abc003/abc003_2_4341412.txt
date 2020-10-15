@@ -1,0 +1,66 @@
+問題文の引用元：https://atcoder.jp/contests/abc003/tasks/abc003_2
+B - AtCoderトランプEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 64 MB
+問題文 : AtCoder社では 1 人で行うトランプを使ったゲームが流行っています。AtCoder社特製トランプでは、各カードにアルファベット小文字 1 文字（a～z）、または@の文字が書かれています。ゲームは以下の手順で行います。カードを同じ枚数ずつ 2 列に並べて文字列を 2 つ作ります。@のカードは、それぞれa,t,c,o,d,e,rのどれかのカードと置き換えます。2 つの列が指し示す文字列が同じであれば勝ち、同じでなければ負けです。手順 1. で並べられた 2 つの列が指し示す2つの文字列与えられるので、適切に@を置き換えて、このゲームで勝つことができるかどうかを判定するプログラムを書いてください。入力入力は以下の形式で標準入力から与えられる。ST  1 行目には、1 列目のトランプが表す文字列 S が与えられる。  2 行目には、2 列目のトランプが表す文字列 T が与えられる。  S、T ともにアルファベット小文字、および、@のみから構成されることが保証される。S、T の文字数は等しく、1 文字以上、10文字以下であることが保証される。  出力このゲームで勝つことが可能であればYou can winと、不可能であればYou will loseと（シングルクォーテーションを除いて）1 行で出力せよ。また、出力の末尾には改行を入れること。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc003/submissions/4341412
+// 提出ID : 4341412
+// 問題ID : abc003_2
+// コンテストID : abc003
+// ユーザID : xryuseix
+// コード長 : 1157
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<cctype>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF=1LL<<60;
+//set<int>::iterator it;
+
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	string s,t;
+	cin>>s>>t;
+	int i;
+	for(i=0;i<s.length();i++){
+		if(s[i]!='@'&&t[i]!='@'&&s[i]!=t[i]){
+			cout<<"You will lose"<<endl;
+			return 0;;
+		}
+		if(s[i]=='@'&&t[i]!='@'){
+			if(t[i]=='a'||t[i]=='t'||t[i]=='c'||t[i]=='o'||t[i]=='d'||t[i]=='e'||t[i]=='r')continue;
+			else{
+				cout<<"You will lose"<<endl;
+				return 0;;
+			}
+		}
+		if(s[i]!='@'&&t[i]=='@'){
+			if(s[i]=='a'||s[i]=='t'||s[i]=='c'||s[i]=='o'||s[i]=='d'||s[i]=='e'||s[i]=='r')continue;
+			else{
+				cout<<"You will lose"<<endl;
+				return 0;;
+			}
+		}
+	}
+	
+	cout<<"You can win"<<endl;
+	
+	
+	
+	return 0;
+}

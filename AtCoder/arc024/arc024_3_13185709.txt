@@ -1,0 +1,122 @@
+問題文の引用元：https://atcoder.jp/contests/arc024/tasks/arc024_3
+C - だれじゃEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 3 sec / Memory Limit : 256 MB
+問題文 : Takahashi 市の住人はダジャレが大好きであり、Takahashi 市で上手に渡り歩くためには高度なダジャレ能力が要求される。Takahashi 市の住人の間では、引っ越してきた相手に様々なダジャレを浴びせることが習慣となっている。最近の Takahashi 市では「アナグラムダジャレ」というものが流行っている。「アナグラムダジャレ」とは、文章の中に、互いに共通部分を持たない、2 つの同じ長さの文字列に関して、一方に出てくる文字列を並べ替えると他方の文字列になるというものである。その文字列の長さが m であるとき、この文章は長さ m の「アナグラムダジャレ」を含むと呼ぶことにする。例えば、「だじゃれをいったのはだれじゃ」という文章を考えると、先頭 4 文字からなる文字列「だじゃれ」と末尾 4 文字からなる文字列「だれじゃ」は互いに共通部分を持たず、かつ「だじゃれ」を並べ替えると「だれじゃ」になるため、この文章は長さ 4 の「アナグラムダジャレ」を含むということになる。Takahashi 市に引っ越したばかりの青木君は、Takahashi 市で上手に渡り歩くために、「アナグラムダジャレ」検知能力を身につけたいと考えている。青木君は長さ K の「アナグラムダジャレ」を発見するのが苦手なので、文章生成ソフトを用いて特訓することにした。ところが文章生成ソフトには長さ K の「アナグラムダジャレ」が含まれているか判定する機能がついていない。あなたは青木君のために長さ K の「アナグラムダジャレ」が含まれているかを判定するプログラムを作らなければならない。入力入力は以下の形式で標準入力から与えられる。N KS1 行目には、与えられる文章の長さ N (1 ≦ N ≦ 10^5) および 求めたい「アナグラムダジャレ」の長さ K (1 ≦ K ≦ N) が空白区切りで与えられる。2 行目には、判定したい文章が与えられる。この文章は長さ N で、半角の小文字英字のみからなる。部分点この問題には部分点が設定されている。N ≦ 8 を満たすデータセット 1 に正解した場合は、15 点が与えられる。N ≦ 300 を満たすデータセット 2 に正解した場合は、上記とは別に 15 点が与えられる。N ≦ 5,000 を満たすデータセット 3 に正解した場合は、上記とは別に 15 点が与えられる。追加
+制約のないデータセット 4 に正解した場合は、上記とは別に 55 点が与えられる。出力長さ K の「アナグラムダジャレ」が含まれるなら YES を、含まれないなら NO を 1 行に出力せよ。出力の末尾に改行を入れること。
+// ソースコードの引用元 : https://atcoder.jp/contests/arc024/submissions/13185709
+// 提出ID : 13185709
+// 問題ID : arc024_3
+// コンテストID : arc024
+// ユーザID : xryuseix
+// コード長 : 2989
+// 実行時間 : 91
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <random>
+#include <iomanip>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<pair<ll,ll> > vpll;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+typedef map<int,int> mii;
+typedef set<int> si;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define arep(i,v) for(auto i : v)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+// #define endl '\n';
+#define fi first
+#define se second
+#define NONVOID [[nodiscard]]
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+template <class T> inline void dump(T &v){irep(i, v){cout<<*i<<((i==--v.end())?'\n':' ');}}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL<<60;
+constexpr ll MOD = 1000000007;
+constexpr double EPS = 1e-9;
+
+
+
+
+int main() {
+
+    int n,k;
+    string s;
+    cin>>n>>k>>s;
+    vvi csum(26,vi(n+1,0));
+    rep(i,n){
+        rep(j,26){
+            csum[j][i+1]=csum[j][i];
+        }
+        csum[s[i]-'a'][i+1]++;
+    }
+    map<vector<int>,int> se;
+    for(int i=0;i<n-k+1;i++){
+        vi v(26,0);
+        rep(j,26){
+            v[j]=csum[j][i+k]-csum[j][i];
+        }
+        // dump(v);
+        // fin(i-se[v]);
+        if(se.find(v)!=se.end()){
+            if(i-se[v]>=k){
+                fin("YES");
+                return 0;
+            }
+        }
+        else se[v]=i;
+    }
+    fin("NO");
+
+
+
+}

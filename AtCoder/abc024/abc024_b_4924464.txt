@@ -1,0 +1,67 @@
+問題文の引用元：https://atcoder.jp/contests/abc024/tasks/abc024_b
+B - 自動ドアEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : ABCマーケットは高橋王国で最も人気なスーパーマーケットです。入り口は自動ドアになっています。この自動ドアは人が前を通りかかると自動で開き、そこから T 秒後まで開き続け、その後自動的に閉じます。ドアが開いている状態で新たに人が前を通りかかると、通りかかった時刻のさらに T 秒後まで開き続ける時間が延長されます。今日はのべ N 人の客が自動ドアの前を通りかかりました。i 番目の人が通りかかった時刻はABCマーケットが開店してから A_i 秒経った時刻です。今日、この自動ドアが開いていた合計秒数を求めてください。入力入力は以下の形式で標準入力から与えられる。N TA_1A_2:A_N1 行目に今日自動ドアの前を通りかかった人数を表す整数 N(1 ≦ N ≦ 10^5) とドアが開き続ける時間を表す整数 T(1 ≦ T ≦ 10^5) が空白区切りで与えられる。2 行目からの N 行のうち i 行目には i 番目の客が自動ドアの前を通りかかった時刻 A_i(1 ≦ A_i ≦ 10^6) が与えられる。A_1 ≦ A_2 ≦ … ≦ A_N が成り立つ。部分点この問題には部分点が設定されている。1 ≦ T ≦ 100を満たすデータセットに正解した場合は 50 点が与えられる。1 ≦ T ≦ 10^5を満たすデータセットに正解した場合はさらに 50 点が与えられる。合計で100点となる。出力ドアが開いていた秒数を 1 行に出力せよ。出力の末尾に改行を入れること。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc024/submissions/4924464
+// 提出ID : 4924464
+// 問題ID : abc024_b
+// コンテストID : abc024
+// ユーザID : xryuseix
+// コード長 : 1113
+// 実行時間 : 10
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	int ini,i,t,n,a,ans=0;
+	cin>>n>>t;
+	vector<int> v(n,0);
+	rep(i,n)cin>>v[i];
+	v.push_back(INF);
+	ini=v[0];
+	rep(i,n){
+		if(v[i+1]-v[i]>t){
+			ans+=v[i]-ini+t;
+			ini=v[i+1];
+		}
+		else{
+//			cout<<i<<endl;
+		}
+	}
+	cout<<ans<<endl;
+	
+	
+	
+//////////////////////////////////////////////////////
+	return 0;
+}

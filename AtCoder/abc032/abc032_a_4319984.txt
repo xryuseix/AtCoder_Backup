@@ -1,0 +1,71 @@
+問題文の引用元：https://atcoder.jp/contests/abc032/tasks/abc032_a
+A - 高橋君と青木君の好きな数Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 青木君は整数 a で割り切れる数が好きです。高橋君は整数 b で割り切れる数が好きです。n 以上の整数で、青木君と高橋君の両方が好きな最小の数を答えてください。入力入力は以下の形式で標準入力から与えられる。abn1 行目には、整数 a (1≦a≦100) が与えられる。2 行目には、整数 b (1≦b≦100) が与えられる。3 行目には、整数 n (1≦n≦20,000) が与えられる。出力出力は以下の形式で標準出力に行うこと。1 行目に、n 以上の整数で青木君と高橋君の両方が好きな数の最小値を出力せよ。末尾の改行を忘れないこと。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc032/submissions/4319984
+// 提出ID : 4319984
+// 問題ID : abc032_a
+// コンテストID : abc032
+// ユーザID : xryuseix
+// コード長 : 764
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<cctype>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	int i,a,b,n;
+	cin>>a>>b>>n;
+	for(i=n;i<=200000000;i++){
+		if(i%a==0&&i%b==0){
+			cout<<i<<endl;
+			return 0;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	return 0;
+}

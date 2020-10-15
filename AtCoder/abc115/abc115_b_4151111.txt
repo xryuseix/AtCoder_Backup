@@ -1,0 +1,38 @@
+問題文の引用元：https://atcoder.jp/contests/abc115/tasks/abc115_b
+B - Christmas Eve EveEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 200 点
+問題文 : とある世界では、今日はクリスマスイブの前日です。高羽氏は、デパートで N 個の品物を買おうとしています。i 個目の品物 (1 \leq i \leq N) の定価は p_i 円です。彼は割引券を持っており、N 個のうち最も定価が高い品物 1 個を定価の半額で買うことができます。残りの N-1 個の品物に対しては定価を支払います。支払金額は合計でいくらになるでしょうか？
+制約2 \leq N \leq 10100 \leq p_i \leq 10000p_i は偶数である。入力入力は以下の形式で標準入力から与えられる。Np_1p_2:p_N出力合計支払金額を (整数として) 出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc115/submissions/4151111
+// 提出ID : 4151111
+// 問題ID : abc115_b
+// コンテストID : abc115
+// ユーザID : xryuseix
+// コード長 : 362
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+using namespace std;
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	int d,i;
+	cin>>d;
+	int p[d];
+	for(i=0;i<d;i++)cin>>p[i];
+	sort(p,p+d);
+	int ans=p[d-1]/2;
+	for(i=0;i<d-1;i++)ans+=p[i];
+	cout<<ans<<endl;
+	
+	return 0;
+}

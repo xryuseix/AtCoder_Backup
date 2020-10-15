@@ -1,0 +1,59 @@
+問題文の引用元：https://atcoder.jp/contests/abc037/tasks/abc037_b
+B - 編集Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 長さ N の数列 \{a_i\} があります。最初、この数列の全ての要素は 0 です。この数列に対し、計 Q 回次の操作を入力で与えられた順に行ってください。数列の L_i 番目から R_i 番目 (両端を含む) を T_i に書き換える。ただし、数列の最初の要素が 1 番目である。最終的に数列の各値が何になったかを求めてください。
+制約1 \leq N \leq 1001 \leq Q \leq 1001 \leq L_i \leq R_i \leq N1 \leq T_i \leq 10^9T_i は整数である。入力入力は以下の形式で標準入力から与えられる。N QL_1 R_1 T_1:L_Q R_Q T_Q出力出力は N 行からなる。上から i 行目に操作後の a_i の値を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc037/submissions/4322684
+// 提出ID : 4322684
+// 問題ID : abc037_b
+// コンテストID : abc037
+// ユーザID : xryuseix
+// コード長 : 759
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<cctype>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	int i,n,j,q,l,r,t;
+	cin>>n>>q;
+	int a[n]={0};
+	for(i=0;i<q;i++){
+		cin>>l>>r>>t;
+		for(j=l-1;j<=r-1;j++)a[j]=t;
+	}
+	for(i=0;i<n;i++)cout<<a[i]<<endl;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	return 0;
+}

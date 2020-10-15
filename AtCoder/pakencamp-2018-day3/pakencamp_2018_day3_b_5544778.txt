@@ -1,0 +1,89 @@
+問題文の引用元：https://atcoder.jp/contests/pakencamp-2018-day3/tasks/pakencamp_2018_day3_b
+B - ㍻の終焉を告げるEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB﻿
+配点: 100 点  
+問題文 : 2018 年も間もなく終わりです。2019 年 5 月 1 日に新元号になることが発表されて以来、2018 年は「㍻の終焉を告げる」年になりました。  さて、古くから続く PAKEN 国は、情報暦 1 年 1 月 1 日に第 1 代天皇が即位し、第 i 代天皇は丁度 a_i 年間在位しました。天皇の退位式は情報暦の一年の一番最後の日である 12 月 31 日、即位式は情報暦の一年の一番最初の日である 1 月 1 日に行われるので、元号は天皇が変わる年の 12/31 と 1/1 の間に変わります。現在の天皇は第 N+1 代天皇であるため、第 1 代から第 N 代天皇に関する在位期間のデータが与えられます。  PAKEN 国では、第 i 代 (1 \leq i \leq N) 天皇がいる最後の年のことを「〇〇時代の終焉を告げる」年といいます。情報暦 2018 年までに、何回「〇〇時代の終焉を告げる年」があったのでしょうか。ただし 2018 年も含めて数えるものとします。また、現在は情報暦 2018 年より後であるとします。  
+制約N は 1 以上 8000 以下の整数a_i は 1 以上 10000 以下の整数入力入力は以下の形式で標準入力から与えられる.  Na_1a_2a_3 :a_N出力情報暦 2018 年までに、何回「〇〇時代の終焉を告げる」年があったのでしょうか。一行で出力しなさい。  
+// ソースコードの引用元 : https://atcoder.jp/contests/pakencamp-2018-day3/submissions/5544778
+// 提出ID : 5544778
+// 問題ID : pakencamp_2018_day3_b
+// コンテストID : pakencamp-2018-day3
+// ユーザID : xryuseix
+// コード長 : 1304
+// 実行時間 : 2
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#include<bits/stdc++.h>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+#define vi vector<int>
+#define vc vector<char>
+#define vs vector<string>
+#define vpii vector<pair<int,int> >
+#define vvi vector<vector<int> >
+#define vvc vector<vector<char> >
+#define vvs vector<vector<string> >
+#define P 1000000007
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	int n;
+	int sum=0;
+	cin>>n;
+	int t;
+	int ans=0;
+	int i;
+	rep(i,n){
+		cin>>t;
+		sum+=t;
+		if(sum<=2018)ans++;
+	}
+	
+	fin(ans);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//////////////////////////////////////////////////////
+return 0;}
+
+
+
+
+
+
+
+
+

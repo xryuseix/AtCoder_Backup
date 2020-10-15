@@ -1,0 +1,126 @@
+問題文の引用元：https://atcoder.jp/contests/agc043/tasks/agc043_a
+A - Range Flip Find RouteEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 400 点
+問題文 : H 行 W 列のマス目を考えます。上から r 番目、左から c 番目のマスを (r, c) と表すことにします。全てのマスはそれぞれ白か黒のどちらかの色に塗られています。次のような経路が存在するとき、このマス目を"良い"状態と呼びます。常に白いマスの上にいながら、(1, 1) から、一つ 右か下 のマスに移動することを繰り返し、 (H, W) へ移動する。ここで、"良い"状態ならば (1, 1) や (H, W) が必ず白いことに注意してください。あなたの仕事は、以下の操作を繰り返し、マス目を"良い"状態にすることです。最小で何回操作を行う必要があるか求めてください。なお、有限回の操作で必ず"良い"状態に出来ることが証明可能です。4 つの整数 r_0, c_0, r_1, c_1(1 \leq r_0 \leq r_1 \leq H, 1 \leq c_0 \leq c_1 \leq W) を選ぶ。r_0 \leq r \leq r_1, c_0 \leq c \leq c_1 を満たす全ての r, c について、(r, c) の色を変更する。つまり、白色ならば黒色にし、黒色ならば白色にする。
+制約2 \leq H, W \leq 100入力入力は以下の形式で標準入力から与えられる。H Ws_{11} s_{12} \cdots s_{1W}s_{21} s_{22} \cdots s_{2W} \vdotss_{H1} s_{H2} \cdots s_{HW}ここで、s_{rc} は # か . であり、# は (r, c) が黒色、. は白色であることを表す。出力最小の操作回数を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/agc043/submissions/11077035
+// 提出ID : 11077035
+// 問題ID : agc043_a
+// コンテストID : agc043
+// ユーザID : xryuseix
+// コード長 : 3373
+// 実行時間 : 2
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int;
+#define endl '\n';
+const int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+const int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+
+// 各座標に格納したい情報を構造体にする
+// 今回はX座標,Y座標,深さ(距離)を記述している
+struct Corr {
+    int x;
+    int y;
+    int depth;
+};
+queue<Corr> q;
+int bfs(vector<string> grid) {
+    vvi res(grid.size(),vi(grid[0].size(),INF));
+    res[0][0]=0;
+    // このような記述をしておくと，この後のfor文が綺麗にかける
+    int dx[8] = {1, 0, -1, 0};
+    int dy[8] = {0, 1, 0, -1};
+    for(int i=0;i<grid.size();i++){
+        for(int j=0;j<grid[0].size();j++){
+            for(int k=0;k<2;k++){
+                int nextx=j+dx[k];
+                int nexty=i+dy[k];
+                if(nextx==grid[0].size()||nexty==grid.size())continue;
+                chmin(res[nexty][nextx],res[i][j]+(grid[i][j]!=grid[nexty][nextx]));
+            }
+        }
+    }
+    // for(int i=0;i<grid.size();i++){
+    //     for(int j=0;j<grid[0].size();j++){
+    //         cout<<res[i][j];
+    //     }
+    //     cout<<endl;
+    // }
+    return res[grid.size()-1][grid[0].size()-1];
+}
+
+int main() {
+    
+    int h,w;
+    cin>>h>>w;
+    vs v(h);
+    rep(i,h)cin>>v[i];
+    int d=0;
+    if(v[0][0]=='#')d++;
+    Corr c={0,0,d};
+    q.push(c);
+    int ans=bfs(v);
+    if(v[h-1][w-1]=='#')ans++;
+    // fin(ans);
+    fin(ceil(ans/2.0));
+}

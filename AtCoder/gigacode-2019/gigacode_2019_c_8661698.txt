@@ -1,0 +1,85 @@
+問題文の引用元：https://atcoder.jp/contests/gigacode-2019/tasks/gigacode_2019_c
+C - パソコンの購入Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB﻿
+配点: 100 点
+問題文 : ギガ君は，「GigaCode 20XX」というイベントに参加するために，小遣いからパソコンを購入することになりました．今日を 1 日目とすると，彼は D 日目までにパソコンを購入しなければなりません．  1 日目の朝の段階で，彼が持っている小遣いの金額は 0 円です．また，i 日目の正午には小遣い a_i 円が彼に渡されます．  さて，パソコンの価格は毎日変動します．i 日目のパソコンの価格は b_i 円であり，この価格はその日の 0 時から 24 時まで変わりません．  D 日間分の小遣いの情報・パソコンの価格の情報が与えられたとき，彼が買うことのできるパソコンの価格としてあり得る最小値を求めてください．ただし，彼がパソコンを D 日目までに購入することができない場合は -1 と出力してください．なお，与えられた小遣い以外の金は使うことができないものとします．  
+制約1 \leq D \leq 200 \ 0001 \leq a_1, a_2, a_3, \dots, a_D \leq 200 \ 0001 \leq b_1, b_2, b_3, \dots, b_D \leq 2 \ 000 \ 000 \ 000入力はすべて整数部分点この問題はいくつかの小課題に分けられ，その小課題のすべてのテストケースに正解した場合に「この小課題に正解した」とみなされます．提出したソースコードの得点は，正解した小課題の点数の合計となります．  (20 点) D = 1 を満たす．  (40 点) D \leq 365 を満たす．  (40 点) 追加の
+制約はない．  入力入力は以下の形式で標準入力から与えられます．  Da_1 a_2 a_3 ... a_Db_1 b_2 b_3 ... b_D出力ギガ君が買うことのできるパソコンの価格としてあり得る最小値を出力してください．ただし，彼がパソコンを D 日目までに購入することができない場合は -1 と出力してください．  
+// ソースコードの引用元 : https://atcoder.jp/contests/gigacode-2019/submissions/8661698
+// 提出ID : 8661698
+// 問題ID : gigacode_2019_c
+// コンテストID : gigacode-2019
+// ユーザID : xryuseix
+// コード長 : 1824
+// 実行時間 : 144
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const ll MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<62;
+
+
+int main(void) {
+
+    ll ans=LLINF;
+    int d;cin>>d;
+    ll sum=0;
+    vll a(d),b(d);
+    rep(i,d)cin>>a[i];
+    rep(i,d)cin>>b[i];
+    
+    rep(i,d){
+        sum+=a[i];
+        if(sum>=b[i])ans=min(ans,b[i]);
+    }
+    if(ans==LLINF)fin(-1);
+    else fin(ans);
+}

@@ -1,0 +1,104 @@
+問題文の引用元：https://atcoder.jp/contests/arc081/tasks/arc081_a
+C - Make a RectangleEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 300 点
+問題文 : 太さが無視できる棒が N 本あります．i 番目の棒の長さは A_i です．すぬけ君は，これらの棒から 4 本の異なる棒を選び，それらの棒を辺として長方形（正方形を含む）を作りたいです．作ることができる最大の長方形の面積を求めてください．
+制約4 \leq N \leq 10^51 \leq A_i \leq 10^9A_i は整数入力入力は以下の形式で標準入力から与えられる。NA_1 A_2 ... A_N出力すぬけ君が作ることのできる最大の長方形の面積を出力せよ．ただし，長方形を作れない場合は，0 を出力せよ．
+// ソースコードの引用元 : https://atcoder.jp/contests/arc081/submissions/11394551
+// 提出ID : 11394551
+// 問題ID : arc081_a
+// コンテストID : arc081
+// ユーザID : xryuseix
+// コード長 : 2450
+// 実行時間 : 71
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int;
+#define endl '\n';
+const int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+const int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+
+
+
+int main() {
+    
+    int n;
+    cin>>n;
+    vi v(n);
+    rep(i,n)cin>>v[i];
+    Sort(v);
+    map<int,int> m;
+    rep(i,n)m[v[i]]++;
+    vll w;
+    irep(i,m){
+        if(i->second>=2){
+            w.pb(i->first);
+        }
+        if(i->second>=4){
+            w.pb(i->first);
+        }
+    }
+    Rort(w);
+    if(w.size()<2)fin(0);
+    else cout<<w[0]*w[1]<<endl;
+
+}
+

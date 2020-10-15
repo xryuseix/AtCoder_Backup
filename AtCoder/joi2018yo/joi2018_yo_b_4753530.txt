@@ -1,0 +1,35 @@
+問題文の引用元：https://atcoder.jp/contests/joi2018yo/tasks/joi2018_yo_b
+B - 双六 (Sugoroku)Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 100 点
+問題文 : JOI 君はおじさんの家で双六を見つけた．双六は直線状に並んだ N+2 個のマスからなり，1 番目のマスはスタート，N+2 番目のマスはゴールである．その他の各マスには 0 または 1 が書かれていて，各 i (1≦i≦N) について，i+1 番目のマスに書かれた数字は A_i である．双六では，最初にスタートのマスにコマを置き，サイコロを振って，出た目の数だけコマを進めることを繰り返す．ただし，1 の書かれたマスに止まった場合は，ゲームオーバーである．ゲームオーバーにならずにゴールのマスに止まるか，ゴールのマスを通り過ぎたら，ゲームクリアである．JOI 君は双六を遊ぶためのサイコロをおもちゃ屋さんに買いに行くことにした．おもちゃ屋さんには N+1 個のサイコロが売っている．j 番目 (1≦j≦N+1) のサイコロは j 個の面を持ち，1,2,...,j が 1 つずつ書かれている．JOI 君はゲームクリアできるようなサイコロのうち，最も面の数が少ないサイコロを 1 個買うことにした．JOI 君はどのサイコロを買えばよいだろうか．
+制約1≦N≦1000≦A_i≦1 (1≦i≦N)入力入力は以下の形式で標準入力から与えられる．NA_1 A_2 ... A_N出力JOI 君が購入すべきサイコロの面の数を答えよ．
+// ソースコードの引用元 : https://atcoder.jp/contests/joi2018yo/submissions/4753530
+// 提出ID : 4753530
+// 問題ID : joi2018_yo_b
+// コンテストID : joi2018yo
+// ユーザID : xryuseix
+// コード長 : 314
+// 実行時間 : 1
+
+
+
+#include<stdio.h>
+int main(void){
+	int n,max=0,i,k,co;
+	scanf("%d",&n);
+	int map[n];
+	for(i=1;i<=n;i++){
+		scanf("%d",&map[i]);
+	}
+	for(i=1;i<=n;i++){
+		co=0;
+		for(k=1;k<=n-i+1;k++){
+			if(map[k]==1) co++;
+			if(co>max) max=co;
+			if(map[k]==0) co=0;
+		}
+	}
+	printf("%d\n",max+1);
+	return 0;
+}

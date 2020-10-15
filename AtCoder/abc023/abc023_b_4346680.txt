@@ -1,0 +1,59 @@
+問題文の引用元：https://atcoder.jp/contests/abc023/tasks/abc023_b
+B - 手芸王Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 高橋君は趣味でアクセサリーを作っている。アクセサリーは a, b, c のいずれか 1 文字が書かれたブロックを横 1 列に並べることで作成できる。高橋君は、以下の手順でアクセサリーの作成を行う：手順 0 : 高橋君は b 1 文字からなるアクセサリーを作成する。以降の手順では、既にあるアクセサリーの両端にブロックを 1 つずつ追加することでアクセサリーを改造する。手順 3n + 1 (n ≧ 0) : 手順 3n で完成したアクセサリーの左端に文字 a が書かれたブロックを、右端に文字 c が書かれたブロックを付け足す。手順 3n + 2 (n ≧ 0) : 手順 3n+1 で完成したアクセサリーの左端に文字 c が書かれたブロックを、右端に文字 a が書かれたブロックを付け足す。手順 3n (n ≧ 1) : 手順 3n-1 で完成したアクセサリーの左端に文字 b が書かれたブロックを、右端に文字 b が書かれたブロックを付け足す。高橋君はアクセサリーの作成を好きな手順の直後に終了することができる。終了した場合、アクセサリーには、アクセサリーを構成するブロックに書かれた文字を左から右に読んだものと同じ名前が付けられる。例えば、手順 0, 1, 2, 3 それぞれの直後にアクセサリーの作成を終了した場合、アクセサリーの名前は順に、b, abc, cabca, bcabcab となる。文字列 S が与えられるので、その文字列がアクセサリーの名前として考えられるかを判定し、考えられるなら何番目の手順の直後にアクセサリーの作成を終了したのかを求めよ。入力入力は以下の形式で標準入力から与えられる。NS1 行目には、文字列 S の長さを表す整数 N (1 ≦ N ≦ 100) が与えられる。2 行目には、半角の小文字アルファベットのみからなる文字列 S が与えられる。出力文字列 S が手順 K の直後にアクセサリーの作成を終了したときのアクセサリーの名前と等しいような整数 K が存在する場合は整数 K を、いつアクセサリーの作成を終了してもアクセサリーの名前が S とならないときは -1 を 1 行に出力せよ。出力の末尾にも改行を入れること。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc023/submissions/4346680
+// 提出ID : 4346680
+// 問題ID : abc023_b
+// コンテストID : abc023
+// ユーザID : xryuseix
+// コード長 : 868
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<cctype>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF=1LL<<60;
+//set<int>::iterator it;
+
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	int i,n;
+	string s;
+	cin>>n>>s;
+	if((n+1)%2!=0){
+		cout<<-1<<endl;
+		return 0;
+	}
+	int ce=(n-1)/2;
+	for(i=ce+1;i<n;i++){
+		char o=s[ce*2-i],t=s[i];
+		if((o==t&&o=='b')||(o=='a'&&t=='c')||(o=='c'&&t=='a')){}
+		else{
+			cout<<-1<<endl;
+			return 0;
+		}
+	}
+	
+	
+	cout<<ce<<endl;
+	
+	
+	return 0;
+}

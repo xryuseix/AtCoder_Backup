@@ -1,0 +1,36 @@
+問題文の引用元：https://atcoder.jp/contests/abc071/tasks/abc071_a
+A - Meal DeliveryEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 100 点
+問題文 : すぬけ君は，数直線上の位置 x に住んでいます．また，位置 a, b にはそれぞれ出前を行っている店 A, B が存在します．すぬけ君は，店 A, B のうち，より近いほうから出前をとることにしました．どちらの店がすぬけ君の住んでいる位置により近いかを求めてください．ただし，数直線上の 2 点 s, t の間の距離は |s-t| で表されます．
+制約1 \leq x \leq 10001 \leq a \leq 10001 \leq b \leq 1000x, a, b は互いに異なるすぬけ君の位置から店 A, B までの距離は異なる入力入力は以下の形式で標準入力から与えられる。x a b出力店 A のほうが近いなら A を，店 B のほうが近いなら B を出力せよ．
+// ソースコードの引用元 : https://atcoder.jp/contests/abc071/submissions/4203198
+// 提出ID : 4203198
+// 問題ID : abc071_a
+// コンテストID : abc071
+// ユーザID : xryuseix
+// コード長 : 341
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<set>
+#include<cctype>
+using namespace std;
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	int x,a,b;
+	cin>>x>>a>>b;
+	if(abs(x-a)<abs(x-b))cout<<"A"<<endl;
+	else cout<<"B"<<endl;
+	
+	return 0;
+}

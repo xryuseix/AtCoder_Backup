@@ -1,0 +1,49 @@
+問題文の引用元：https://atcoder.jp/contests/abc061/tasks/abc061_b
+B - Counting RoadsEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 200 点
+問題文 : N 個の都市があり、M 本の道路があります。i(1≦i≦M) 番目の道路は、都市 a_i と 都市 b_i (1≦a_i,b_i≦N) を双方向に結んでいます。 同じ 2 つの都市を結ぶ道路は、1 本とは限りません。 各都市から他の都市に向けて、何本の道路が伸びているか求めてください。   
+制約2≦N,M≦501≦a_i,b_i≦N a_i ≠ b_i 入力は全て整数である。 入力入力は以下の形式で標準入力から与えられる。  N Ma_1 b_1:  a_M b_M出力答えを N 行に出力せよ。 i(1≦i≦N) 行目には、都市 i から他の都市に向けて、何本の道路が伸びているかを出力せよ。   
+// ソースコードの引用元 : https://atcoder.jp/contests/abc061/submissions/4276385
+// 提出ID : 4276385
+// 問題ID : abc061_b
+// コンテストID : abc061
+// ユーザID : xryuseix
+// コード長 : 684
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<cctype>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF=1LL<<60;
+
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	
+	int i,m,n,nu;
+	cin>>n>>m;
+	int num[n]={0};
+	for(i=0;i<m*2;i++){
+		cin>>nu;
+		num[nu-1]++;
+	}
+	for(i=0;i<n;i++)cout<<num[i]<<endl;
+	
+	return 0;
+}

@@ -1,0 +1,84 @@
+問題文の引用元：https://atcoder.jp/contests/agc016/tasks/agc016_a
+A - ShrinkingEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 300 点
+問題文 : すぬけ君は、次のルールに従い、長さ N の文字列 t を長さ N - 1 の文字列 t' へ変えることができます。各 i (1 ≤ i ≤ N - 1) について、t' の i 文字目は t の i, i + 1 文字目のどちらかである。英小文字のみからなる文字列 s があります。すぬけ君の目標は、s に上記の操作を繰り返し行い、s が単一の文字のみからなるようにすることです。目標を達成するために必要な操作回数の最小値を求めてください。
+制約1 ≤ |s| ≤ 100s は英小文字のみからなる。入力入力は以下の形式で標準入力から与えられる。s出力目標を達成するために必要な操作回数の最小値を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/agc016/submissions/4402921
+// 提出ID : 4402921
+// 問題ID : agc016_a
+// コンテストID : agc016
+// ユーザID : xryuseix
+// コード長 : 1165
+// 実行時間 : 2
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<cctype>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF=1LL<<60;
+//set<int>::iterator it;
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	string s,t,u;
+	int i,j,len,min=11111110,ans=0;
+	char c;
+	cin>>s;
+	u=s;
+	for(j=0;j<26;j++){
+		c='a'+j;
+		t=s=u;
+		ans=0;
+		while(1){
+//			cout<<c<<" "<<t<<" "<<s<<endl;
+			len=t.length();
+			bool ch=true;
+			for(i=0;i<len;i++){
+				if(t[i]!=c){
+					s=t;
+					ch=false;
+					break;
+				}
+			}
+			if(!ch){
+				t="";
+				for(i=0;i<s.length()-1;i++){
+					if(s[i]==c||s[i+1]==c)t+=c;
+					else t+=s[i];
+				}
+				ans++;
+			}
+			else{
+				if(min>ans)min=ans;
+//				cout<<c<<" "<<ans<<" "<<min<<endl;
+				break;
+			}
+		}
+	}
+	cout<<min<<endl;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	return 0;
+}

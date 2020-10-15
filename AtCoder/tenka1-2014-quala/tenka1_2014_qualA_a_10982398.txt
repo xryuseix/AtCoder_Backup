@@ -1,0 +1,89 @@
+問題文の引用元：https://atcoder.jp/contests/tenka1-2014-quala/tasks/tenka1_2014_qualA_a
+A - 天下一序数Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB     
+問題文 :   天下一王国では整数は辞書順比較で表します。入国したばかりのダイキ君はとりあえず 1000 までの整数を書き出すことにしました。  1 以上 1000 以下のすべての整数を十進数で表した文字列を辞書順比較で昇順にソートして、1 行ずつ出力してください。  辞書順比較について  文字列 A に対して、 A_i で i 番目の文字を表し、 |A| で文字列 A の文字数を表すことにすると、文字列 A と文字列 B を辞書順比較で比較するとは、       A_i \neq B_i となる最小の i (1 \leq i \leq {\rm min}(|A|,\ |B|)) に対して      A_i \lt{} B_i であれば、文字列 A は文字列 B より小さい   A_i \gt{} B_i であれば、文字列 A は文字列 B より大きい      そのような i が存在しなければ、文字数が少ない方を小さいとする    として文字列 A と文字列 B の大小関係を決めることである。  例えば、 1, 2, 11, 12, 21 を辞書順比較で昇順にソートすると 1, 11, 12, 2, 21 となる。              入力    この問題では入力は与えられない。              出力    1 以上  1000 以下のすべての整数を十進数で表した文字列を辞書順比較で昇順にソートして、1 行ずつ出力せよ。    なお、行の終端には改行が必要である。             1 から 10 までの出力例   11023456789   Source Name天下一プログラマーコンテスト2014 予選A
+// ソースコードの引用元 : https://atcoder.jp/contests/tenka1-2014-quala/submissions/10982398
+// 提出ID : 10982398
+// 問題ID : tenka1_2014_qualA_a
+// コンテストID : tenka1-2014-quala
+// ユーザID : xryuseix
+// コード長 : 2086
+// 実行時間 : 2
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int;
+#define endl '\n';
+int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+
+
+int main() {
+    
+    vs v(1000);
+    rep(i,1000){
+        int t=i+1;
+        string s="";
+        while(t>0){
+            s+=t%10+'0';
+            t/=10;
+        }
+        reverse(all(s));
+        v[i]=s;
+    }
+    Sort(v);
+    rep(i,1000)fin(v[i]);
+}

@@ -1,0 +1,84 @@
+問題文の引用元：https://atcoder.jp/contests/cf16-final/tasks/codefestival_2016_final_b
+B - Exactly N pointsEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 300 点
+問題文 : ある年のCODE FESTIVALの決勝では N 問の問題が出題されました。i (1≦i≦N) 番目の問題の
+配点は i 点です。高橋くんは、このコンテストでちょうど N 点を取りたいと思い、そのために解く問題の集合をどうするかを考えています。
+配点が高い問題は難しいので、解く問題の
+配点のうちの最大値が最小になるようにしようと考えました。高橋くんが解くべき問題の集合を求めてください。
+制約1≦N≦10^7部分点1≦N≦1000 を満たすデータセットに正解した場合は、200 点が与えられる。追加
+制約のないデータセットに正解した場合は、上記とは別に 100 点が与えられる。入力入力は以下の形式で標準入力から与えられる。N出力点数の合計がちょうど N となるような集合のうち、
+配点の最大値が最小となるようなものを求め、その集合に含まれる問題の番号を 1 行にひとつずつ出力せよ。昇順に出力する必要はありません。そのような集合が複数考えられる場合は、いずれを出力しても構わない。
+// ソースコードの引用元 : https://atcoder.jp/contests/cf16-final/submissions/6200769
+// 提出ID : 6200769
+// 問題ID : codefestival_2016_final_b
+// コンテストID : cf16-final
+// ユーザID : xryuseix
+// コード長 : 1720
+// 実行時間 : 69
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <string>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <bitset>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define P 1000000007
+#define STI(s) atoi(s.c_str())//string to int
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define Sort(a) sort(a.begin(),a.end())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int INF = INT_MAX;
+const long long LLINF = 1LL<<60;
+//g++ -std=c++1z temp.cpp
+//./a.out
+
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+    //dp[i]=点数の合計がNの時の配点の最大値
+    int n;
+    cin>>n;
+    vi dp(n+1,-1);
+    dp[0]=0;
+    dp[1]=1;
+    for(int i=2;i<=n;i++){
+        if(dp[i-1]*(dp[i-1]+1)/2<i)dp[i]=dp[i-1]+1;
+        else dp[i]=dp[i-1];
+    }
+    while(n>0){
+        cout<<dp[n]<<endl;
+        n-=dp[n];
+    }
+
+//////////////////////////////////////////////////////
+return 0;}

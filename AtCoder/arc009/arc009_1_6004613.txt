@@ -1,0 +1,64 @@
+問題文の引用元：https://atcoder.jp/contests/arc009/tasks/arc009_1
+A - 元気にお使い！高橋君Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 64 MB
+問題文 : ある日高橋君はお母さんに近くのスーパーまでおつかいを頼まれました。お母さんに手渡されたおつかいメモには、買ってきて欲しい商品の値段と個数がそれぞれ書かれています。ただしメモに書かれている値段には消費税が含まれていませんが、全ての商品には消費税が 5% かかります。高橋君のおつかいに必要な金額を答えなさい。なお、消費税は 1 円未満は切り捨てます。入力入力は以下の形式で標準入力から与えられる。Na_0 b_0a_1 b_1::a_{N-1} b_{N-1}入力は N+1 行ある。1 行目には、購入する商品の品数を表す整数 N(1≦N≦10) が与えられる。2 行目から N 行の i+2 行目にはある商品の購入したい個数を表す整数 a_i(1≦a_i≦10) とその単価を表す整数 b_i(1≦b_i≦1,000) が空白区切りで与えられる。出力高橋君のおつかいに必要な金額を標準出力に 1 行で出力せよ。なお、最後には改行を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/arc009/submissions/6004613
+// 提出ID : 6004613
+// 問題ID : arc009_1
+// コンテストID : arc009
+// ユーザID : xryuseix
+// コード長 : 1395
+// 実行時間 : 1
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <string>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <bitset>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define P 1000000007
+#define STI(s) atoi(s.c_str())//string to int
+#define mp(p,q) make_pair(p,q)
+#define Sort(a) sort(a.begin(),a.end())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int INF = INT_MAX;
+const long long LLINF = 1LL<<60;
+//g++ -std=c++1z temp.cpp
+//./a.out
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+    int ans=0,i,a,b,n;
+    cin>>n;
+    rep(i,n){
+        cin>>a>>b;
+        ans+=a*b;
+    }
+    cout<<floor((double)ans*1.05)<<endl;
+    
+//////////////////////////////////////////////////////
+return 0;}

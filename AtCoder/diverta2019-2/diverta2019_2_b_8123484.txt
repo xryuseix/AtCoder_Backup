@@ -1,0 +1,96 @@
+問題文の引用元：https://atcoder.jp/contests/diverta2019-2/tasks/diverta2019_2_b
+B - Picking UpEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 300 点
+問題文 : 2 次元平面上に N 個のボールがあり、i 番目のボールは (x_i, y_i) にあります。まず、p \neq 0 または q \neq 0 を満たす 2 つの整数 p, q を決め、その後以下の操作を繰り返してボールを全て回収します。残っているボールを 1 つ選んで回収する。このボールの座標を (a, b) とする。この時、直前に選んだボールの座標が (a - p, b - q) である時コスト 0 、そうでない時コスト 1 かかる。ただし、1 つ目に選んだボールについては必ずコスト 1 かかる。p, q を最適に選んだ場合にボールを全て回収するのにかかるコストの和の最小値を計算してください。
+制約1 \leq N \leq 50|x_i|, |y_i| \leq 10^9x_i \neq x_j または y_i \neq y_j (i \neq j)入力は全て整数である入力入力は以下の形式で標準入力から与えられる。Nx_1 y_1:x_N y_N出力ボールを全て回収するのにかかるコストの和の最小値を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/diverta2019-2/submissions/8123484
+// 提出ID : 8123484
+// 問題ID : diverta2019_2_b
+// コンテストID : diverta2019-2
+// ユーザID : xryuseix
+// コード長 : 2168
+// 実行時間 : 15
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const int MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<62;
+
+
+
+int main(void) {
+
+    int n;
+    cin>>n;
+    vi x(n),y(n);
+    rep(i,n)cin>>x[i]>>y[i];
+    int ans=INF;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            if(i==j)continue;
+            int p = x[i]-x[j];
+            int q = y[i]-y[j];
+            vi group;
+            for(int k=0;k<n;k++){
+                for(int l=0;l<n;l++){
+                    if(k==l)continue;
+
+                    if(x[k]-x[l]==p && y[k]-y[l]==q){
+                        group.push_back(k);
+                    }
+                }
+            }
+            ans=min(ans,n-(int)group.size());
+        }
+    }
+    if(n==1)ans=1;
+    fin(ans);
+}
+

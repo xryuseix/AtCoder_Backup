@@ -1,0 +1,84 @@
+問題文の引用元：https://atcoder.jp/contests/abc141/tasks/abc141_b
+B - Tap DanceEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点: 200 点
+問題文 : 高橋君はタップダンスをすることにしました。タップダンスの動きは文字列 S で表され、S の各文字は L, R, U, D のいずれかです。各文字は足を置く位置を表しており、1 文字目から順番に踏んでいきます。S が以下の 2 条件を満たすとき、またその時に限り、S を「踏みやすい」文字列といいます。奇数文字目がすべて R, U, D のいずれか。偶数文字目がすべて L, U, D のいずれか。S が「踏みやすい」文字列なら Yes を、そうでなければ No を出力してください。
+制約S は長さ 1 以上 100 以下の文字列S の各文字は L, R, U, D のいずれか入力入力は以下の形式で標準入力から与えられます。S出力S が「踏みやすい」文字列なら Yes を、そうでなければ No を出力してください。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc141/submissions/7515963
+// 提出ID : 7515963
+// 問題ID : abc141_b
+// コンテストID : abc141
+// ユーザID : xryuseix
+// コード長 : 1811
+// 実行時間 : 1
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(),a.end()
+#define rall(a) a.rbegin(),a.rend()
+#define Sort(a) sort(a.begin(),a.end())
+#define Rort(a) sort(a.rbegin(),a.rend())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int P = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+
+    string s;
+    cin>>s;
+    bool ch=true;
+    rep(i,s.size()){
+        if(i%2==1){
+            if(s[i]=='R')ch=false;
+        } else {
+            if(s[i]=='L')ch=false;
+        }
+    }
+    if(ch)fin("Yes");
+    else fin("No");
+
+
+//////////////////////////////////////////////////////
+return 0;}
+

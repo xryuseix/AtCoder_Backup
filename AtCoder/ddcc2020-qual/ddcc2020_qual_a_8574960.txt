@@ -1,0 +1,85 @@
+問題文の引用元：https://atcoder.jp/contests/ddcc2020-qual/tasks/ddcc2020_qual_a
+A - DDCC FinalsEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点: 100 点
+問題文 : 「コード部門」「装置実装部門」の 2 つの部門で競技が行われました．各競技において，3 位の選手は 100000 円，2 位の選手は 200000 円，1 位の選手は 300000 円の賞金を獲得します．また，コード部門と装置実装部門の両方で 1 位となった選手は，さらに 400000 円の賞金を獲得します．  DISCO 君はコード部門で X 位，装置実装部門で Y 位となりました．彼が得られる賞金額の合計を求めてください．  
+制約1 \leq X \leq 2051 \leq Y \leq 205X, Y は整数である．入力入力は以下の形式で標準入力から与えられます．  X Y出力DISCO 君が得られる賞金額の合計を，整数で出力してください．  
+// ソースコードの引用元 : https://atcoder.jp/contests/ddcc2020-qual/submissions/8574960
+// 提出ID : 8574960
+// 問題ID : ddcc2020_qual_a
+// コンテストID : ddcc2020-qual
+// ユーザID : xryuseix
+// コード長 : 1840
+// 実行時間 : 1
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const ll MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<62;
+
+
+int main(void) {
+
+    int x,y;
+    cin>>x>>y;
+    ll ans=0;
+
+    if(x==1)ans+=300000;
+    else if(x==2)ans+=200000;
+    else if(x==3)ans+=100000;
+
+    if(y==1)ans+=300000;
+    else if(y==2)ans+=200000;
+    else if(y==3)ans+=100000;
+
+    if(x==y&&x==1)ans+=400000;
+    fin(ans);
+}

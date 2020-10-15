@@ -1,0 +1,202 @@
+問題文の引用元：https://atcoder.jp/contests/abc073/tasks/abc073_d
+D - joisino's travelEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 400 点
+問題文 : Atcoder国には N 個の町があり、M 本の双方向に移動可能な道で結ばれています。また、 i 本目の道は町 A_i と町 B_i の間を距離 C_i で結んでいます。joisinoお姉ちゃんは、この国の R 個の町 r_1,r_2..r_R を訪れることとなりました。最初に訪れる町までの移動と、最後に訪れる町からの移動は空路で行うが、それ以外は道を使わなければなりません。町を訪れる順番を、道での移動距離が最小となるように決めた時の移動距離を答えてください。
+制約2≦N≦2001≦M≦N×(N-1)/22≦R≦min(8,N)  ( min(8,N) は 8 と N のうち小さい方)r_i≠r_j (i≠j)1≦A_i,B_i≦N , A_i≠B_i(A_i,B_i)≠(A_j,B_j),(A_i,B_i)≠(B_j,A_j) (i≠j)1≦C_i≦100000すべての町の間は道のみで移動することができる。入力は全て整数である。入力入力は以下の形式で標準入力から与えられる。N M Rr_1 ... r_RA_1 B_1 C_1:A_M B_M C_M出力町を訪れる順番を、道での移動距離が最小となるように決めた時の移動距離を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc073/submissions/7843405
+// 提出ID : 7843405
+// 問題ID : abc073_d
+// コンテストID : abc073
+// ユーザID : xryuseix
+// コード長 : 4157
+// 実行時間 : 35
+
+
+
+/*
+				   _ooOoo_
+				  o8888888o
+				  88" . "88
+				  (| -_- |)
+				  O\  =  /O
+			   ____/`---'\____
+			 .'  \\|     |//  `.
+		    /  \\|||  :  |||//  \
+		   /  _||||| -:- |||||-  \
+		   |   | \\\  -  /// |   |
+		   | \_|  ''\---/''  |   |
+		   \  .-\__  `-`  ___/-. /
+		 ___`. .'  /--.--\  `. . __
+	  ."" '<  `.___\_<|>_/___.'  >'"".
+	 | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+	 \  \ `-.   \_ __\ /__ _/   .-` /  /
+======`-.____`-.___\_____/___.-`____.-'======
+				   `=---='
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+		fozubaoyou    pass System Test!
+		quoted from "https://codeforces.com/contest/472/submission/7996840"
+*/
+ 
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(),a.end()
+#define rall(a) a.rbegin(),a.rend()
+#define Sort(a) sort(a.begin(),a.end())
+#define Rort(a) sort(a.rbegin(),a.rend())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const int MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+class WAR_FLY {
+public:
+	vvi d; //辺の数
+	int V; //頂点の数
+	
+	WAR_FLY(int n) {
+		V = n;
+		d = vector<vector<int> > (n,vector<int>(n));
+		for(int i = 0; i < V; i++) {
+			for(int j = 0; j < V; j++) {
+				if(i == j) {
+					d[i][j] = 0;
+				}
+				else {
+					d[i][j] = INF;
+				}
+			}
+		}
+	}
+
+	void warshall_floyd() {
+		for(int k = 0; k < V; k++) {
+			for(int i = 0; i < V; i++) {
+				for(int j = 0; j < V; j++) {
+					d[i][j] = min((ll)d[i][j], (ll)d[i][k] + (ll)d[k][j]);
+				}
+			}
+		}
+	}
+
+	void add(int from, int to, int cost) {
+		d[from][to] = cost;
+	}
+
+	bool is_negative_loop() {
+		for(int i = 0; i < V; i++) {
+			if(d[i][i] < 0) return true;
+		}
+		return false;
+	}
+
+	void show() {
+		for(int i = 0; i < V; i++) {
+			for(int j = 0; j < V; j++) {
+				cout << d[i][j] << " ";
+			}
+			cout << endl;
+		}
+	}
+};
+
+vector<vector<pair<int,int> > > v(8);
+ll ans=LLINF;
+ 
+void dfs(int pos, vector<bool> passed, int passnum, int n, ll cost){
+	passed[pos]=true;
+	// cout<<pos<<" "<<cost<<" "<<passnum<<endl;
+	if(passnum==n){
+		ans=min(ans,cost);
+	}
+	for(int i=0;i<v[pos].size();i++){
+		if(!passed[v[pos][i].first])dfs(v[pos][i].first,passed,passnum+1,n,cost+v[pos][i].second);
+	}
+}
+
+int main(void){
+
+	int n,m,R;
+	cin>>n>>m>>R;
+	vi r(R);
+	rep(i,R)cin>>r[i];
+
+	WAR_FLY wa1(n);
+	for(int i=0;i<m;i++){
+		int a,b,c;
+		cin>>a>>b>>c;
+		a--;b--;
+		wa1.add(a,b,c);
+		wa1.add(b,a,c);
+	}
+	wa1.warshall_floyd();
+
+	// cout<<"-------"<<endl;
+	// wa1.show();
+	// cout<<"-------"<<endl;
+
+	WAR_FLY wa2(R);
+	for(int i=0;i<R-1;i++){
+		for(int j=i+1;j<R;j++){
+			// cout<<i<<" "<<j<<endl;
+			wa2.add(i,j,wa1.d[r[i]-1][r[j]-1]);
+			wa2.add(j,i,wa1.d[r[j]-1][r[i]-1]);
+		}
+	}
+	wa2.warshall_floyd();
+
+	// cout<<"-------"<<endl;
+	// wa2.show();
+	// cout<<"-------"<<endl;
+
+
+	for(int i=0;i<R;i++){
+		for(int j=0;j<wa2.d[i].size();j++){
+			v[i].push_back(mp(j,wa2.d[i][j]));
+		}
+	}
+
+	for(int i=0;i<R;i++){
+		vector<bool> passed(R,false);
+		dfs(i,passed,1,R,0);
+	}
+
+	fin(ans);
+
+}

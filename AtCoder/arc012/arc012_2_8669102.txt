@@ -1,0 +1,74 @@
+問題文の引用元：https://atcoder.jp/contests/arc012/tasks/arc012_2
+B - アキレスと亀Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 64 MB
+問題文 : 高橋君は、カメが大好きです。高橋君は L メートル先にカメを見つけたので、このカメを追いかけて、捕まえようと思いました。ですが、カメは高橋君が苦手です。カメは、高橋君から追いかけられ始めた瞬間、高橋君と反対の方向に逃げていきます。高橋君の追いかける速度は秒間 v_a メートルで、カメの逃げる早さは秒間 v_b メートルです。ここで高橋君はふと疑問に思いました。高橋君が、今カメのいる場所までたどり着いた時、カメはさらに少し先に進んでいます。そのカメがいる場所まで高橋君がたどり着くと、カメはその少し先にまた進んでいます。これでは何度繰り返しても永遠にカメに追いつかないのではないでしょうか。高橋君は、この事実を調査するため、この動作を N 回繰り返した時に、カメと高橋君の距離がどれだけ縮まっているかを調べたいです。高橋君とカメの距離を出力するプログラムを作成してください。なお、高橋君はカメがいるところまでまっすぐ最短距離を進みます。また、動作を開始した時点でカメがいたところまで高橋君が移動することを 1 回の移動として数えるので、それぞれの移動にかかる時間が異なることに気をつけてください。入力入力は以下の形式で標準入力から与えられる。N v_a v_b L1 行目に、高橋君の移動回数を表す整数 N(1≦N≦100) 、高橋君の秒間移動距離を表す整数 v_a(1≦v_a≦100)、カメの秒間移動距離を表す整数 v_b(1≦v_b＜v_a)、高橋君とカメの最初の距離を表す整数 L(1≦L≦100) が、空白区切りで与えられる。出力カメのいる場所に高橋君が移動する動作を N 回行った後の、高橋君とカメの距離を出力せよ。 出力は標準出力におこない、末尾には改行をいれること。出力は絶対誤差あるいは相対誤差の少なくとも片方が 10^{−6} 以下であれば許容される。
+// ソースコードの引用元 : https://atcoder.jp/contests/arc012/submissions/8669102
+// 提出ID : 8669102
+// 問題ID : arc012_2
+// コンテストID : arc012
+// ユーザID : xryuseix
+// コード長 : 1685
+// 実行時間 : 1
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const ll MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<62;
+
+
+int main(void) {
+
+    double n,a,b,dist;
+    cin>>n>>a>>b>>dist;
+    double bi=a/b;
+    rep(i,n)dist/=bi;
+    printf("%7f\n",dist);
+}

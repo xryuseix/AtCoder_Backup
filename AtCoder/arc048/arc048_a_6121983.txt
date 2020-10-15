@@ -1,0 +1,65 @@
+問題文の引用元：https://atcoder.jp/contests/arc048/tasks/arc048_a
+A - 階段の下Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 年商 10 億円を達成したAtCoder社のオフィスビルは、地上 10^9 階地下 10^9 階の超高層ビルです。ロビーは 1 階にあり、その上には 2,3,4,...,10^9 階、その下には地下 1,2,...,10^9 階というように階が続きます。あいにくすべてのエレベーターが壊れてしまったので、高橋君は A 階からそれより上にある B 階まで階段で上がることにしました。AtCoder社のオフィスビルにはすべての上下に隣り合う階の間に階段があります。また、高橋君は階段を下ることはしません。高橋君は階段を何階分上る必要があるでしょうか。ただし、x > 0 に対し、-x 階は地下 x 階のことを表すこととします。入力入力は以下の形式で標準入力から与えられる。A B1 行目には、整数 A,B(-10^9 ≦ A < B ≦ 10^9, A ≠ 0, B ≠ 0) が空白を区切りとして与えられる。出力高橋君が何階分の階段を上る必要があるかを表す整数 1 つを出力せよ。出力の最後には改行を忘れないこと。
+// ソースコードの引用元 : https://atcoder.jp/contests/arc048/submissions/6121983
+// 提出ID : 6121983
+// 問題ID : arc048_a
+// コンテストID : arc048
+// ユーザID : xryuseix
+// コード長 : 1464
+// 実行時間 : 1
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <string>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <bitset>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define P 1000000007
+#define STI(s) atoi(s.c_str())//string to int
+#define mp(p,q) make_pair(p,q)
+#define Sort(a) sort(a.begin(),a.end())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int INF = INT_MAX;
+const long long LLINF = 1LL<<60;
+//g++ -std=c++1z temp.cpp
+//./a.out
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+
+    ll a,b;
+    cin>>a>>b;
+    if(a<0&&b>0)cout<<abs(a)+b-1<<endl;
+    else cout<<b-a<<endl;
+//////////////////////////////////////////////////////
+return 0;}

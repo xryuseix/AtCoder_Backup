@@ -1,0 +1,94 @@
+問題文の引用元：https://atcoder.jp/contests/cpsco2019-s3/tasks/cpsco2019_s3_c
+C - Camp ReceptionEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 300 点
+問題文 : 高橋君は競プロ合宿を開催することにしました。高橋君が会場に到達した時点の時刻を 0 とします。高橋君は時刻 0 の時点では控室にいて、その後参加者たちの受付を開始します。参加者は N 人いて、i (=1, 2, \ldots, N) 人目の参加者は、時刻 s_i に受付を開始して時刻 t_i に受付を終えます。高橋君は、いずれかの参加者が受付中の時間帯は常に受付にいて、どの参加者も受付中ではない時間帯は常に控室にいるようにします。また複数人の参加者の受付を並列に処理できるものとします。より正確にいえば、i (=1, 2, \ldots, N) 人目の参加者は、他の参加者の受付状態によらず時刻 s_i に到着して時刻 t_i に受付を終えます。高橋君が会場に到着した時から最後の参加者が到着するまでの間に、高橋君が控室から受付へと移動する回数が何回あったかを求めるプログラムを作成してください。ただし、高橋君が受付から控室へ移動したり、控室から受付へ移動したりするのにかかる時間は無視できるものとしますが、ある参加者の受付を時刻 t に終了して他の参加者の受付が時刻 t に開始する場合には、時刻 t の時点で控室に戻ることはないものとします。
+制約1 \le N \le 2 \times 10^51 \le s_i < t_i \le 10^6与えられる入力はすべて整数です。入力入力は以下の形式で標準入力から与えられます。Ns_1 t_1s_2 t_2:s_N t_N  出力答えを一行に出力してください。
+// ソースコードの引用元 : https://atcoder.jp/contests/cpsco2019-s3/submissions/5407711
+// 提出ID : 5407711
+// 問題ID : cpsco2019_s3_c
+// コンテストID : cpsco2019-s3
+// ユーザID : xryuseix
+// コード長 : 1580
+// 実行時間 : 51
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#include<bits/stdc++.h>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+#define vi vector<int>
+#define vc vector<char>
+#define vs vector<string>
+#define vpii vector<pair<int,int> >
+#define vvi vector<vector<int> >
+#define vvc vector<vector<char> >
+#define vvs vector<vector<string> >
+#define P 1000000007
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	int i,n,s,t;
+	cin>>n;
+	vpii v;
+	rep(i,n){
+		cin>>s>>t;
+		v.push_back(make_pair(s,t));
+	}
+	int ans=1;
+	sort(v.begin(),v.end());
+	int f=v[0].first,l=v[0].second;
+	for(i=1;i<n;i++){
+		//cout<<v[i].first<<" "<<f<<" "<<l<<" "<<v[i].second<<endl;
+		if(v[i].first>=f&&v[i].first<=l){
+			l=max(v[i].second,l);
+		}
+		else{
+			//cout<<ans<<endl;
+			ans++;
+			f=v[i].first;
+			l=v[i].second;
+		}
+	}
+	cout<<ans<<endl;
+	
+	
+	
+	
+//////////////////////////////////////////////////////
+return 0;}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,59 @@
+問題文の引用元：https://atcoder.jp/contests/tenka1-2012-qualA/tasks/tenka1_2012_qualA_1
+A - 算盤の書Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 64 MB
+問題文 : ある数学者は次の問題を考案したという。1 つがいの兎は、産まれて 2 か月後から毎月 1 つがいずつの兎を産む。兎が死ぬことはない。この条件のもとで、産まれたばかりの 1 つがいの兎は 1 年の間に何つがいの兎になるか？※つがい:オスとメスの一組この問題は上の問題をもとにした問題です。今、 1 つがいの産まれたばかりの兎がいるとします。上の問題の条件と同様に兎が増えるとすると、n ヶ月後に何つがいの兎がいるでしょう？このとき、 n ヶ月後ちょうどに産まれた兎のつがいも数に含めます。入力入力は以下の形式で標準入力から与えられる。n何ヶ月後かを表す整数 n (0 \leq n \leq 45) が 1 行で与えられる。出力n ヶ月後の兎のつがいの数を標準出力に 1 行で出力せよ。なお、行の終端には改行が必要である。
+// ソースコードの引用元 : https://atcoder.jp/contests/tenka1-2012-qualA/submissions/4830283
+// 提出ID : 4830283
+// 問題ID : tenka1_2012_qualA_1
+// コンテストID : tenka1-2012-qualA
+// ユーザID : xryuseix
+// コード長 : 1001
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	ll dp[10001];
+	int n;
+	cin>>n;
+	int i;
+	dp[0]=1;
+	dp[1]=1;
+	for(i=2;i<=45;i++){
+		dp[i]=dp[i-1]+dp[i-2];
+	}
+	cout<<dp[n]<<endl;
+	
+	
+	
+//////////////////////////////////////////////////////
+	return 0;
+}

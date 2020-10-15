@@ -1,0 +1,203 @@
+問題文の引用元：https://atcoder.jp/contests/abc137/tasks/abc137_e
+E - Coins RespawnEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 500 点
+問題文 : 1 から N までの番号がつけられた N 頂点と M 辺からなる有向グラフがあります。i 番目の辺は頂点 A_i から頂点 B_i へと向かい、この辺の上には C_i 枚のコインが置かれています。また、頂点 N にはボタンが設置されています。このグラフ上でゲームを行います。あなたは頂点 1 でコインを 0 枚持ってゲームを開始し、辺をたどってコインを拾いながら頂点 N を目指します。1 本の辺を通るには 1 分の時間がかかり、辺を通るたびにその辺の上に置かれているすべてのコインを拾うことができます。ゲームの世界ではよくあるように、ある辺を通ってその上のコインを拾っても、その辺を次に通る際には同じ枚数のコインが再び出現しており、それらを再び拾うことができます。頂点 N に到着したとき、ボタンを押してゲームを終了することができます。(ボタンを押さずに移動を続けることもできます。)ただし、ゲームを終了する際に、ゲーム開始からの経過時間を T 分として T \times P 枚のコインの支払いが要求されます。持っているコインの枚数が T \times P 枚未満の場合は、代わりに持っているコインをすべて支払います。この支払いの後に残ったコインの枚数があなたのスコアとなります。獲得できるスコアの最大値が存在するか判定し、存在する場合はその最大値を求めてください。
+制約2 \leq N \leq 25001 \leq M \leq 50001 \leq A_i, B_i \leq N1 \leq C_i \leq 10^50 \leq P \leq 10^5入力中の値はすべて整数である。頂点 1 から頂点 N に到達することが可能である。入力入力は以下の形式で標準入力から与えられる。N M PA_1 B_1 C_1:A_M B_M C_M出力獲得できるスコアの最大値が存在する場合はその最大値を、存在しない場合は -1 を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc137/submissions/12557273
+// 提出ID : 12557273
+// 問題ID : abc137_e
+// コンテストID : abc137
+// ユーザID : xryuseix
+// コード長 : 5133
+// 実行時間 : 268
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <random>
+#include <iomanip>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<pair<ll,ll> > vpll;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define arep(i,v) for(auto i : v)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+// #define endl '\n';
+#define fi first
+#define se second
+#define NONVOID [[nodiscard]]
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+template <class T> inline void dump(T &v){irep(i, v){cout<<*i<<((i==--v.end())?'\n':' ');}}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL<<60;
+constexpr ll MOD = 1000000007;
+constexpr double EPS = 1e-9;
+
+// 頂点fromから頂点toへのコストcostの辺
+struct bf_edge {
+    ll from;
+    ll to;
+    ll cost;
+};
+
+class Bellman_Ford{
+public:
+    vector<bf_edge> es; // 辺
+    vector<ll> d,loop; // d[i]...頂点sから頂点iまでの最短距離
+    ll V, E; // Vは頂点数、Eは辺数
+
+    Bellman_Ford(ll v, ll e) {
+        V = v;
+        E = e;
+        d = vector<ll>(v);
+        loop = vector<ll>(v);
+    }
+
+    void add(ll from, ll to, ll cost) {
+        bf_edge ed = {from, to, cost};
+        es.push_back(ed);
+    }
+
+    // s番目の頂点から各頂点INFへの最短距離を求める
+    void shortest_path(ll s) {
+        for(ll i = 0; i < V; i++) {
+            d[i] = LLINF;
+        }
+        d[s] = 0;
+        while(true) {
+            bool update = false;
+            for(ll i = 0; i < E; i++) {
+                bf_edge e = es[i];
+                if(d[e.from] != LLINF && d[e.to] > d[e.from] + e.cost) {
+                    d[e.to] = d[e.from] + e.cost;
+                    update = true;
+                }
+            }
+            if (!update) break;
+        }
+    }
+    // trueなら負の閉路が存在する
+    bool is_nagative_loop(void) {
+        for(ll i = 0; i < V; i++) {
+            loop[i] = 0;
+        }
+        for (ll i = 0; i < 3*V; i++) {
+            for(ll j = 0; j < E; j++) {
+                bf_edge e = es[j];
+                if(loop[e.to] > loop[e.from] + e.cost) {
+                    loop[e.to] = loop[e.from] + e.cost;
+
+                    // 3n回目にも更新があるなら負の閉路が存在する
+                    if(i == V - 1)return true;
+                }
+            }
+        }
+        return false;
+    }
+};
+
+void dfs(int pos, vvi &v, vi &ok) {
+    ok[pos]=1;
+    for(auto i: v[pos]){
+        if(!ok[i])dfs(i,v,ok);
+    }
+}
+
+int main() {
+
+    ll n,m,k;
+    cin>>n>>m>>k;
+    vll a(m),b(m),c(m);
+    vvi v(n),rv(n);
+    vi ok(n,0),ok2(n,0);
+    rep(i,m){
+        ll A,B,C;
+        cin>>A>>B>>C;
+        A--;B--;
+        C-=k;
+        C=-C;
+        a[i]=A;
+        b[i]=B;
+        c[i]=C;
+        v[A].pb(B);
+        rv[B].pb(A);
+    }
+    dfs(0,v,ok);
+    dfs(n-1,rv,ok2);
+    vvi edge;
+    rep(i,m){
+        if(ok[a[i]]&&ok[b[i]]&&ok2[a[i]]&&ok2[b[i]]){
+            vi v;
+            v.pb(a[i]);
+            v.pb(b[i]);
+            v.pb(c[i]);
+            edge.pb(v);
+        }
+    }
+    Bellman_Ford bf(n,edge.size());
+    rep(i,edge.size()){
+        bf.add(edge[i][0],edge[i][1],edge[i][2]);
+    }
+    if(bf.is_nagative_loop()){
+        fin(-1);
+    } else {
+        bf.shortest_path(0);
+        ll ans=bf.d[n-1]*(-1);
+        fin(max(ans,0LL));
+    }
+
+}
+

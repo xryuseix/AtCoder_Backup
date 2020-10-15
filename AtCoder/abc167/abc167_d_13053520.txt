@@ -1,0 +1,206 @@
+問題文の引用元：https://atcoder.jp/contests/abc167/tasks/abc167_d
+D - TeleporterEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点: 400 点
+問題文 : 高橋王国には N 個の町があります。町は 1 から N まで番号が振られています。それぞれの町にはテレポーターが 1 台ずつ設置されています。町 i (1 \leq i \leq N) のテレポーターの転送先は町 A_i です。高橋王は正の整数 K が好きです。わがままな高橋王は、町 1 から出発してテレポーターをちょうど K 回使うと、どの町に到着するかが知りたいです。高橋王のために、これを求めるプログラムを作成してください。
+制約2 \leq N \leq 2 \times 10^51 \leq A_i \leq N1 \leq K \leq 10^{18}入力入力は以下の形式で標準入力から与えられる。N KA_1 A_2 \dots A_N出力町 1 から出発してテレポーターをちょうど K 回使ったとき到着する町の番号を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc167/submissions/13053520
+// 提出ID : 13053520
+// 問題ID : abc167_d
+// コンテストID : abc167
+// ユーザID : xryuseix
+// コード長 : 5146
+// 実行時間 : 192
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <random>
+#include <iomanip>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<pair<ll,ll> > vpll;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+typedef map<int,int> mii;
+typedef set<int> si;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define arep(i,v) for(auto i : v)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+// #define endl '\n';
+#define fi first
+#define se second
+#define NONVOID [[nodiscard]]
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+template <class T> inline void dump(T &v){irep(i, v){cout<<*i<<((i==--v.end())?'\n':' ');}}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL<<60;
+constexpr ll MOD = 1000000007;
+constexpr double EPS = 1e-9;
+
+class DIJKSTRA {
+public:
+    int V;
+
+    struct dk_edge {
+        int to;
+        int cost;
+    };
+
+    typedef pair<int, int> PI; //firstは最短距離、secondは頂点の番号
+    vector<vector<dk_edge> >G;
+    vector<int> d; //これ答え。d[i]:=V[i]までの最短距離
+    vector<int> prev; //経路復元
+
+    DIJKSTRA(int size) {
+        V = size;
+        G = vector<vector<dk_edge> >(V);
+        prev = vector<int> (V, -1);
+    }
+
+    void add(int from, int to, int cost) {
+        dk_edge e = {to, cost};
+        G[from].push_back(e);
+    }
+
+    void dijkstra(int s) {
+        //greater<P>を指定することでfirstが小さい順に取り出せるようにする
+        priority_queue<PI, vector<PI>, greater<PI> > que;
+        d = vector<int> (V, INF);
+        d[s] = 0;
+        que.push(PI(0, s));
+
+        while(!que.empty()) {
+            PI p = que.top();
+            que.pop();
+            int v = p.second;
+            if(d[v] < p.first) continue;
+            for(int i = 0; i < G[v].size(); i++) {
+                dk_edge e = G[v][i];
+                if(d[e.to] > d[v] + e.cost) {
+                    d[e.to] = d[v] + e.cost;
+                    prev[e.to] = v;
+                    que.push(PI(d[e.to], e.to));
+                }
+            }
+        }
+    }
+    vector<int> get_path(int t) {
+        vector<int> path;
+        for(;t != -1; t = prev[t]) {
+            //tがsになるまでprev[t]をたどっていく
+            path.push_back(t);
+        }
+        //このままだとt->sの順になっているので逆順にする
+        reverse(path.begin(),path.end());
+        return path;
+    }
+    void show(void) {
+        for(int i = 0; i < d.size()-1; i ++) {
+            cout << d[i] << " ";
+        }
+        cout << d[d.size()-1] << endl;
+    }
+};
+
+vi pass(201010,false);
+int point;
+int d;
+void dfs1(int pos, vvi &v, int depth){
+    int ne=v[pos][0];
+    if(!pass[ne]){
+        pass[ne]=1;
+        dfs1(ne,v,depth+1);
+        return;
+    } else {
+        point=ne;
+        d=depth+1;
+        return;
+    }
+}
+
+int ans;
+void dfs2(int pos, vvi &v, int k){
+    int ne=v[pos][0];
+    if(k==0){
+        ans=pos;
+        return;
+    } else {
+        dfs2(ne,v,k-1);
+        return;
+    }
+}
+
+int main() {
+
+    ll n,k;
+    cin>>n>>k;
+    vvi v(n);
+    DIJKSTRA dj(n);
+    rep(i,n){
+        int a;
+        cin>>a;
+        a--;
+        v[i].pb(a);
+        dj.add(i,a,1);
+    }
+    pass[0]=1;
+    dfs1(0,v,0);
+    dj.dijkstra(0);
+    ll syu=d-dj.d[point];
+    if(k-dj.d[point]<0){
+        dfs2(0,v,k);
+    } else {
+        int K=(k-dj.d[point])%syu;
+        dfs2(point,v,K);
+    }
+    fin(ans+1);
+}

@@ -1,0 +1,57 @@
+問題文の引用元：https://atcoder.jp/contests/code-festival-2014-morning-easy/tasks/code_festival_morning_easy_a
+A - 差の平均Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 要素数 n の正の整数の列 a_n について、隣り合う項同士の差の平均、つまり、a_{i+1} - a_{i} (1 \leq i \leq n - 1) の平均値を求めてください。入力入力は以下の形式で与えられる。na_1 a_2 a_3 ... a_n    1 行目には、数列の要素数を表す整数 n (2 \leq n \leq 100) が与えられる。    2 行目には、数列の各項 a_i (1 \leq a_i \leq 1{,}000{,}000{,}000) が与えられる。出力隣り合う項同士の差の平均値を 1 行で出力せよ。絶対誤差が 0.001 以下ならば正解とみなされる。最後は改行し、余計な文字、空行を含まないこと。
+// ソースコードの引用元 : https://atcoder.jp/contests/code-festival-2014-morning-easy/submissions/4830418
+// 提出ID : 4830418
+// 問題ID : code_festival_morning_easy_a
+// コンテストID : code-festival-2014-morning-easy
+// ユーザID : xryuseix
+// コード長 : 1007
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	int n,i;
+	cin>>n;
+	int a[n];
+	double sum=0;
+	rep(i,n)cin>>a[i];
+	for(i=0;i<n-1;i++){
+		sum+=a[i+1]-a[i];
+	}
+	sum/=n-1;
+	printf("%.5f",sum);
+	
+//////////////////////////////////////////////////////
+	return 0;
+}

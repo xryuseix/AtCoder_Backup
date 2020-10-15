@@ -1,0 +1,80 @@
+問題文の引用元：https://atcoder.jp/contests/iroha2019-day1/tasks/iroha2019_day1_d
+D - 肉と肉のぶつかり合いEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点: 200 点
+問題文 : いろはちゃんは、プロレスの試合を観戦します。その試合のルールは次のようなものです。高橋君と青木君が勝負をする。高橋君の戦闘力は X であり、青木君の戦闘力は Y である。双方が、野良レスラーの N 人の中から N/2 人づつ援軍をとる。援軍は、高橋君から始めて交互に 1 人づつ野良レスラーを選んで自陣に加えていく。i 人目の野良レスラーの戦闘力は A_i である。高橋君とその援軍(高橋軍)、青木君とその援軍(青木軍)のうち、戦闘力の和が大きいほうが勝ち。但し、等しい場合は引き分け。あなたは超能力者です。高橋君と青木君の両者が最善を尽くすとき、この試合の勝者を言い当ててください。
+制約2 \leq N \leq 100Nは偶数である1 \leq X,Y \leq 1001 \leq A_i \leq 100 (1 \leq i \leq N)入力入力は以下の形式で与えられる。N\ \ X\ \ YA_1\ \ A_2\ \ ...\ \ A_N出力高橋軍が勝つならTakahashi青木軍が勝つならAoki引き分けるならDrawを一行に出力してください。
+// ソースコードの引用元 : https://atcoder.jp/contests/iroha2019-day1/submissions/5206497
+// 提出ID : 5206497
+// 問題ID : iroha2019_day1_d
+// コンテストID : iroha2019-day1
+// ユーザID : xryuseix
+// コード長 : 1308
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#include<bits/stdc++.h>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+#define vvi vector<vector<int> >
+#define vvc vector<vector<char> >
+#define vvs vector<vector<string> >
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	int n,i,x,y,taka=0,aoki=0;
+	cin>>n>>taka>>aoki;
+	vector<int> a(n,0);
+	rep(i,n)cin>>a[i];
+	sort(a.rbegin(),a.rend());
+	
+	for(i=0;i<n;i++){
+		if(i%2==0)taka+=a[i];
+		else aoki+=a[i];
+	}
+	
+	
+	if(taka>aoki)fin("Takahashi");
+	else if(taka<aoki)fin("Aoki");
+	else cout<<"Draw"<<endl;
+	
+	
+	
+	
+//////////////////////////////////////////////////////
+	return 0;
+}
+
+
+
+
+
+

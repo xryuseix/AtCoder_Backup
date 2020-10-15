@@ -1,0 +1,42 @@
+問題文の引用元：https://atcoder.jp/contests/abc100/tasks/abc100_a
+A - Happy Birthday!Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 976 MB
+配点: 100 点  
+問題文 : もうすぐ E869120 君と square1001 君の 16 才の誕生日が来る.そこで, AtCoder 王国の高橋君は, 円形のケーキ 1 個に放射状に切れ目を入れ 16 等分したものを, 彼らにプレゼントした.  E869120 君はそのうち A 切れ、square1001 君は B 切れを食べようとした.しかし, ケーキと一緒についていた紙を見ると, 「同じ人が隣り合う 2 切れのケーキを両方取ってはならない」と書かれていた.  さて、彼らは紙に書かれたことを守って、2 人とも食べたい数のケーキを取ることができるだろうか？  
+制約A, B は 1 以上 16 以下の整数A+B は 16 以下である.入力入力は以下の形式で標準入力から与えられる.  A B出力紙に書かれたことを守って, E869120 君と square1001 君両方が, 食べたい数のケーキを取ることができるならば Yay!, そうでなければ :( と出力しなさい.
+// ソースコードの引用元 : https://atcoder.jp/contests/abc100/submissions/4239729
+// 提出ID : 4239729
+// 問題ID : abc100_a
+// コンテストID : abc100
+// ユーザID : xryuseix
+// コード長 : 536
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<set>
+#include<cctype>
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF = 1LL << 60;
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	int a,b;
+	cin>>a>>b;
+	if(a<=8&&b<=8)cout<<"Yay!"<<endl;
+	else cout<<":("<<endl;
+	
+	
+	
+	
+	return 0;
+}

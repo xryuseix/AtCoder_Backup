@@ -1,0 +1,85 @@
+問題文の引用元：https://atcoder.jp/contests/arc076/tasks/arc076_a
+C - Reconciled?Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 300 点
+問題文 : すぬけ君は、犬を N 匹と猿を M 匹飼っています。すぬけ君は、この N+M 匹を一列に並べようと思っています。文字通り犬猿の仲の犬たちと猿たちを仲直りさせたいすぬけ君は、犬同士、または猿同士が隣り合うところができないように並べようと思っています。このような並べ方は何通りあるでしょうか。犬と猿は 10^9+7 以上の数を理解できないので、並べ方の個数を 10^9+7 で割ったあまりを求めてください。ただし、犬同士、また猿同士は互いに区別します。また、左右が反転しただけの列も異なる列とみなします。
+制約1 ≦ N,M ≦ 10^5入力入力は以下の形式で標準入力から与えられる。N M出力並べ方の個数を 10^9+7 で割ったあまりを出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/arc076/submissions/4829666
+// 提出ID : 4829666
+// 問題ID : arc076_a
+// コンテストID : arc076
+// ユーザID : xryuseix
+// コード長 : 1261
+// 実行時間 : 2
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	int n,m;
+	cin>>n>>m;
+	if(abs(n-m)>1){
+		cout<<0<<endl;
+		return 0;
+	}
+	ll ans=2,i;
+	if(n==m){
+		for(i=n;i>1;i--){
+			ans*=i;
+			ans%=1000000007;
+		}
+		for(i=n;i>1;i--){
+			ans*=i;
+			ans%=1000000007;
+		}
+	}
+	else{
+		ans=1;
+		for(i=n;i>1;i--){
+			ans*=i;
+			ans%=1000000007;
+		}
+		for(i=m;i>1;i--){
+			ans*=i;
+			ans%=1000000007;
+		}
+	}
+	
+	cout<<ans<<endl;
+	
+	
+	
+	
+	
+	
+	
+//////////////////////////////////////////////////////
+	return 0;
+}

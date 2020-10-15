@@ -1,0 +1,125 @@
+問題文の引用元：https://atcoder.jp/contests/indeednow-qualb/tasks/indeednow_2015_qualc_3
+C - 木Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 木とは、頂点とそれを結ぶ辺からなる構造「グラフ」の 1 種で、頂点の数を N 個とすると、辺は N-1 本あり、どの頂点も他の全ての頂点に辺で間接・直接的につながっています。この問題では、頂点は N 個あり、1 から N まで番号付けられています。木が与えられたとき、以下の操作で作られる数列のうち、辞書順で最小のものを出力してください。頂点1を選ぶ。今まで選ばれた頂点と辺で結ばれている頂点のうち、まだ選ばれていない頂点を1つ選ぶ、という操作を選ばれていない頂点が無くなるまで繰り返す。頂点の番号を選ばれた順に並べた数列を作る。ただし、長さ N の列 A=\{a_1,a_2, ...,a_N\} と B=\{b_1,b_2, ...,b_N\} に対し、辞書順で A が B より小さいとは、i < k で a_i=b_ii = k で a_i<b_iとなるような k(1≦k≦N) が存在するということです。入力入力は以下の形式で標準入力から与えられる。Na_1 b_1a_2 b_2：a_{N-1} b_{N-1}1 行目には、木の頂点の数を表す整数 N (2 ≦ N ≦ 10^5) が与えられる。2 行目から N-1 行には、木の辺の情報が与えられる。このうち i (1 ≦ i ≦ N-1) 行目には頂点 a_i と頂点 b_i を結ぶ辺があることを表す 2 つの整数 a_i , b_i が与えられる。N-1 本の辺で結ばれる N 個の頂点は木を成すことが保障される。部分点この問題には部分点が設定されている。50 点分のテストケースにおいて、 1 ≦ N ≦ 3,000 を満たす。出力1 行目に、与えられた木から作られる辞書順で最小の数列を空白区切りで出力せよ。行末の改行を忘れないこと。また，行末に余分な空白を入れてはならない。
+// ソースコードの引用元 : https://atcoder.jp/contests/indeednow-qualb/submissions/13257946
+// 提出ID : 13257946
+// 問題ID : indeednow_2015_qualc_3
+// コンテストID : indeednow-qualb
+// ユーザID : xryuseix
+// コード長 : 3015
+// 実行時間 : 161
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <random>
+#include <iomanip>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<pair<ll,ll> > vpll;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+typedef map<int,int> mii;
+typedef set<int> si;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define arep(i,v) for(auto i : v)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+// #define endl '\n';
+#define fi first
+#define se second
+#define NONVOID [[nodiscard]]
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+template <class T> inline void dump(T &v){irep(i, v){cout<<(*i)+1<<((i==--v.end())?'\n':' ');}}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL<<60;
+constexpr ll MOD = 1000000007;
+constexpr double EPS = 1e-9;
+
+
+
+
+int main() {
+
+    set<int> s;
+    int n;
+    cin>>n;
+    vvi v(n);
+    rep(i,n-1){
+        int a,b;
+        cin>>a>>b;
+        a--;b--;
+        v[b].pb(a);
+        v[a].pb(b);
+    }
+    vi ans;
+    ans.pb(0);
+    set<int> rem;
+    rem.insert(0);
+    rep(i,v[0].size()){s.insert(v[0][i]);}
+    while(!s.empty()){
+        // dump(s);
+        int A=*s.begin();
+        s.erase(s.begin());
+        rep(i,v[A].size()){
+            if(rem.count(v[A][i])==1){
+                continue;
+            }
+            s.insert(v[A][i]);
+        }
+        ans.pb(A);
+        rem.insert(A);
+    }
+    dump(ans);
+
+
+
+}
+

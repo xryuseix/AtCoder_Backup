@@ -1,0 +1,97 @@
+問題文の引用元：https://atcoder.jp/contests/abc096/tasks/abc096_d
+D - Five, Five EverywhereEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点：400 点
+問題文 : 以下の条件を満たす, 長さ N の数列 a_1, a_2, ..., a_N を 1 つ出力してください.  a_i \ (1 \leq i \leq N) は 55 \ 555 以下の素数である.  a_1, a_2, ..., a_N の値はすべて異なる.  a_1, a_2, ..., a_N からどの異なる 5 個の整数を選んでも, この合計は合成数になる. 条件を満たす数列が複数個存在するとき、条件を満たすもののうちどのような数列を出力しても正解となります.  備考2 以上の整数 N が, 1 と N 以外のどの正の整数でも割り切れなければ N は「素数」であり, そうでない場合 N は「合成数」である.  
+制約N は 5 以上 55 以下の整数入力入力は以下の形式で標準入力から与えられる.  N出力1 行に, N 個の数 a_1, a_2, a_3, ..., a_N を空白区切りで出力しなさい.  
+// ソースコードの引用元 : https://atcoder.jp/contests/abc096/submissions/7812945
+// 提出ID : 7812945
+// 問題ID : abc096_d
+// コンテストID : abc096
+// ユーザID : xryuseix
+// コード長 : 2243
+// 実行時間 : 2
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(),a.end()
+#define rall(a) a.rbegin(),a.rend()
+#define Sort(a) sort(a.begin(),a.end())
+#define Rort(a) sort(a.rbegin(),a.rend())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int P = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+vector<bool> eratosmake(int n,vector<bool> num){
+    //整数を列挙して素数の候補とする
+    for(int i = 0; i < n; i++) num[i] = true;
+    //0と1を消す
+    num[0] = num[1] = false;
+    //iを残してiの倍数を消していく
+    for(int i = 2; i < n; i++){
+        if(num[i]){
+            for(int j = i + i; j < n; j += i){
+                num[j] = false;
+            }
+        }
+    }
+    return num;
+}
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+    
+    int n;
+    cin>>n;
+    vector<bool> v(55560);
+    v=eratosmake(55560,v);
+    int ans=0;
+    int i=1;
+    while(n>0){
+        if(v[i]&&i%5==1){
+            cout<<i<<endl;
+            n--;
+        }
+        i++;
+    }
+    
+//////////////////////////////////////////////////////
+return 0;}

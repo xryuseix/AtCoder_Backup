@@ -1,0 +1,56 @@
+問題文の引用元：https://atcoder.jp/contests/abc018/tasks/abc018_1
+A - 豆まきEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 太郎君と次郎君と三郎君の 3 人の人が豆まきで対戦をした。得点が高いほうが上の順位である。それぞれの得点が与えられるので、それぞれの順位を答えよ。入力入力は以下の形式で標準入力から与えられる。ABC1 行目には、太郎君の得点を表す整数 A (1 ≦ A ≦ 100) が与えられる。2 行目には、次郎君の得点を表す整数 B (1 ≦ B ≦ 100) が与えられる。3 行目には、三郎君の得点を表す整数 C (1 ≦ C ≦ 100) が与えられる。A, B, C は互いに異なる。出力出力は 3 行からなる。1 行目には太郎君の順位を表す整数を出力せよ。2 行目には次郎君の順位を表す整数を出力せよ。3 行目には三郎君の順位を表す整数を出力せよ。(21:49 表現の変更)出力の末尾に改行を入れること。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc018/submissions/4320304
+// 提出ID : 4320304
+// 問題ID : abc018_1
+// コンテストID : abc018
+// ユーザID : xryuseix
+// コード長 : 775
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<cctype>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	int a[3],b[3],i,x;
+	cin>>a[0]>>a[1]>>a[2];	
+	b[0]=a[0];b[1]=a[1];b[2]=a[2];
+	sort(b,b+3);
+	for(i=0;i<3;i++){
+		for(x=0;x<3;x++){
+			if(a[i]==b[x])cout<<4-(x+1)<<endl;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	return 0;
+}

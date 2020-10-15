@@ -1,0 +1,76 @@
+問題文の引用元：https://atcoder.jp/contests/arc003/tasks/arc003_2
+B - さかさま辞書Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 64 MB
+問題文 : 高橋君は友達とチャットで逆さしりとりをすることにしました。逆さしりとりとは、前の人が言った単語の頭文字で終わる単語を答えるしりとりです。しかし、高橋君は英単語に自信がないのでこっそり「さかさま辞書」を使うことにしました。普通の辞書は単語の先頭の文字がABC順になるように並べられており、同じ文字同士の場合はその次の文字がABC順になるように並べられます。先頭から見ていく普通の辞書順に対して、「さかさま辞書」は後ろの文字から見ていきます。例えば apple, bee, card は、普通の辞書なら apple → bee → card の順になります。しかし、「さかさま辞書」では d で終わる card が 1 番、apple とbee は同じ e で終わるのでその 1 つ前が e である bee が 2 番、l であるapple が 3 番の順になります。図(a)：普通の辞書順に並べた例　　図(b)：さかさま辞書順に並べた例高橋君の代わりに「さかさま辞書」を作成し、与えられた単語を「さかさま辞書」順に並べてください。入力入力は以下の形式で標準入力から与えられる。Ns_{1}s_{2}::s_{N}1 行目は、並べる単語数を表す整数 N (1 ≦ N ≦ 100) が与えられる。2 行目から N 行は、並べる単語を表す文字列が 1 行に 1 つずつ与えられる。i+1 行目の文字列 s_i の長さは 1 文字以上 20 文字以下で、含まれる文字はアルファベットの小文字のみ(a-z)です。なお、重複する単語が与えられることはありません。出力入力として与えられた単語を、さかさま辞書順に標準出力に 1 行ずつ出力せよ。なお、最後には改行を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/arc003/submissions/7313186
+// 提出ID : 7313186
+// 問題ID : arc003_2
+// コンテストID : arc003
+// ユーザID : xryuseix
+// コード長 : 1737
+// 実行時間 : 1
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(),a.end()
+#define rall(a) a.rbegin(),a.rend()
+#define Sort(a) sort(a.begin(),a.end())
+#define Rort(a) sort(a.rbegin(),a.rend())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int P = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+
+    int n;
+    cin>>n;
+    vs v(n);
+    rep(i,n)cin>>v[i];
+    rep(i,n)reverse(all(v[i]));
+    Sort(v);
+    rep(i,n)reverse(all(v[i]));
+    rep(i,n)cout<<v[i]<<endl;
+
+//////////////////////////////////////////////////////
+return 0;}

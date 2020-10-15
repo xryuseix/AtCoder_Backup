@@ -1,0 +1,44 @@
+問題文の引用元：https://atcoder.jp/contests/dp/tasks/dp_a
+A - Frog 1Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 100 点
+問題文 : N 個の足場があります。足場には 1, 2, \ldots, N と番号が振られています。各 i (1 \leq i \leq N) について、足場 i の高さは h_i です。最初、足場 1 にカエルがいます。カエルは次の行動を何回か繰り返し、足場 N まで辿り着こうとしています。足場 i にいるとき、足場 i + 1 または i + 2 へジャンプする。 このとき、ジャンプ先の足場を j とすると、コスト |h_i - h_j| を支払う。カエルが足場 N に辿り着くまでに支払うコストの総和の最小値を求めてください。
+制約入力はすべて整数である。2 \leq N \leq 10^51 \leq h_i \leq 10^4入力入力は以下の形式で標準入力から与えられる。Nh_1 h_2 \ldots h_N出力カエルが支払うコストの総和の最小値を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/dp/submissions/4231110
+// 提出ID : 4231110
+// 問題ID : dp_a
+// コンテストID : dp
+// ユーザID : xryuseix
+// コード長 : 624
+// 実行時間 : 10
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<set>
+#include<cctype>
+using namespace std;
+template<class T> inline void chmin(T& a,T b){if(a>b)a=b;}
+template<class T> inline void chmax(T& a,T b){if(a<b)a=b;}
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	int n,i;
+	cin>>n;
+	long long int dp[n];
+	int h[n];
+	for(i=0;i<n;i++)cin>>h[i];
+	for(i=0;i<n;i++)dp[i]=1000000;
+	dp[0]=0;
+	dp[1]=abs(h[1]-h[0]);
+	for(i=2;i<n;i++)dp[i]=min(dp[i-1]+abs(h[i]-h[i-1]),dp[i-2]+abs(h[i]-h[i-2]));
+	cout<<dp[n-1]<<endl;
+	
+	return 0;
+}

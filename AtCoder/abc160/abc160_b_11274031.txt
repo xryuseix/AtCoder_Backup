@@ -1,0 +1,99 @@
+問題文の引用元：https://atcoder.jp/contests/abc160/tasks/abc160_b
+B - Golden CoinsEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 200 点
+問題文 : 高橋君は金色の硬貨が好きです。自分が持っている 500 円硬貨 1 枚につき 1000、5 円硬貨 1 枚につき 5 の 嬉しさ を得ます。高橋君は X 円を持っています。これを高橋君の嬉しさが最大になるように両替したとき、高橋君の嬉しさはいくらになりますか？(なお、利用できる硬貨は 500 円玉、100 円玉、50 円玉、10 円玉、5 円玉、1 円玉の 6 種類とします。)
+制約0 \leq X \leq 10^9X は整数入力入力は以下の形式で標準入力から与えられる。X出力嬉しさの最大値を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc160/submissions/11274031
+// 提出ID : 11274031
+// 問題ID : abc160_b
+// コンテストID : abc160
+// ユーザID : xryuseix
+// コード長 : 2405
+// 実行時間 : 1
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int;
+#define endl '\n';
+const int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+const int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+
+
+
+int main() {
+    
+    // int n,k;
+    // cin>>k>>n;
+    // vi v(n);
+    // rep(i,n)cin>>v[i];
+    // vi sum;
+    // rep(i,n-1)sum.pb(v[i+1]-v[i]);
+    // sum.pb(v[0]+(k-v[n-1]));
+    // Sort(sum);
+    // fin(k-sum[sum.size()-1]);
+
+    int x;cin>>x;
+    ll ans=0;
+    ans+=x/500*1000;
+    x%=500;
+    ans+=x/5*5;
+    fin(ans);
+}

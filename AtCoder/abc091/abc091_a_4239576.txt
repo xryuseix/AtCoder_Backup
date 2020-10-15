@@ -1,0 +1,40 @@
+問題文の引用元：https://atcoder.jp/contests/abc091/tasks/abc091_a
+A - Two CoinsEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 100 点
+問題文 : 小学生の高橋君は雑貨店にやってきました。高橋君は A 円硬貨と B 円硬貨の 2 枚を持っており，C 円のオモチャを買いたいと思っています。高橋君はオモチャを買うことができるでしょうか？なお，高橋君は高橋王国に住んでいるため，日本円ではありえないような硬貨を持っていることもあります。
+制約入力は全て整数である1 \leq A, B \leq 5001 \leq C \leq 1000入力入力は以下の形式で標準入力から与えられる。A B C出力オモチャを買えるならば Yes，買えないならば No を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc091/submissions/4239576
+// 提出ID : 4239576
+// 問題ID : abc091_a
+// コンテストID : abc091
+// ユーザID : xryuseix
+// コード長 : 530
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<set>
+#include<cctype>
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF = 1LL << 60;
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	int a,b,c;
+	
+	cin>>a>>b>>c;
+	if(a+b>=c)cout<<"Yes"<<endl;
+	else cout<<"No"<<endl;
+	
+	return 0;
+}

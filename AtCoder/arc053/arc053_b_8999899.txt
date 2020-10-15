@@ -1,0 +1,90 @@
+問題文の引用元：https://atcoder.jp/contests/arc053/tasks/arc053_b
+B - 回文分割Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 高橋君は文字列 S を持っています。S は英小文字のみからなります。まず、高橋君は S の文字を任意の順番に並べ替え、文字列 S' を作ります。次に、高橋君は S' を任意の位置で分割し、何個かの文字列 s_1，s_2，...，s_N を作ります（N は任意）。ただし、各 s_i は回文でなければなりません。各 s_i の長さの最小値を X とします。高橋君は X をできるだけ大きくしようとしています。X の最大値を求めてください。
+制約1≦|S|≦10^5S は英小文字のみからなる。入力入力は以下の形式で標準入力から与えられる。S出力X の最大値を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/arc053/submissions/8999899
+// 提出ID : 8999899
+// 問題ID : arc053_b
+// コンテストID : arc053
+// ユーザID : xryuseix
+// コード長 : 2045
+// 実行時間 : 5
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+int main(){
+
+    string s;
+    cin>>s;
+    int a[26]={0};
+    rep(i,s.size())a[s[i]-'a']++;
+    int odd=0;
+    rep(i,26)odd+=a[i]%2;
+    vi div(odd);
+    if(odd==0)div.push_back(0);
+    int pos=0;
+    for(int i=0;i<26;i++){
+        while(a[i]>1){
+            a[i]-=2;
+            div[pos]+=2;
+            if(!odd);
+            else pos = (pos+1)%odd;
+        }
+    }
+    if(!odd)fin(div[0]);
+    else fin(div[odd-1]+1);
+    // rep(i,odd)fin(div[i]);
+}

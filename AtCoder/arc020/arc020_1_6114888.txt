@@ -1,0 +1,67 @@
+問題文の引用元：https://atcoder.jp/contests/arc020/tasks/arc020_1
+A - 石を滑らせるゲームEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : アリの Ant さんと Bug くんが石を滑らせるゲームで遊んでいます。このゲームには、まっすぐな細長い氷の板と 2 つの小さな石を使います。氷の板には 1 ミリメートルごとに -1,000 から 1,000 までの目盛りが順番についています。はじめ 2 匹のプレイヤーは 1 つずつ石を持っています。2 匹のプレイヤーは交互に板の端から石を滑らせます。そして、最終的に滑らせた石がより 0 の目盛りに近かった方のプレイヤーがこのゲームの勝者となります。また、2 つの石の 0 の目盛りからの距離が同じ場合は引き分けとなります。Ant さんと Bug くんのために、2 つの石のある場所の目盛りがそれぞれ与えられた時に勝敗を判定するプログラムを作ってあげて下さい。入力入力は以下の形式で標準入力から与えられる。A B1 行目には、Ant さんの石がある場所の目盛りを表す整数 A (-1,000 ≦ A ≦ 1,000) と Bug くんの石がある場所の目盛りを表す整数 B (-1,000 ≦ B ≦ 1,000) が空白区切りで与えられる。部分点この問題には部分点が設定されている。0 ≦ A かつ 0 ≦ B を満たすテストケースすべてに正解した場合は 50 点が与えられる。出力勝者が Ant さんである場合は Ant、勝者が Bug くんである場合は Bug、引き分けである場合は Draw と 1 行に出力せよ。出力の末尾に改行をいれること。
+// ソースコードの引用元 : https://atcoder.jp/contests/arc020/submissions/6114888
+// 提出ID : 6114888
+// 問題ID : arc020_1
+// コンテストID : arc020
+// ユーザID : xryuseix
+// コード長 : 1408
+// 実行時間 : 1
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <string>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <bitset>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define fin(ans) cout<<(ans)<<endl
+#define P 1000000007
+#define STI(s) atoi(s.c_str())//string to int
+#define mp(p,q) make_pair(p,q)
+#define Sort(a) sort(a.begin(),a.end())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int INF = INT_MAX;
+const long long LLINF = 1LL<<60;
+//g++ -std=c++1z temp.cpp
+//./a.out
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+    
+    int a,b;
+    cin>>a>>b;
+    if(abs(a)==abs(b))fin("Draw");
+    else if(abs(a)>abs(b))fin("Bug");
+    else fin("Ant");
+
+    
+
+//////////////////////////////////////////////////////
+return 0;}

@@ -1,0 +1,72 @@
+問題文の引用元：https://atcoder.jp/contests/abc012/tasks/abc012_3
+C - 九九足し算Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 高橋君は、先日、九九の表を全て暗記することに成功しました。九九で物足りなくなった高橋君は、 1 × 1 から 9 × 9 までの値を、全て足してみることにしました。高橋君は、九九のうちの一つの答えを忘れてしまったので、その計算を後回しにして、残りの和を求めたところ、N になりました。しかし、高橋君は、後回しにした問題がどれだか解らなくなってしまいました。高橋君が後回しにしてしまった問題として、あり得るものを辞書順で全て出力しなさい。入力入力は以下の形式で標準入力から与えられる。N1 行目には、高橋君の演算結果を表す整数 N (1944 ≦ N ≦ 2024) が与えられる。答えが存在しないような N は与えられない。出力高橋君が飛ばした演算を、 1 行ずつ辞書順で全て出力せよ。出力の末尾にも改行をいれること。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc012/submissions/5078646
+// 提出ID : 5078646
+// 問題ID : abc012_3
+// コンテストID : abc012
+// ユーザID : xryuseix
+// コード長 : 1163
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#include<bits/stdc++.h>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+#define vvi vector<vector<int> >
+#define vvc vector<vector<char> >
+#define vvs vector<vector<string> >
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	int sum=2025,i,j;
+	int a;
+	cin>>a;
+	sum-=a;
+	for(i=1;i<=9;i++){
+		for(j=1;j<10;j++){
+			if(i*j==sum){
+				cout<<i<<" x "<<j<<endl;
+			}
+		}
+	}
+	
+	
+//////////////////////////////////////////////////////
+	return 0;
+}
+
+
+
+
+

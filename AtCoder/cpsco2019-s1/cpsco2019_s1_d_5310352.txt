@@ -1,0 +1,81 @@
+問題文の引用元：https://atcoder.jp/contests/cpsco2019-s1/tasks/cpsco2019_s1_d
+D - Dessert PlanningEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB        
+配点 : 400 点            
+問題文 :     やむなく君はお菓子を食べることが大好きです。今日を 1 日目として、今日から N 日間、お菓子をどのように食べるかを考えることにしました。そこで、以下のルールを設定しました。              お菓子は毎日朝、昼、晩の 3 回食べる。        それぞれで食べるお菓子は「クッキー」「チョコレート」「ケーキ」のいずれか 1 つにする。        同じお菓子を 2 回連続で食べない。( i 日目の晩と (i+1) 日目の朝についても適用される。)        朝に食べるお菓子は「クッキー」「チョコレート」のどちらかにする。        N 日間、合計 3N 回のお菓子について、上のルールをすべて満たすような食べ方の組み合わせが何通りあるかを 10^9+7 で割った余りを計算してください。      なお、1 日目の朝は「クッキー」「チョコレート」のどちらを食べてもよく、やむなく君は 3 種類のお菓子すべてを十分たくさん持っているものとします。                    
+制約    1\le N\le 10^{18}    N は整数                        部分点この問題には部分点が設定されています。    N \leq 10^5 を満たす入力に正解すると、300 点が与えられます。                                入力    入力は以下の形式で標準入力から与えられます。    N                      出力    答えを 1 行に出力してください。                                
+// ソースコードの引用元 : https://atcoder.jp/contests/cpsco2019-s1/submissions/5310352
+// 提出ID : 5310352
+// 問題ID : cpsco2019_s1_d
+// コンテストID : cpsco2019-s1
+// ユーザID : xryuseix
+// コード長 : 1421
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#include<bits/stdc++.h>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+#define vvi vector<vector<int> >
+#define vvc vector<vector<char> >
+#define vvs vector<vector<string> >
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+int p=1000000007;
+ll pow_kai(ll a, ll n){//aのn乗を計算します。
+  	ll x = 1;
+	while(n > 0){//全てのbitが捨てられるまで。
+    	if(n&1){//1番右のbitが1のとき。
+      		x = x*a%p;;
+    	}
+    	a = a*a%p;;
+   		n >>= 1;//bit全体を右に1つシフトして一番右を捨てる。
+  	}
+  return x;
+}
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	ll n;
+	cin>>n;
+	n-=1;
+	ll ans=8;
+	
+	cout<<ans*pow_kai(5,n)%p<<endl;
+
+	
+	
+//////////////////////////////////////////////////////
+return 0;}
+
+
+
+
+
+
+
+
+

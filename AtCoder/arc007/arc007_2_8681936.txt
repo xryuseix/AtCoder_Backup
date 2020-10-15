@@ -1,0 +1,88 @@
+問題文の引用元：https://atcoder.jp/contests/arc007/tasks/arc007_2
+B - 迷子のCDケースEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 64 MB
+問題文 : 　高橋君はCDで音楽を聴くことが好きです。　CDプレイヤーには先日聴いたCDが入ったままになっているのですが、そのCDに対応するCDケースが見当たらないことに気づきました。　前回に聴いた時にCDケースをどこに置いたのか、残念ながら高橋君は全く思い出せませんでした。　仕方がないので高橋君は今から聴こうとしているCDをケースから取り出し、CDプレイヤーに入っていたCDをそのケースへと片付けることにしました。　さらに別のCDを新たにCDプレイヤーに入れる場合も、CDプレイヤーに入っていたCDは空いたCDケースに片づけます。　例えば図 1 のように 3 枚のCDがある状態で、黄緑色のCD、オレンジ色のCDの順でCDを聴くと、それぞれのCDは最も下の図のように片付けられることになります。図 1:黄緑色のCD、オレンジ色のCDの順で聴いた場合のCDの動き　高橋君が音楽を聴き終わった後、今日聞いたCDのリストが与えられるので、高橋君が所持するCDケースにはそれぞれどのCDが入っているかを答えなさい。入力入力は以下の形式で標準入力から与えられる。N Mdisk_{0}disk_{1}::disk_{M-1}入力は M+1 行ある。1 行目には、高橋君が所持するCDケースの個数を表す整数 N(1≦N≦100)と、今日聴いたCDの枚数 M(0≦M≦100) が空白区切りで与えられる。CDケースを 1 つ無くしているので、高橋君は計 N+1 枚のCDを所持している。CDと対応するCDケースにはそれぞれ 0 から N までの数が番号付けられている。現在CDプレイヤーに入ってるCDとそれに対応する見当たらないCDケースは 0 番である。 2 行目からの M 行には今日聴いたCDの番号のリストが与えられる。i+2 行目の整数 disk_{i}(0≦i≦M-1, 0≦disk_i≦N) は i+1 番目に disk_i 番のCDを聴いたことを表している。出力1 から N 番までのCDケースに入ってるCDの番号を順に標準出力に 1 行に 1 ケース分ずつ出力せよ。なお、最後には改行を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/arc007/submissions/8681936
+// 提出ID : 8681936
+// 問題ID : arc007_2
+// コンテストID : arc007
+// ユーザID : xryuseix
+// コード長 : 1974
+// 実行時間 : 1
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const ll MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<62;
+
+
+int main(void) {
+
+    int n,m;
+    cin>>n>>m;
+    vi d(m);
+    rep(i,m)cin>>d[i];
+    vi ans(n);
+    int hub=0;
+    rep(i,n)ans[i]=i+1;
+    rep(i,m){
+        rep(j,n){
+            if(ans[j]==d[i]){
+                swap(ans[j],hub);
+                break;
+            }
+        }
+        // cout<<hub<<" : ";
+        // rep(j,n)cout<<ans[j]<<" ";
+        // cout<<endl;
+    }
+    rep(i,n)cout<<ans[i]<<endl;
+}

@@ -1,0 +1,84 @@
+問題文の引用元：https://atcoder.jp/contests/abc036/tasks/abc036_c
+C - 座圧Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : N 人の人が座っています。i 番目の人の座圧は a_i です。すぬけ君は、大小関係を保存したまま座圧のデータを圧縮して保存することにしました。以下の条件を満たす数列 b_1, …, b_N を求めてください。b_i はすべて非負整数である。a_i < a_j ならば b_i < b_j である。a_i = a_j ならば b_i = b_j である。上の条件を満たす配列のうち、b_i の最大値が最小となる。このような条件をみたす b は一意に定まることが知られています。
+制約1 ≤ N ≤ 10^50 ≤ a_i ≤ 10^9a_i は整数である。部分点30 点分のテストケースでは、1 ≤ N ≤ 10^3 をみたす。上とは別の 30 点分のテストケースでは、0 ≤ a_i ≤ 10^5 をみたす。入力入力は以下の形式で標準入力から与えられる。Na_1:a_N出力N 行出力せよ。i 行目には b_i を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc036/submissions/6420497
+// 提出ID : 6420497
+// 問題ID : abc036_c
+// コンテストID : abc036
+// ユーザID : xryuseix
+// コード長 : 1893
+// 実行時間 : 221
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define Sort(a) sort(a.begin(),a.end())
+#define Rort(a) sort(a.rbegin(),a.rend())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int P = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+//g++ -std=c++1z temp.cpp
+//./a.out
+
+map<int,int> zip;
+int compress(vector<int> &x) {
+    int unzip[x.size()];
+    sort(x.begin(), x.end());
+    x.erase(unique(x.begin(),x.end()),x.end());
+    for(int i = 0; i < x.size(); i++){
+        zip[x[i]] = i;
+        unzip[i] = x[i];
+    }
+    return x.size();
+}
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	int n;
+    cin>>n;
+    vi v(n),w(n);
+    rep(i,n)cin>>v[i];
+    w=v;
+    compress(v);
+    rep(i,n)cout<<zip[w[i]]<<endl;
+
+    
+//////////////////////////////////////////////////////
+return 0;}

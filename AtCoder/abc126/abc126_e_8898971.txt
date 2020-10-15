@@ -1,0 +1,129 @@
+問題文の引用元：https://atcoder.jp/contests/abc126/tasks/abc126_e
+E - 1 or 2Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 500 点
+問題文 : N 枚のカードが一列に伏せられており、各カードには整数 1 または 2 が書かれています。i 番目のカードに書かれている整数を A_i とします。あなたの目的は A_1, A_2, ..., A_N を当てることです。次のことが分かっています。i = 1, 2, ..., M について A_{X_i} + A_{Y_i} + Z_i は偶数である。あなたは魔法使いです。次の魔法を何度でも使うことができます。魔法: コストを 1 払う。カードを 1 枚選び、そのカードに書かれた整数 A_i を知る。最小で何コスト払えば、A_1, A_2, ..., A_N 全てを確実に当てることができるでしょうか。なお、与えられる入力には矛盾がないことが保証されます。
+制約入力は全て整数である。2 \leq N \leq 10^51 \leq M \leq 10^51 \leq X_i < Y_i \leq N1 \leq Z_i \leq 100(X_i, Y_i) の組は互いに異なる。与えられる入力には矛盾がない(すなわち、条件を満たす A_1, A_2, ..., A_N が存在する)。入力入力は以下の形式で標準入力から与えられる。N MX_1 Y_1 Z_1X_2 Y_2 Z_2\vdotsX_M Y_M Z_M出力A_1, A_2, ..., A_N 全てを確実に当てるために払う必要のあるコストの合計の最小値を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc126/submissions/8898971
+// 提出ID : 8898971
+// 問題ID : abc126_e
+// コンテストID : abc126
+// ユーザID : xryuseix
+// コード長 : 3155
+// 実行時間 : 78
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const ll MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<62;
+
+
+class UnionFind {
+public:
+    //親の番号を格納する。親だった場合は-(その集合のサイズ)
+    vector<int> Parent;
+    //作るときはParentの値を全て-1にする
+    //こうすると全てバラバラになる
+    UnionFind(int N) {
+        Parent = vector<int>(N, -1);
+    }
+    //Aがどのグループに属しているか調べる
+    int root(int A) {
+        if (Parent[A] < 0) return A;
+        return Parent[A] = root(Parent[A]);
+    }
+    //自分のいるグループの頂点数を調べる
+    int size(int A) {
+        return -Parent[root(A)];//親をとってきたい]
+    }
+    //AとBをくっ付ける
+    bool connect(int A, int B) {
+        //AとBを直接つなぐのではなく、root(A)にroot(B)をくっつける
+        A = root(A);
+        B = root(B);
+        if (A == B) {
+            //すでにくっついてるからくっ付けない
+            return false;
+        }
+        //大きい方(A)に小さいほう(B)をくっ付けたい
+        //大小が逆だったらひっくり返しちゃう。
+        if (size(A) < size(B)) swap(A, B);
+        //Aのサイズを更新する
+        Parent[A] += Parent[B];
+        //Bの親をAに変更する
+        Parent[B] = A;
+        return true;
+    }
+};
+
+int main(void){
+
+    int n,m;
+    cin>>n>>m;
+    UnionFind uni(n);
+
+    int x,y,z;
+    rep(i,m){
+        cin>>x>>y>>z;
+        x--;y--;
+        uni.connect(x,y);
+    }
+    int ans=0;
+    rep(i,uni.Parent.size()){
+        if(uni.Parent[i]<0)ans++;
+    }
+
+    cout<<ans<<endl;
+
+
+
+
+}

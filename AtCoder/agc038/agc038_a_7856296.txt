@@ -1,0 +1,107 @@
+問題文の引用元：https://atcoder.jp/contests/agc038/tasks/agc038_a
+A - 01 MatrixEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 300 点
+問題文 : H 行 W 列からなるマス目があります。すぬけくんは、各マスに 0 または 1 を書き込みたいです。その際、以下の条件を全て満たす必要があります。どの行についても、その行に含まれる 0 の個数と、その行に含まれる 1 の個数のうち、小さい方が A である。（ここで、0,1 の個数が同じ場合、小さい方はどちらとしてもよい）。どの列についても、その列に含まれる 0 の個数と、その列に含まれる 1 の個数のうち、小さい方が B である。これらの条件を満たすように各マスに 0,1 を書き込めるか判定し、可能な場合は条件を満たす書き込み方を 1 つ示してください。
+制約1 \leq H,W \leq 10000 \leq A2 \times A \leq W0 \leq B2 \times B \leq H入力される値はすべて整数である。入力入力は以下の形式で標準入力から与えられる。H W A B出力条件を満たすように各マスに 0,1 を書き込むことが不可能な場合は No を出力せよ。可能な場合は、条件を満たす書き込み方を 1 つ、以下の形式で出力せよ。s_{11}s_{12}\cdots s_{1W}s_{21}s_{22}\cdots s_{2W}\vdotss_{H1}s_{H2}\cdots s_{HW}ただしここで s_{ij} は、マス目の上から i 行目、左から j 番目のマスに書き込む数字である。解が複数存在する場合、どれを出力しても正解と判定される。
+// ソースコードの引用元 : https://atcoder.jp/contests/agc038/submissions/7856296
+// 提出ID : 7856296
+// 問題ID : agc038_a
+// コンテストID : agc038
+// ユーザID : xryuseix
+// コード長 : 2374
+// 実行時間 : 52
+
+
+
+/*
+				   _ooOoo_
+				  o8888888o
+				  88" . "88
+				  (| -_- |)
+				  O\  =  /O
+			   ____/`---'\____
+			 .'  \\|     |//  `.
+			/  \\|||  :  |||//  \
+		   /  _||||| -:- |||||-  \
+		   |   | \\\  -  /// |   |
+		   | \_|  ''\---/''  |   |
+		   \  .-\__  `-`  ___/-. /
+		 ___`. .'  /--.--\  `. . __
+	  ."" '<  `.___\_<|>_/___.'  >'"".
+	 | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+	 \  \ `-.   \_ __\ /__ _/   .-` /  /
+======`-.____`-.___\_____/___.-`____.-'======
+				   `=---='
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+		fozubaoyou    pass System Test!
+		quoted from "https://codeforces.com/contest/472/submission/7996840"
+*/
+ 
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(),a.end()
+#define rall(a) a.rbegin(),a.rend()
+#define Sort(a) sort(a.begin(),a.end())
+#define Rort(a) sort(a.rbegin(),a.rend())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const int MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+
+int main(void){
+
+	int h,w,a,b;
+	cin>>h>>w>>a>>b;
+	vvi v(h,vi(w,0));
+	for(int i=0;i<h;i++){
+		for(int j=0;j<w;j++){
+			if((i<b&&j>=a)||(i>=b&&j<a)){
+				v[i][j]=1;
+			}
+		}
+	}
+	for(int i=0;i<h;i++){
+		for(int j=0;j<w;j++){
+			cout<<v[i][j];
+		}
+		cout<<endl;
+	}
+}

@@ -1,0 +1,81 @@
+問題文の引用元：https://atcoder.jp/contests/tenka1-2013-qualb/tasks/tenka1_2013_qualB_a
+A - 天下一人力比較Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 64 MB
+問題文 : 天下一株式会社に勤めるカズキ君は、以下の文字列の中から辞書順比較で 7 番目に小さいものを選ぶという仕事を言い渡された。あなたは唖然とするカズキ君を助けるためにプログラムを書いて、答えを見つけることにした。ABGGEGBCFEBFBAFFFGFACCCECDGCDGAFFFACGDAEEDCAEAFBDDEEDGGAGDCAGFFAACBGEDBAFBCDECGAEEDBGADGADEDBCGABDDCBBDBEADGADBBDFCEBFGCGCBEDCEDGADBGGDDFEEGGFDGCAFBFGFAADDDAEBGACDFDGDABEEDCECFFAEADDBEEABFEABFEEBFDGAADAEGB辞書順比較について文字列 A に対して、 A_i で i 番目の文字を表し、 |A| で文字列 A の文字数を表すことにすると、文字列 A と文字列 B を辞書順比較で比較するとは、A_i \neq B_i となる最小の i (1 \leq i \leq {\rm min}(|A|,\ |B|)) に対してA_i < B_i であれば、文字列 A は文字列 B より小さいA_i > B_i であれば、文字列 A は文字列 B より大きいそのような i が存在しなければ、文字数が少ない方を小さいとするとして文字列 A と文字列 B の大小関係を決めることである。なお、アルファベットの大小関係は、 A \lt{} B \lt{} C \lt{} ...\lt{} Y \lt{} Z である。例えば、 AA, B, BA, AB, A の中から辞書順比較で 3 番目に小さいものは ABである。(A \lt{} AA \lt{} AB \lt{} B \lt{} BA である。)入力下記の文字列が標準入力から与えられる。
+問題文 : においてカズキ君の渡された文字列と同じである。ABGGEGBCFEBFBAFFFGFACCCECDGCDGAFFFACGDAEEDCAEAFBDDEEDGGAGDCAGFFAACBGEDBAFBCDECGAEEDBGADGADEDBCGABDDCBBDBEADGADBBDFCEBFGCGCBEDCEDGADBGGDDFEEGGFDGCAFBFGFAADDDAEBGACDFDGDABEEDCECFFAEADDBEEABFEABFEEBFDGAADAEGB出力辞書順比較で 7 番目に小さい文字列を標準出力に 1 行で出力せよ。なお、行の終端には改行が必要である。Source Name天下一プログラマーコンテスト2013 予選B
+// ソースコードの引用元 : https://atcoder.jp/contests/tenka1-2013-qualb/submissions/10982264
+// 提出ID : 10982264
+// 問題ID : tenka1_2013_qualB_a
+// コンテストID : tenka1-2013-qualb
+// ユーザID : xryuseix
+// コード長 : 1910
+// 実行時間 : 1
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int;
+#define endl '\n';
+int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+
+
+int main() {
+    
+    vs s(15);
+    rep(i,15)cin>>s[i];
+    Sort(s);
+    fin(s[6]);
+}

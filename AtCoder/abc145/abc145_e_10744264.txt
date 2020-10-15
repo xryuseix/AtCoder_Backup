@@ -1,0 +1,114 @@
+問題文の引用元：https://atcoder.jp/contests/abc145/tasks/abc145_e
+E - All-you-can-eatEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 500 点
+問題文 : 高橋君は食べ放題のお店に来ました。N 種類の料理があり、i 番目の料理は、食べるために A_i 分必要で、美味しさは B_i です。この店のルールは以下の通りです。1 度に 1 つの料理のみを注文することができます。注文した料理は即座に提供され、食べ始めることができます。同じ種類の料理を 2 度以上注文することはできません。提供済みの料理を食べ終わるまで次の料理を注文することはできません。最初の注文から T-0.5 分後以降に注文することはできませんが、提供済みの料理を食べることはできます。高橋君の満足度を、この来店で高橋君が食べる料理の美味しさの合計とします。高橋君が適切に行動したとき、満足度は最大でいくらになるでしょうか。
+制約2 \leq N \leq 30001 \leq T \leq 30001 \leq A_i \leq 30001 \leq B_i \leq 3000入力中のすべての値は整数である。入力入力は以下の形式で標準入力から与えられる。N TA_1 B_1:A_N B_N出力高橋君が適切に行動したときの、満足度の最大値を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc145/submissions/10744264
+// 提出ID : 10744264
+// 問題ID : abc145_e
+// コンテストID : abc145
+// ユーザID : xryuseix
+// コード長 : 2686
+// 実行時間 : 83
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int;
+#define endl '\n';
+int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+
+int knapsack(int n, int W, vi w, vi v){
+    vvi dp(n + 1, vi (W + 1, 0));
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= W; j++) {
+            if(j - w[i] >= 0) {
+                chmax(dp[i][j], dp[i - 1][j - w[i]] + v[i]);
+            }
+            chmax(dp[i][j], dp[i - 1][j]);
+        }
+    }
+    int res=dp[n][W];
+    for(int i=2;i<=n;i++){
+        chmax(res,dp[i-1][W-1]+v[i]);
+    }
+    // rep(i,n+1){
+    //     rep(j,W+1){
+    //         cout<<dp[i][j]<<" ";
+    //     }
+    //     cout<<endl;
+    // }
+    return res;
+}
+
+int main() {
+    
+    int n,t;
+    cin>>n>>t;
+    vi v(n+1),w(n+1);
+    vpii tmp(n+1);
+    rep(i,n){
+        cin>>tmp[i+1].first>>tmp[i+1].second;
+    }
+    Sort(tmp);
+    rep(i,n){
+        v[i+1]=tmp[i+1].second;
+        w[i+1]=tmp[i+1].first;
+    }
+    fin(knapsack(n,t,w,v));
+    
+}

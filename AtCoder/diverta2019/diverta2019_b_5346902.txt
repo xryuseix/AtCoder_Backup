@@ -1,0 +1,81 @@
+問題文の引用元：https://atcoder.jp/contests/diverta2019/tasks/diverta2019_b
+B - RGB BoxesEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 200 点
+問題文 : すぬけ君はボールが入った箱を売っている店に行きました。売っている箱は以下の 3 種類です。R 個のボールが入った赤色の箱G 個のボールが入った緑色の箱B 個のボールが入った青色の箱すぬけ君は赤色の箱を r 個、緑色の箱を g 個、青色の箱を b 個買うことで合計でちょうど N 個のボールが手に入るようにしたいです。これを達成する非負整数の組 (r,g,b) はいくつありますか？
+制約入力は全て整数1 \leq R,G,B,N \leq 3000入力入力は以下の形式で標準入力から与えられる。R G B N出力答えを出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/diverta2019/submissions/5346902
+// 提出ID : 5346902
+// 問題ID : diverta2019_b
+// コンテストID : diverta2019
+// ユーザID : xryuseix
+// コード長 : 1258
+// 実行時間 : 267
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#include<bits/stdc++.h>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+#define vvi vector<vector<int> >
+#define vvc vector<vector<char> >
+#define vvs vector<vector<string> >
+#define P 1000000007
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	int i,j,r,g,b,n,ans=0;
+	cin>>r>>g>>b>>n;
+	for(i=0;i<=9000;i++){
+		for(j=0;j<=9000;j++){
+			if((n-(i*r+j*g))%b==0&&(n-(i*r+j*g))/b>=0){
+				ans++;
+//				cout<<i<<j<<endl;
+			}
+		}
+	}
+	
+	
+	cout<<ans<<endl;
+	
+	
+	
+	
+	
+//////////////////////////////////////////////////////
+return 0;}
+
+
+
+
+
+
+
+
+

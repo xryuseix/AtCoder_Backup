@@ -1,0 +1,61 @@
+問題文の引用元：https://atcoder.jp/contests/abc025/tasks/abc025_a
+A - 25個の文字列Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 高橋君は短めの呼び名を考えています。呼び名は半角小文字アルファベット 2 文字で構成されます。高橋君には好きな 5 種類のアルファベットがあります。高橋君は、以下の条件を満たす長さ 2 の文字列すべてを考え、それらの集合を「呼び名候補の集合」と呼ぶことにします。条件 : 文字列の 1 文字目も 2 文字目も高橋君が好きな 5 種類のアルファベットのいずれかである。ここで、2 つの長さ 2 の異なる文字列 S,T に関して、S が T よりも辞書順で先に来るというのは、以下の条件のうちのいずれかが満たされたときです。文字列 S の 1 文字目と文字列 T の 1 文字目が異なり、かつ文字列 S の 1 文字目が文字列 T の 1 文字目よりもアルファベット順 (ABC 順) で先である。文字列 S の 1 文字目と文字列 T の 1 文字目が同じで、かつ文字列 S の 2 文字目が文字列 T の 2 文字目よりもアルファベット順 (ABC 順) で先である。例えば、好きなアルファベットが a, b, c, d, e のとき、「呼び名候補の集合」に含まれる文字列は、辞書順に、aa, ab, ac, ad, ae, ba, bb, bc, bd, be, ca, cb, cc, cd, ce, da, db, dc, dd, de, ea, eb, ec, ed, ee となります。「呼び名候補の集合」を構成する文字列は全部で 25 個あります。高橋君はそれらの文字列を辞書順に並べたときに先頭から N 番目となる文字列を最終的な呼び名にすることにしました。あなたの課題は、高橋君が定めた最終的な呼び名を求めることです。入力入力は以下の形式で標準入力から与えられる。SN1 行目には、長さ 5 の文字列 S が与えられる。S の各文字はいずれも半角小文字アルファベットであり、S に使われている文字には重複がなく、かつ昇順に並んでいる。すなわち文字列 S の左から i (1 ≦ i ≦ 5) 文字目の文字を c_i としたとき、c_i ≠ c_j (i≠j) であり、i＜j ならアルファベット c_i はアルファベット c_j よりもアルファベット順で前である。2 行目には、整数 N (1 ≦ N ≦ 25) が与えられる。出力高橋君が定めた最終的な呼び名を 1 行に出力せよ。出力の末尾に改行を入れること。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc025/submissions/4320123
+// 提出ID : 4320123
+// 問題ID : abc025_a
+// コンテストID : abc025
+// ユーザID : xryuseix
+// コード長 : 693
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<cctype>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	string s;
+	int n;
+	cin>>s>>n;
+	cout<<s[(n-1)/5]<<s[(n-1)%5]<<endl;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	return 0;
+}

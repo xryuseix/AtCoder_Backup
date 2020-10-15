@@ -1,0 +1,62 @@
+問題文の引用元：https://atcoder.jp/contests/abc022/tasks/abc022_a
+A - Best BodyEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 高橋君は太りやすく痩せやすい体質です。そこで彼は N 日間の体重の変化量を記録してみました。1 日目の高橋くんの体重は W キログラムでした。i 日目 (2≦i≦N) の体重の変化量は A_i キログラムでした(A_i は負になり得ます)。つまり i-1 日目の体重を X キログラムとすると、 i 日目の体重は X + A_i キログラムだったということです。ところで、高橋君の個人的な価値観では、体重が S キログラム以上 T キログラム以下の体型が「ベストボディー」だと考えています。体重を記録した N 日間のうち、高橋君がベストボディーであった日数を求めてください。入力入力は以下の形式で標準入力から与えられるN S TWA_2A_3:A_N1 行目には高橋君が体重を記録した日数を表す整数 N(2 ≦ N ≦ 1,000) 、ベストボディーの基準となる値 S, T(1 ≦ S ≦ T ≦ 10^5) が空白区切りで与えられる。2 行目には 1 日目の高橋君の体重を表す整数 W(1 ≦ W ≦ 10^5) が与えられる。3 行目からの N-1 行のうち i 行目には i+1 日目の体重の変化量を表す整数 A_{i+1}(-10^5 ≦ A_{i+1} ≦ 10^5) が与えられる。高橋君の体重が 0 キログラム以下になることはない。出力高橋君がベストボディーであった日数を 1 行で出力せよ。出力の末尾にも改行を入れること。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc022/submissions/4320181
+// 提出ID : 4320181
+// 問題ID : abc022_a
+// コンテストID : abc022
+// ユーザID : xryuseix
+// コード長 : 766
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<cctype>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	int ans=0,n,s,t,p,i,x;
+	cin>>n>>s>>t;
+	for(i=0;i<n;i++){
+		if(i==0)cin>>x;
+		else{
+			cin>>p;
+			x+=p;
+		}
+		if(x<=t&&s<=x)ans++;
+	}
+	cout<<ans<<endl;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	return 0;
+}

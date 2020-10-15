@@ -1,0 +1,112 @@
+問題文の引用元：https://atcoder.jp/contests/abc058/tasks/arc071_a
+C - Dubious DocumentEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 300 点
+問題文 : すぬけ君は、文字列の書かれた紙から文字をいくつか切り抜いて、並び替えて別の文字列を作るのが好きです。明日になると、すぬけ君は文字列 S_1,...,S_n のうちどれか 1 つが書かれた紙がもらえます。すぬけ君は文字列を作る事をとても楽しみにしているので、どんな文字列を作るか計画を立てることにしました。ただし、すぬけ君はまだどの文字列が書かれた紙がもらえるかを知らないため、どの文字列が書かれていた場合にも作れる文字列を考えることにしました。S_1,...,S_n のどの文字列が書かれていても作れる文字列のうち、最長のものを求めてください。最長のものが複数ある場合は、辞書順で最小のものを求めてください。
+制約1 \leq n \leq 50i = 1, ... , n に対して、 1 \leq |S_i| \leq 50i = 1, ... , n に対して、 S_i は小文字のアルファベット( a - z )からなる文字列入力入力は以下の形式で標準入力から与えられる。nS_1...S_n出力条件を満たす最長の文字列のうち、辞書順で最小のものを出力せよ。そのような文字列が空文字列である場合は、空行を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc058/submissions/10994548
+// 提出ID : 10994548
+// 問題ID : arc071_a
+// コンテストID : abc058
+// ユーザID : xryuseix
+// コード長 : 2633
+// 実行時間 : 2
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int;
+#define endl '\n';
+int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+
+
+int main() {
+    
+    map<char,int> ans,tmp;
+    int n;
+    cin>>n;
+    rep(i,n){
+        tmp.clear();
+        map<char,int> m;
+        string s;
+        cin>>s;
+        rep(i,s.size())m[s[i]]++;
+        if(!i)ans=m;
+        else {
+            irep(j,m){
+                if(ans.find(j->first)==ans.end()){
+                    continue;
+                } else {
+                    tmp[j->first]=min(m[j->first],ans[j->first]);
+                }
+            }
+            ans=tmp;
+        }
+        // irep(j,ans){
+        //     char c=j->first;
+        //     int num=j->second;
+        //     rep(j,num)cout<<c;
+        // }
+        // cout<<"\n\n";
+    }
+    irep(i,ans){
+        char c=i->first;
+        int num=i->second;
+        rep(j,num)cout<<c;
+    }
+    cout<<endl;
+
+}

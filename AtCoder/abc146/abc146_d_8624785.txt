@@ -1,0 +1,138 @@
+問題文の引用元：https://atcoder.jp/contests/abc146/tasks/abc146_d
+D - Coloring Edges on TreeEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 400 点
+問題文 : N 頂点の木 G が与えられます。頂点には 1 から N までの番号がついており、i 本目の辺は頂点 a_i と頂点 b_i を結んでいます。G の辺を何色かで塗り分けることを考えます。このとき、各頂点について、その頂点を端点に持つ辺の色がすべて相異なるようにしたいです。上記の条件を満たす塗り分けの中で、使用する色の数が最小であるようなものを 1 つ構築してください。
+制約 2 \le N \le 10^5  1 \le a_i \lt b_i \le N 入力はすべて整数与えられるグラフは木である入力入力は以下の形式で標準入力から与えられる。Na_1 b_1a_2 b_2\vdotsa_{N-1} b_{N-1}出力出力は N 行からなる。1 行目に使用する色の数 K を出力せよ。i+1 行目 (1 \le i \le N-1) に i 番目の辺の色を表す整数 c_i を出力せよ。ここで 1 \le c_i \le K でなければならない。
+問題文 : 中の条件を満たし、使用する色の数が最小であるような塗り分けが複数存在するときは、そのうちのどれを出力しても構わない。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc146/submissions/8624785
+// 提出ID : 8624785
+// 問題ID : abc146_d
+// コンテストID : abc146
+// ユーザID : xryuseix
+// コード長 : 3147
+// 実行時間 : 383
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const ll MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<62;
+
+vvi v(1000010);
+map<pair<int,int>,int> ans;
+
+struct Corr{
+    int pos;
+    int bef;
+};
+queue<Corr> q;
+void bfs(){
+    while(!q.empty()){
+        Corr now=q.front();q.pop();
+        int color=0;
+        for(int i=0;i<v[now.pos].size();i++){
+            int nextpos=v[now.pos][i];
+            if(ans.find(mp(min(now.pos,nextpos),max(now.pos,nextpos)))!=ans.end())continue;
+            if(color==now.bef)color++;
+            ans[mp(min(now.pos,nextpos),max(now.pos,nextpos))]=color;
+            Corr c={nextpos,color};
+            q.push(c);
+            color++;
+        }
+    }
+}
+
+int main(void) {
+
+    int n;
+    cin>>n;
+    int a,b;
+    vpii edge(n);
+    rep(i,n-1){
+        cin>>a>>b;
+        a--;b--;
+        if(a>b)swap(a,b);
+        edge[i]=mp(a,b);
+    }
+    map<int,int> m;
+    rep(i,n-1){
+        m[edge[i].first]++;
+        m[edge[i].second]++;
+        v[edge[i].first].push_back(edge[i].second);
+        v[edge[i].second].push_back(edge[i].first);
+    }
+    int start=0;
+    int maxnum=0;
+    for(auto it=m.begin();it!=m.end();it++){
+        if(it->second>maxnum){
+            maxnum=it->second;
+            start=it->first;
+        }
+    }
+    Corr c={start,-1};
+    q.push(c);
+    bfs();
+
+    vi ansvec(n-1);
+
+
+    for(int i=0;i<n-1;i++){
+        int mi=min(edge[i].first,edge[i].second);
+        int ma=max(edge[i].first,edge[i].second);
+        ansvec[i]=ans[mp(mi,ma)]+1;
+    }
+    set<int> s;
+    rep(i,n-1)s.insert(ansvec[i]);
+    cout<<s.size()<<endl;
+    for(int i=0;i<n-1;i++){
+        cout<<ansvec[i]<<endl;
+    }
+}

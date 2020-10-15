@@ -1,0 +1,81 @@
+問題文の引用元：https://atcoder.jp/contests/bcu30-2019/tasks/bcu30_2019_a
+A - Wolf KeyboardEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 100 点
+問題文 : ある世界では N 種類の文字が使われています。また、この世界のキーボードには、K 個の文字キーと 1 個の Shift キーがあります。しかし、 文字の種類数はキーボードの文字キーの数より多く、文字キーの数の 2 倍より少ないことが分かっています。 すなわち、K < N < 2K を満たします。そこで、以下のようにして全種類の文字を入力できるようにします。N 種類の文字のうち K 種類の文字は、ある文字キーを 1 回押すことで 1 文字入力される。残りの N-K 種類の文字は、Shift キーとある文字キーを 1 回同時に押すことで 1 文字入力される。今、サイボウズの高橋さんはとある文書を入力することになりました。この文書には、i 種類目の文字が a_i 個含まれています。適切に文字とキーを割り当てることによって、キーを押す回数の合計を最小化したいです。ただし、Shift キーと文字キーを同時に押すのを 2 回押したとカウントします。キーを押す回数の合計の最小値を求めてください。
+制約2 ≤ K ≤ 50K < N < 2K0 ≤ a_i ≤ 100 (1 ≤ i ≤ N)入力入力は以下の形式で標準入力から与えられる。N Ka_1:a_N出力キーを押す回数の合計の最小値を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/bcu30-2019/submissions/6256346
+// 提出ID : 6256346
+// 問題ID : bcu30_2019_a
+// コンテストID : bcu30-2019
+// ユーザID : xryuseix
+// コード長 : 1704
+// 実行時間 : 1
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <string>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <bitset>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define P 1000000007
+#define STI(s) atoi(s.c_str())//string to int
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define Sort(a) sort(a.begin(),a.end())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int INF = INT_MAX;
+const long long LLINF = 1LL<<60;
+//g++ -std=c++1z temp.cpp
+//./a.out
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+    int n,k;
+    cin>>n>>k;
+    vi a(n);
+    rep(i,n)cin>>a[i];
+
+    int ans=0;
+    sort(a.rbegin(),a.rend());
+    for(int i=0;i<k;i++){
+        ans+=a[i];
+    }
+    for(int i=k;i<n;i++){
+        ans+=a[i]*2;
+    }
+    fin(ans);
+
+
+    
+//////////////////////////////////////////////////////
+return 0;}

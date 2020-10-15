@@ -1,0 +1,102 @@
+問題文の引用元：https://atcoder.jp/contests/abc109/tasks/abc109_d
+D - Make Them EvenEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 400 点
+問題文 : 縦 H 行横 W 列に区切られたマス目があり、上から i 番目、左から j 列目のマスをマス (i, j) と呼びます。マス (i, j) には a_{ij} 枚のコインが置かれています。あなたは以下の操作を何度でも行うことができます。操作: まだ選んだことのないマスのうち 1 枚以上のコインが置かれているマスを 1 つ選び、そのマスに置かれているコインのうち 1 枚を上下左右に隣接するいずれかのマスに移動する偶数枚のコインが置かれたマスの数を最大化してください。
+制約入力はすべて整数である1 \leq H, W \leq 5000 \leq a_{ij} \leq 9入力入力は以下の形式で標準入力から与えられる。H Wa_{11} a_{12} ... a_{1W}a_{21} a_{22} ... a_{2W}:a_{H1} a_{H2} ... a_{HW}出力偶数枚のコインが置かれたマスの数が最大となるような操作の列を次の形式で出力せよ。Ny_1 x_1 y_1' x_1'y_2 x_2 y_2' x_2':y_N x_N y_N' x_N'すなわち、1 行目には操作の回数を表す 0 以上 H \times W 以下の整数 N を出力せよ。i+1 (1 \leq i \leq N) 行目には i 回目の操作を表す整数 y_i, x_i, y_i', x_i' (1 \leq y_i, y_i' \leq H かつ 1 \leq x_i, x_i' \leq W) を出力せよ。ただし、これはマス (y_i, x_i) にあるコインのうち 1 枚を上下左右に隣接するマス (y_i', x_i') に移動させる操作を表す。
+問題文 : 中の操作でないような操作が与えられた場合や、出力の形式が正しくない場合には Wrong Answer となるので注意せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc109/submissions/7057774
+// 提出ID : 7057774
+// 問題ID : abc109_d
+// コンテストID : abc109
+// ユーザID : xryuseix
+// コード長 : 2395
+// 実行時間 : 263
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(),a.end()
+#define rall(a) a.rbegin(),a.rend()
+#define Sort(a) sort(a.begin(),a.end())
+#define Rort(a) sort(a.rbegin(),a.rend())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int P = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+
+    int h,w;
+    cin>>h>>w;
+    vvi v(h,vi (w));
+    rep(i,h)rep(j,w)cin>>v[i][j];
+    vvi ans;
+    for(int i=0;i<h-1;i++){
+        for(int j=0;j<w;j++){
+            if(v[i][j]%2==1){
+                v[i+1][j]++;
+                vi t;
+                t.push_back(i+1);
+                t.push_back(j+1);
+                t.push_back(i+2);
+                t.push_back(j+1);
+                ans.push_back(t);
+            }
+        }
+    }
+    for(int i=0;i<w-1;i++){
+        if(v[h-1][i]%2==1){
+            v[h-1][i+1]++;
+            vi t;
+            t.push_back(h);
+            t.push_back(i+1);
+            t.push_back(h);
+            t.push_back(i+2);
+            ans.push_back(t);
+        }
+    }
+    cout<<ans.size()<<endl;
+    for(int i=0;i<ans.size();i++){
+        cout<<ans[i][0]<<" "<<ans[i][1]<<" "<<ans[i][2]<<" "<<ans[i][3]<<endl;
+    }
+
+//////////////////////////////////////////////////////
+return 0;}

@@ -1,0 +1,73 @@
+問題文の引用元：https://atcoder.jp/contests/agc031/tasks/agc031_a
+A - Colorful SubsequenceEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 200 点
+問題文 : 長さ N の文字列 S が与えられます。S の部分列であって、すべて異なる文字からなるものの数を 10^9+7 で割った余りを答えてください。文字列として同一でも、異なる位置から取り出された部分列は区別して数えることとします。ただし、文字列の部分列とは、文字列から文字をいくつか 正の個数 取り出し、もとの文字列から順序を変えずにつなげたものを指します。
+制約1 \leq N \leq 100000S は英小文字からなる|S|=N入力入力は以下の形式で標準入力から与えられる。NS出力異なる文字からなる部分列の個数を 10^9+7 で割った余りを出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/agc031/submissions/4601683
+// 提出ID : 4601683
+// 問題ID : agc031_a
+// コンテストID : agc031
+// ユーザID : xryuseix
+// コード長 : 1255
+// 実行時間 : 3
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX;
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	ll n,i,j;
+	string s;
+	cin>>n>>s;
+	vector<char> alpha;
+	vector<int> alnum;
+	vector<char>::iterator it;
+	for(i=0;i<n;i++){
+		it=find(alpha.begin(),alpha.end(),s[i]);
+		if(it!=alpha.end()){
+			alnum[it-alpha.begin()]++;
+		}
+		else{
+			alpha.push_back(s[i]);
+			alnum.push_back(1);
+		}
+	}
+	ll ans=1;
+	for(i=0;i<alpha.size();i++){
+		ans*=alnum[i]+1;
+		ans%=1000000007;
+	}
+	cout<<ans-1<<endl;
+	
+//////////////////////////////////////////////////////
+	return 0;
+}

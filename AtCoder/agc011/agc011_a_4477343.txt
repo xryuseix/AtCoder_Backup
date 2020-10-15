@@ -1,0 +1,58 @@
+問題文の引用元：https://atcoder.jp/contests/agc011/tasks/agc011_a
+A - Airport BusEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 300 点
+問題文 : 高橋空港には，毎日飛行機で N 人の乗客が到着します．i 番目の乗客は時刻 T_i に到着します．高橋空港に到着する乗客は全員バスで市内へ移動します．どのバスも定員は C 人であり，C 人以下の乗客を乗せることができます．飛行機の乗客は，飛行機の到着時刻よりも早く出発するバスには乗ることができません．また，飛行機の到着時刻から K の時間が経過した後にもバスに乗れていないと，怒り出してしまいます．そのため，i 番目の乗客は，出発時刻が T_i 以上 T_i + K 以下であるようなバスに乗れるようにしないといけません．この条件のもとで，うまくバスの出発時刻を定めるとき，必要なバスの数の最小値を求めてください．ただし，バスの出発時刻は必ずしも整数である必要はなく，同じ時刻に出発するバスが複数あってもかまいません．
+制約2 \leq N \leq 1000001 \leq C \leq 10^91 \leq K \leq 10^91 \leq T_i \leq 10^9C, K, T_i は整数入力入力は以下の形式で標準入力から与えられる。N C KT_1T_2:T_N出力必要なバスの数の最小値を出力せよ．
+// ソースコードの引用元 : https://atcoder.jp/contests/agc011/submissions/4477343
+// 提出ID : 4477343
+// 問題ID : agc011_a
+// コンテストID : agc011
+// ユーザID : xryuseix
+// コード長 : 837
+// 実行時間 : 18
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<cctype>
+#include<stack>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	int i,n,c,k,ans=0,j;
+	cin>>n>>c>>k;
+	int t[n];
+	for(i=0;i<n;i++)cin>>t[i];
+	sort(t,t+n);
+	for(i=0;i<n;i++){
+		for(j=i;j<i+c&&j<n&&t[j]-t[i]<=k;j++);
+//		cout<<i<<" "<<j<<" "<<ans<<endl;
+		ans++;
+		i+=j-1-i;
+	}
+	cout<<ans<<endl;
+	
+	
+	
+	
+	return 0;
+}

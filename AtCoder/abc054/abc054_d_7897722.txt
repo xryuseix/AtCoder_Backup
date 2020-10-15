@@ -1,0 +1,139 @@
+問題文の引用元：https://atcoder.jp/contests/abc054/tasks/abc054_d
+D - Mixing ExperimentEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 400 点
+問題文 : イルカは、微量の物質Cを生成したいと考えています。物質Cを生成するためには、タイプAの物質とタイプBの物質の混合比が M_a:M_b となる溶液を用意する必要があります。しかし、イルカは薬品を1つも持っていないため、薬局へ薬品を買いに行くことにしました。薬局では、N 種類の薬品を取り扱っており、各薬品 i の在庫はちょうど1つです。各薬品 i は、タイプAの物質 a_i グラム、タイプBの物質 b_i グラム含んでおり、価格 c_i 円で売られています。 イルカは、いくつかの薬品を薬局で買います。買った薬品は全て使わなければなりません。物質Cを生成するために、必要な最小予算を求めてください。 薬局で売られている薬品の組み合わせで、物質Cを生成できない場合はそれを報告してください。    
+制約1≦N≦40  1≦a_i,b_i≦10  1≦c_i≦100  1≦M_a,M_b≦10  gcd(M_a,M_b)=1a_i、b_i、c_i、M_a、M_bは整数である。入力入力は以下の形式で標準入力から与えられる。N M_a M_b  a_1 b_1 c_1  a_2 b_2 c_2:  a_N b_N c_N  出力物質Cを生成するために必要な最小予算を出力せよ。物質Cを生成できない場合には -1 を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc054/submissions/7897722
+// 提出ID : 7897722
+// 問題ID : abc054_d
+// コンテストID : abc054
+// ユーザID : xryuseix
+// コード長 : 3338
+// 実行時間 : 33
+
+
+
+/*
+				   _ooOoo_
+				  o8888888o
+				  88" . "88
+				  (| -_- |)
+				  O\  =  /O
+			   ____/`---'\____
+			 .'  \\|     |//  `.
+			/  \\|||  :  |||//  \
+		   /  _||||| -:- |||||-  \
+		   |   | \\\  -  /// |   |
+		   | \_|  ''\---/''  |   |
+		   \  .-\__  `-`  ___/-. /
+		 ___`. .'  /--.--\  `. . __
+	  ."" '<  `.___\_<|>_/___.'  >'"".
+	 | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+	 \  \ `-.   \_ __\ /__ _/   .-` /  /
+======`-.____`-.___\_____/___.-`____.-'======
+				   `=---='
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+		fozubaoyou    pass System Test!
+		quoted from "https://codeforces.com/contest/472/submission/7996840"
+*/
+ 
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(),a.end()
+#define rall(a) a.rbegin(),a.rend()
+#define Sort(a) sort(a.begin(),a.end())
+#define Rort(a) sort(a.rbegin(),a.rend())
+#define PI acos(-1)
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const int MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+ll gcd(ll a, ll b) { return b ? gcd(b, a%b) : a;}
+
+int main(void){
+
+	int n,ma,mb;
+	cin>>n>>ma>>mb;
+	vi a(n+1),b(n+1),c(n+1);
+	for(int i=1;i<=n;i++){
+		cin>>a[i]>>b[i]>>c[i];
+	}
+	vector<vector<vector<int> > > dp(n+1,vector<vector<int> > (500,vector<int> (500,0)));
+	
+	for(int i=0;i<=n;i++)dp[i][0][0]=1;
+	for(int i=1;i<=n;i++){
+		for(int j=0;j<500;j++){
+			for(int k=0;k<500;k++){
+				if(dp[i-1][j][k]==0)continue;
+				if(dp[i][j+a[i]][k+b[i]]!=0){
+					dp[i][j+a[i]][k+b[i]]=min(dp[i][j+a[i]][k+b[i]], dp[i-1][j][k]+c[i]);
+				}
+				else{
+					dp[i][j+a[i]][k+b[i]]=dp[i-1][j][k]+c[i];
+				}
+				if(dp[i][j][k]!=0){
+					dp[i][j][k]=min(dp[i][j][k], dp[i-1][j][k]);
+				}
+                else dp[i][j][k]=dp[i-1][j][k];
+			}
+		}
+	}
+
+	// int pos=n;
+	// for(int k=1;k<n*10+1;k++){
+	// 	for(int j=1;j<n*10+1;j++){
+	// 		if(dp[pos][k][j]==INF)cout<<"+ ";
+	// 		else cout<<dp[pos][k][j]<<" ";
+	// 	}
+	// 	cout<<endl;
+	// }
+	int ans=INF;
+	for(int j=1; j<500; j++){
+        for(int k=1; k<500; k++){
+            if(dp[n][j][k]!=0 && j/gcd(j,k)==ma && k/gcd(j,k)==mb){
+                ans=min(ans,dp[n][j][k]-1);
+            }
+        }
+    }
+	if(ans==INF)fin(-1);
+	else fin(ans);
+
+}

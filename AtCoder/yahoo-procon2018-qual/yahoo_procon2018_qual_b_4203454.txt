@@ -1,0 +1,38 @@
+問題文の引用元：https://atcoder.jp/contests/yahoo-procon2018-qual/tasks/yahoo_procon2018_qual_b
+B - オークションEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 200 点
+問題文 : 矢風くんはオークションに参加しています。矢風くんの欲しい品物には、現在 X 円の値が付いています。矢風くんはこの品物に、以下の条件を満たすような Y に対して、Y 円の値段をつけることができます。オークションでつける値段として適切である。すなわち、X+1\leq Y である。つける金額は細かすぎない。すなわち、Y の 10 進表記の下 K 桁は全て 0 である。矢風くんがつけることのできる最小の金額を求めてください。
+制約1 \leq X \leq 10^90 \leq K \leq 9入力はすべて整数である入力入力は以下の形式で標準入力から与えられる。X K出力矢風くんがつけることのできる最小の金額を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/yahoo-procon2018-qual/submissions/4203454
+// 提出ID : 4203454
+// 問題ID : yahoo_procon2018_qual_b
+// コンテストID : yahoo-procon2018-qual
+// ユーザID : xryuseix
+// コード長 : 359
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<set>
+#include<cctype>
+using namespace std;
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	int i,x,k,div;
+	cin>>x>>k;
+	div=x/pow(10,k);
+	cout<<div+1;
+	for(int i=0;i<k;i++)cout<<"0";
+	cout<<endl;
+	
+	return 0;
+}

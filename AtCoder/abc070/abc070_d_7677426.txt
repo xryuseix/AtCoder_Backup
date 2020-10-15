@@ -1,0 +1,147 @@
+問題文の引用元：https://atcoder.jp/contests/abc070/tasks/abc070_d
+D - Transit Tree PathEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 400 点
+問題文 : N 頂点の木が与えられます。 木とはグラフの一種であり、頂点の数を N とすると、辺の数が N-1 本である閉路のない連結グラフです。 i(1≦i≦N-1) 番目の辺は 頂点 a_i と 頂点 b_i を距離 c_i で結びます。   また、Q 個の質問クエリと整数 K が与えられます。      j(1≦j≦Q) 番目の質問クエリでは、頂点 x_j から 頂点 K を経由しつつ、頂点 y_j まで移動する場合の最短経路の距離を求めてください。    
+制約3≦N≦10^5  1≦a_i,b_i≦N (1≦i≦N-1)  1≦c_i≦10^9 (1≦i≦N-1)  与えられるグラフは木である。1≦Q≦10^5  1≦K≦N  1≦x_j,y_j≦N (1≦j≦Q)  x_j≠y_j (1≦j≦Q)  x_j≠K,y_j≠K (1≦j≦Q)  入力入力は以下の形式で標準入力から与えられる。  N  a_1 b_1 c_1  :  a_{N-1} b_{N-1} c_{N-1}Q Kx_1 y_1:  x_{Q} y_{Q}出力質問クエリの解答を Q 行出力せよ。 j(1≦j≦Q) 行目には、j 番目のクエリの答えを出力せよ。   
+// ソースコードの引用元 : https://atcoder.jp/contests/abc070/submissions/7677426
+// 提出ID : 7677426
+// 問題ID : abc070_d
+// コンテストID : abc070
+// ユーザID : xryuseix
+// コード長 : 3404
+// 実行時間 : 232
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(),a.end()
+#define rall(a) a.rbegin(),a.rend()
+#define Sort(a) sort(a.begin(),a.end())
+#define Rort(a) sort(a.rbegin(),a.rend())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int P = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+class DIJKSTRA {
+public:
+    ll V;
+
+    struct edge {
+        ll to;
+        ll cost;
+    };
+
+    typedef pair<ll, ll> PI; //firstは最短距離、secondは頂点の番号
+    vector<vector<edge> >G;
+    vector<ll> d; //これ答え。d[i]:=V[i]までの最短距離
+    vector<ll> prev; //経路復元
+
+    DIJKSTRA(ll size) {
+        V = size;
+        G = vector<vector<edge> >(V);
+        prev = vector<ll> (V, -1);
+    }
+
+    void add(ll from, ll to, ll cost) {
+        edge e = {to, cost};
+        G[from].push_back(e);
+    }
+
+    void dijkstra(ll s) {
+        //greater<P>を指定することでfirstが小さい順に取り出せるようにする
+        priority_queue<PI, vector<PI>, greater<PI> > que;
+        d = vector<ll> (V, LLINF);
+        d[s] = 0;
+        que.push(PI(0, s));
+
+        while(!que.empty()) {
+            PI p = que.top();
+            que.pop();
+            ll v = p.second;
+            if(d[v] < p.first) continue;
+            for(ll i = 0; i < G[v].size(); i++) {
+                edge e = G[v][i];
+                if(d[e.to] > d[v] + e.cost) {
+                    d[e.to] = d[v] + e.cost;
+                    prev[e.to] = v;
+                    que.push(PI(d[e.to], e.to));
+                }
+            }
+        }
+    }
+    
+    void show() {
+        for(ll i = 0; i < d.size()-1; i ++) {
+            cout << d[i] << " ";
+        }
+        cout << d[d.size()-1] << endl;
+    }
+};
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+
+    ll n;
+    cin>>n;
+    ll a,b,c;
+    DIJKSTRA wa(n);
+    rep(i,n-1){
+        cin>>a>>b>>c;
+        a--;b--;
+        wa.add(a,b,c);
+        wa.add(b,a,c);
+    }
+    ll q,k;
+    cin>>q>>k;
+    ll x,y;
+    k--;
+    wa.dijkstra(k);
+
+    // wa.show();
+    rep(i,q){
+        cin>>x>>y;
+        x--;y--;
+        fin((ll)wa.d[x]+(ll)wa.d[y]);
+    }
+
+//////////////////////////////////////////////////////
+return 0;}
+

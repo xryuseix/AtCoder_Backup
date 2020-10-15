@@ -1,0 +1,103 @@
+問題文の引用元：https://atcoder.jp/contests/abc096/tasks/abc096_c
+C - Grid Repainting 2Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点：300 点
+問題文 : H 行 W 列のマス目で表されるキャンバスがあります. 上から i 番目, 左から j 番目のマスを (i, j) と表します.最初, すべてのマス目は白色です. square1001 君は, 黒い絵の具を使って絵を描きたいと思いました. 具体的には, square1001 君の目標は, s_{i, j}= # のときマス (i, j) を黒色, s_{i, j}= . のときマス (i, j) を白色にすることです.しかし, 彼は絵を描くことが得意ではないので, 何回か (0 回でもよい)「上下左右に隣接する 2 つのマスを選び, 両方黒く塗る」ことしかできません. ただし, すでに黒く塗られているマスを選ぶこともでき, この場合マスの色は黒のまま変わりません.  square1001 君が目標を達成することができるか判定してください.  
+制約H は 1 以上 50 以下の整数W は 1 以上 50 以下の整数すべての (i, j) \ (1 \leq i \leq H, 1 \leq j \leq W) に対して, s_{i, j} は # または .入力入力は以下の形式で標準入力から与えられる.  H Ws_{1, 1} s_{1, 2} s_{1, 3} ... s_{1, W}s_{2, 1} s_{2, 2} s_{2, 3} ... s_{2, W}  :   :s_{H, 1} s_{H, 2} s_{H, 3} ... s_{H, W}出力square1001 君が目標を達成することができるならば Yes、達成できないならば No と出力しなさい.  
+// ソースコードの引用元 : https://atcoder.jp/contests/abc096/submissions/10722647
+// 提出ID : 10722647
+// 問題ID : abc096_c
+// コンテストID : abc096
+// ユーザID : xryuseix
+// コード長 : 2355
+// 実行時間 : 2
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int;
+int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+
+bool calc(int y, int x, vs &v){
+    int cnt=0;
+    rep(i,4){
+        int nx=dx[i]+x;
+        int ny=dy[i]+y;
+        if(nx<0||ny<0||nx>=v[0].size()||ny>=v.size())continue;
+        if(v[ny][nx]=='#')cnt++;
+    }
+    // if(cnt==0){
+    //     cout<<y<<" "<<x<<endl;
+    // }
+    return cnt;
+}
+
+int main() {
+    
+    int n,m;
+    cin>>n>>m;
+    vs v(n);
+    rep(i,n)cin>>v[i];
+    bool ch=true;
+    rep(i,n){
+        rep(j,m){
+            if(v[i][j]=='#')ch &= calc(i,j,v);
+        }
+    }
+    if(ch)fin("Yes");
+    else fin("No");
+
+}

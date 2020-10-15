@@ -1,0 +1,55 @@
+問題文の引用元：https://atcoder.jp/contests/abc040/tasks/abc040_b
+B - □□□□□Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 高橋君は大きさ 1 メートル四方のタイルを n 枚持っています。高橋君はこれらのタイルのうちいくつかを、重ならないように隙間なく並べて大きな長方形を作ろうとしています。出来上がる長方形はできるだけ正方形に近いほうがよいですが、同時に、使わずに余るタイルの枚数ができるだけ少なくなるようにしたいと考えています。長方形の縦と横の長さの差の絶対値と、余ったタイルの枚数の和を最小でいくつにできるでしょうか。
+制約1 ≦ n ≦ 100,000入力入力は以下の形式で標準入力から与えられる。n出力求めた最小値を 1 行に出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc040/submissions/4320800
+// 提出ID : 4320800
+// 問題ID : abc040_b
+// コンテストID : abc040
+// ユーザID : xryuseix
+// コード長 : 766
+// 実行時間 : 3
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<cctype>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	int n,x,ans=1000000,a,b;
+	cin>>n;
+	for(a=1;a<=n;a++){
+		for(b=1;b<=n;b++){
+			if(a*b<=n){
+				x=abs(b-a)+n-a*b;
+				if(x<ans)ans=x;
+			}
+			else break;
+		}
+	}
+	cout<<ans<<endl;
+	
+	
+	
+	return 0;
+}

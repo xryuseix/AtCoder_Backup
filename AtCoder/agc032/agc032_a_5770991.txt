@@ -1,0 +1,109 @@
+問題文の引用元：https://atcoder.jp/contests/agc032/tasks/agc032_a
+A - Limited InsertionEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 400 点
+問題文 : すぬけ君は空の数列 a を持っています。すぬけ君は a に対して N 回操作を行います。i 回目の操作では 1 \leq j \leq i を満たす整数 j を選び、a の先頭から j 番目に j を挿入することができます。長さ N の数列 b が与えられます。N 回の操作後に a が b と一致することがあるかどうかを判定し、可能ならばそれを達成する操作手順の一例を示してください。
+制約入力は全て整数である。1 \leq N \leq 1001 \leq b_i \leq N入力入力は以下の形式で標準入力から与えられる。Nb_1 \dots b_N出力N 回の操作後に a と b が一致するような操作手順が存在しないならば -1 を出力せよ。存在するならば操作手順を N 行に出力せよ。i 行目では i 回目の操作で選んだ整数を出力せよ。考えられる操作手順が複数存在する場合は、そのうちのどれを出力してもよい。
+// ソースコードの引用元 : https://atcoder.jp/contests/agc032/submissions/5770991
+// 提出ID : 5770991
+// 問題ID : agc032_a
+// コンテストID : agc032
+// ユーザID : xryuseix
+// コード長 : 2029
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+#define vi vector<int>
+#define vc vector<char>
+#define vs vector<string>
+#define vpii vector<pair<int,int> >
+#define vvi vector<vector<int> >
+#define vvc vector<vector<char> >
+#define vvs vector<vector<string> >
+#define P 1000000007
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+//|\_
+//g++ -std=c++1z temp.cpp
+//./a.out
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+    int i,n,t;
+    list<int> li;
+    vector<int> v;
+    cin>>n;
+    rep(i,n){
+        cin>>t;
+        li.push_back(t);
+    }
+    auto it=li.rbegin();
+    auto itr=li.begin();
+    t=li.size();
+    int bt;
+    while(t>0){
+        t=li.size();
+        bt=t;
+        itr=li.begin();
+        for(it=li.rbegin();it!=li.rend();it++){
+            // cout<<*it<<"  "<<t<<endl;
+            if(t==*it){
+                v.push_back(*it);
+                advance(itr,t-1);
+                li.erase(itr);
+                break;
+            }
+            t--;
+            if(t<0){
+                cout<<-1<<endl;
+                return 0;
+            }
+        }
+        
+        t=li.size();
+        if(bt==t){
+            cout<<-1<<endl;
+            return 0;
+        }
+    }
+    
+    for(i=v.size()-1;i>=0;i--){
+        cout<<v[i]<<endl;
+    }
+//////////////////////////////////////////////////////
+return 0;}
+
+
+
+
+
+
+
+

@@ -1,0 +1,106 @@
+問題文の引用元：https://atcoder.jp/contests/past202004-open/tasks/past202004_c
+C - LandslideEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 8 点注意この問題に対する言及は、2020年5月2日 18:00 JST まで禁止されています。言及がなされた場合、賠償が請求される可能性があります。試験後に総合得点や認定級を公表するのは構いませんが、どの問題が解けたかなどの情報は発信しないようにお願いします。
+問題文 : 整数 2 \leq N \leq 50 に対して、縦 N マス、横 2N - 1 マスのマス目があります。上から i 行目、左から j 列目のマスをマス (i, j) と表します。このマス目は白黒の 2 色で 山型 に塗られています。具体的には、|j - N| < i を満たす 1 \leq i \leq N, 1 \leq j \leq (2N - 1) についてはマス (i, j) は黒く塗られており、他のマスは白く塗られています。下は N = 5 の場合の例です。(# は黒く塗られたマス、. は白く塗られたマスを表します)....#.......###.....#####...#######.#########ここで、黒く塗られたマスのうちいくつかに X を書きます。書き込んだ後の状態は文字からなるサイズ N \times (2N - 1) の 2 次元配列 S として与えられ、S_{i, j} がマス (i, j) の状態を表します。S_{i, j} が X のとき、マス (i, j) は X の書かれた黒く塗られたマスであり、S_{i, j} が # のとき、マス (i, j) は X の書かれていない黒く塗られたマスであり、S_{i, j} が . のとき、マス (i, j) は白く塗られたマスです。それから、i = N - 1, N - 2, \cdots, 1 の順番で次の操作を行います。2 \leq j \leq 2N - 2 に対して、マス (i, j) が黒く塗られているが X は書かれておらず、マス (i+1, j-1), (i+1, j), (i+1, j+1) のうち 1 つ以上に X が書かれているとき、マス (i, j) に X を書く。全ての操作を終えた後のマス目の状態を計算してください。
+制約2 \leq N \leq 50S_{i, j} は . または # または XS に対応するマス目の状態は、山型に塗られたマス目の黒く塗られたマスのうち 1 つ以上に X を書くことで得られる入力入力は以下の形式で標準入力から与えられる。NS_{1,1}S_{i,2}\cdots S_{1,2N-1}S_{2,1}S_{2,2}\cdots S_{2,2N-1}:S_{N,1}S_{N,2}\cdots S_{N,2N-1}出力全ての操作を終えた後のマス (i, j) の状態を T_{i,j} (黒かつ X が書かれているとき X、黒かつ X が書かれていないとき #、白のとき .) としたとき、以下の形式で出力せよ。T_{1,1}T_{i,2}\cdots T_{1,2N-1}T_{2,1}T_{2,2}\cdots T_{2,2N-1}:T_{N,1}T_{N,2}\cdots T_{N,2N-1}
+// ソースコードの引用元 : https://atcoder.jp/contests/past202004-open/submissions/12801815
+// 提出ID : 12801815
+// 問題ID : past202004_c
+// コンテストID : past202004-open
+// ユーザID : xryuseix
+// コード長 : 2753
+// 実行時間 : 4
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <random>
+#include <iomanip>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<pair<ll,ll> > vpll;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+typedef map<int,int> mii;
+typedef set<int> si;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define arep(i,v) for(auto i : v)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+// #define endl '\n';
+#define fi first
+#define se second
+#define NONVOID [[nodiscard]]
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+template <class T> inline void dump(T &v){irep(i, v){cout<<*i<<((i==--v.end())?'\n':' ');}}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL<<60;
+constexpr ll MOD = 1000000007;
+constexpr double EPS = 1e-9;
+
+
+
+int main() {
+
+    int n;cin>>n;
+    vs v(n);
+    rep(i,n)cin>>v[i];
+    for(int i=n-2;i>=0;i--){
+        for(int j=1;j<v[i].size()-1;j++){
+            if(v[i][j]=='.')continue;
+            if(v[i+1][j-1]=='X'||v[i+1][j]=='X'||v[i+1][j+1]=='X'){
+                v[i][j]='X';
+            }
+        }
+    }
+    rep(i,n)cout<<v[i]<<endl;
+}
+

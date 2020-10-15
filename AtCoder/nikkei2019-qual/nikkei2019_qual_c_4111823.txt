@@ -1,0 +1,67 @@
+問題文の引用元：https://atcoder.jp/contests/nikkei2019-qual/tasks/nikkei2019_qual_c
+C - Different StrokesEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 400 点
+問題文 : 高橋くんと青木さんの前に N 皿の料理が置かれています。便宜上、これらの料理を料理 1、料理 2、…、料理 N と呼びます。高橋くんが料理 i を食べると彼は A_i ポイントの 幸福度 を得ます。また、青木さんが料理 i を食べると彼女は B_i ポイントの幸福度を得ます。彼らは、高橋くんから始めて交互に、料理を 1 皿ずつ選んで食べることを料理が尽きるまで続けます。ただし、彼らはともに、「最終的に自分が得る幸福度の総和」から「最終的に相手が得る幸福度の総和」を引いた値を最大化するように料理を選びます。このとき、「最終的に高橋くんが得る幸福度の総和」から「最終的に青木さんが得る幸福度の総和」を引いた値はいくつになるでしょうか？
+制約1 \leq N \leq 10^51 \leq A_i \leq 10^91 \leq B_i \leq 10^9入力される値はすべて整数である。入力入力は以下の形式で標準入力から与えられる。NA_1 B_1:A_N B_N出力「最終的に高橋くんが得る幸福度の総和」から「最終的に青木さんが得る幸福度の総和」を引いた値を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/nikkei2019-qual/submissions/4111823
+// 提出ID : 4111823
+// 問題ID : nikkei2019_qual_c
+// コンテストID : nikkei2019-qual
+// ユーザID : xryuseix
+// コード長 : 1233
+// 実行時間 : 31
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+using namespace std;
+
+int num[100001];
+/*--- クイックソート ---*/
+void quick(int sum[], int left, int right){
+    int pl = left;                /* 左カーソル */
+    int pr = right;                /* 右カーソル */
+    int x = sum[(pl + pr) / 2];    /* 枢軸は中央の要素 */
+    do {
+        while (sum[pl] < x) pl++;
+        while (sum[pr] > x) pr--;
+        if (pl <= pr) {
+            swap(sum[pl],sum[pr]);
+            swap(num[pl],num[pr]);
+            pl++;
+            pr--;
+        }
+    } while (pl <= pr);
+
+    if (left < pr)  quick(sum,left, pr);
+    if (pl < right) quick(sum,pl, right);
+}
+int main(void){
+	std::ios::sync_with_stdio(false);
+    std::cin.tie(0);
+	
+	long long int takahasi=0,aoki=0;
+	int n,i;
+	cin>>n;
+	int food[n][2],sum[n];
+	for(i=0;i<n;i++)num[i]=i;
+	for(i=0;i<n;i++)cin>>food[i][0]>>food[i][1];
+	for(i=0;i<n;i++)sum[i]=food[i][0]+food[i][1];
+	quick(sum,0,n-1);
+	for(i=0;i<n;i++){
+		if(i%2==0){
+			takahasi+=food[num[n-1-i]][0];
+		}
+		if(i%2==1){
+			aoki+=food[num[n-1-i]][1];
+		}
+	}
+	cout<<takahasi-aoki<<endl;
+	return 0;
+}

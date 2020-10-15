@@ -1,0 +1,172 @@
+問題文の引用元：https://atcoder.jp/contests/agc032/tasks/agc032_b
+B - Balanced NeighborsEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 700 点
+問題文 : 整数 N が与えられます。頂点に 1 から N の番号がついた N 頂点の無向グラフであって、以下の 2 つの条件を満たすものを 1 つ構成してください。単純かつ連結ある整数 S が存在して、任意の頂点についてその頂点に隣接する頂点の番号の値の和は S となるこの問題の
+制約下でそのようなグラフが少なくとも 1 つ存在することが証明できます。
+制約入力は全て整数である。3 \leq N \leq 100入力入力は以下の形式で標準入力から与えられる。N出力1 行目に構成したグラフの辺の本数 M を出力せよ。続く M 行のうち i 行目には、2 つの整数 a_i と b_i を出力せよ。これらは i 番目の辺の端点を表す。構成されたグラフが条件を満たすならば正解となる。
+// ソースコードの引用元 : https://atcoder.jp/contests/agc032/submissions/8307021
+// 提出ID : 8307021
+// 問題ID : agc032_b
+// コンテストID : agc032
+// ユーザID : xryuseix
+// コード長 : 4706
+// 実行時間 : 45
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const int MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<62;
+
+
+
+int main(void) {
+
+    int n;
+    cin>>n;
+    vector<vector<int> > allG(n);
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            if(i==j)continue;
+            allG[i].push_back(j);
+        }
+    }
+    vi allsum(n);
+    for(int i=0;i<n;i++){
+        allsum[i]=n*(n+1)/2-(i+1);
+    }
+    for(int s=n*n;s>=0;s--){
+        // cout<<s<<endl;
+        vvi chG = allG;
+        vi sumG = allsum;
+        bool ch=true;
+        while(ch){
+            bool fin=true;
+            for(int i=0;i<n;i++){
+                if(sumG[i]<s){
+                    ch=false;
+                    break;
+                }
+            }
+            // for(int i=0;i<n;i++){
+            //     cout<<sumG[i]<<" ";
+            // }
+            // cout<<endl;
+            int maxpos=0;
+            int maxval=0;
+            int reduce=0;
+            for(int i=0;i<n;i++){
+                if(maxval<=sumG[i]){
+                    maxval=sumG[i];
+                    maxpos=i;
+                }
+            }
+            // cout<<"AA"<<endl;
+            //rem
+            bool ischange=false;
+            for(int i=0;i<chG[maxpos].size();i++){
+                // cout<<"i:"<<i<<endl;
+                if(sumG[maxpos]-chG[maxpos][i]-1==s){
+                    sumG[maxpos]-=chG[maxpos][i]+1;
+                    sumG[chG[maxpos][i]]-=maxpos+1;
+
+                    int from=maxpos+1;
+                    int to=chG[maxpos][i]+1;
+                    // cout<<"FT "<<from<<" "<<to<<endl;
+
+                    chG[from-1].erase(find(all(chG[from-1]),to-1));
+                    chG[to-1].erase(find(all(chG[to-1]),from-1));
+                    ischange=true;
+                    break;
+                }
+            }
+            // cout<<"BB"<<endl;
+            if(!ischange){
+                Sort(chG[maxpos]);
+                sumG[maxpos]-=chG[maxpos][0]+1;
+                chG[maxpos].erase(chG[maxpos].begin());
+            }
+            for(int i=0;i<n;i++){
+                if(sumG[i]!=s){
+                    fin=false;
+                    break;
+                }
+            }
+            // for(int i=0;i<n;i++){
+            //     cout<<"i: "<<i+1<<" =";
+            //     for(int j=0;j<chG[i].size();j++){
+            //         cout<<chG[i][j]+1<<" ";
+            //     }
+            //     cout<<endl;
+            // }
+            if(fin){
+                //出力
+                set<pair<int,int> > sp;
+                vector<pair<int,int> > ans;
+                for(int i=0;i<n;i++){
+                    for(int j=0;j<chG[i].size();j++){
+                        if(sp.find(mp(i+1,chG[i][j]+1))!=sp.end())continue;
+                        ans.push_back(mp(i+1,chG[i][j]+1));
+                        sp.insert(mp(i+1,chG[i][j]+1));
+                        sp.insert(mp(chG[i][j]+1,i+1));
+                    }
+                }
+                cout<<(int)ans.size()<<endl;
+                for(int i=0;i<ans.size();i++){
+                    cout<<ans[i].first<<" "<<ans[i].second<<endl;
+                }
+                return 0;
+            }
+        }
+    }
+
+}
+

@@ -1,0 +1,222 @@
+問題文の引用元：https://atcoder.jp/contests/abc151/tasks/abc151_f
+F - Enclose AllEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 600 点
+問題文 : 平面上の N 個の点 (x_i, y_i) が与えられます。これら全てを内部または周上に含む円の半径の最小値を求めてください。
+制約2 ≤ N ≤ 500 ≤ x_i ≤ 10000 ≤ y_i ≤ 1000与えられる N 点は全て異なる入力で与えられる値は全て整数入力入力は以下の形式で標準入力から与えられる。Nx_1 y_1:x_N y_N出力N 個全ての点を内部または周上に含む円の半径の最小値を出力せよ。なお、想定解答との絶対誤差または相対誤差が 10^{-6} 以下であれば正解として扱われる。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc151/submissions/10498790
+// 提出ID : 10498790
+// 問題ID : abc151_f
+// コンテストID : abc151
+// ユーザID : xryuseix
+// コード長 : 6797
+// 実行時間 : 18
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int;
+int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+
+
+/* 点 */
+struct Point {
+    double x;
+    double y;
+    Point(double x = 0.0, double y = 0.0) : x(x), y(y) {}
+
+    // === 四則演算の定義 ===
+    friend inline Point operator + (const Point &p, const Point &q) {return Point(p.x + q.x, p.y + q.y);}
+    friend inline Point operator - (const Point &p, const Point &q) {return Point(p.x - q.x, p.y - q.y);}
+    friend inline Point operator * (const Point &p, const double a) {return Point(p.x * a, p.y * a);}
+    friend inline Point operator * (const double a, const Point &p) {return Point(a * p.x, a * p.y);}
+    friend inline Point operator * (const Point &p, const Point &q) {return Point(p.x * q.x - p.y * q.y, p.x * q.y + p.y * q.x);}
+    friend inline Point operator / (const Point &p, const double a) {return Point(p.x / a, p.y / a);}
+
+    // === その他の演算 ===
+    // 反時計回りに90度回転
+    friend Point rot90(const Point &p) {return Point(-p.y, p.x);}
+
+    // 直線b,cからみて，aがどちら側にいるか判定
+    // 1: bを上cを下とした時にaが右側にある, -1: aが左側にある, 0: aは直線bc上
+    friend int simple_ccw(const Point &a, const Point &b, const Point &c) {
+        if(OuterProduct(b-a, c-a) > EPS) return 1;
+        if(OuterProduct(b-a, c-a) < -EPS) return -1;
+        return 0;
+    }
+
+    // 内積
+    friend inline double InnerProduct(const Point &p, const Point &q) {return p.x * q.x + p.y * q.y;}
+    // 外積
+    friend inline double OuterProduct(const Point &p, const Point &q) {return p.x * q.y - p.y * q.x;}
+
+    // 二次元のノーム(ユークリッド距離)を計算
+    friend inline double norm2(const Point &p) {return sqrt(InnerProduct(p, p));}
+
+    // === 出力 ===
+    friend ostream& operator << (ostream &s, const Point &p) {return s << '(' << p.x << ", " << p.y << ')';}
+
+};
+
+
+/* 線 */
+struct Line {
+    vector<Point> line;
+
+    Line(void) {}
+    // 線分の時
+    Line(Point a, Point b = Point(0.0, 0.0)) {
+        // x座標が小さい方->y座標が小さい順にしておく
+        if(a.x > b.x) {
+            swap(a, b);
+        } else if(a.x == b.x && a.y > b.y) {
+            swap(a, b);
+        }
+        line.push_back(a);
+        line.push_back(b);
+    }
+    // 多角形などの時
+    Line(vector<Point> L) {
+        line = L;
+    }
+
+    // === 出力 ===
+    friend ostream& operator << (ostream &s, const Line &l) {
+        s << '{';
+        rep(i, l.line.size()) {
+            if(i) {
+                s << ", ";
+            }
+            s << l.line[i];
+        }
+        s << '}';
+        return s;
+    }
+};
+
+// 直線や多角形の交点
+Line crosspoint(const Line &L, const Line &M) {
+    Line res;
+    Line l = L;
+    Line m = M;
+    l.line.push_back(l.line[0]);
+    m.line.push_back(m.line[0]);
+    for(int i = 0; i < l.line.size() - 1; i++) {
+        for(int j = 0; j < m.line.size() - 1; j++) {
+            double d = OuterProduct(m.line[j + 1] - m.line[j], l.line[i + 1] - l.line[i]);
+            if(abs(d) < EPS) continue;
+            res.line.push_back(l.line[i] + (l.line[i + 1] - l.line[i]) * OuterProduct(m.line[j + 1] - m.line[j], m.line[j + 1] - l.line[i]) / d);
+        }
+    }
+    return res;
+}
+
+// 外心
+Point gaisin(const Point a, const Point b, const Point c) {
+    // 外心は三角形の二つの辺の垂直二等分線の交点
+    Line ab( (a + b)/2, (a + b)/2 + rot90(a - b) );
+    Line bc( (b + c)/2, (b + c)/2 + rot90(b - c) );
+    return crosspoint(ab, bc).line[0];
+}
+
+// 最小包含円
+double SmallestEnclosingCircle(const vector<Point> &V) {
+    int N = V.size();
+    if(N <= 1) return 0;
+
+    // 最小包含円の中心の候補
+    vector<Point> CenterCandidate;
+    for(int i = 0; i < N; i++) {
+        for(int j = i + 1; j < N; j++) {
+            // 最小包含円の円弧上に点が２つしかないの時
+            CenterCandidate.push_back( (V[i] + V[j]) / 2 );
+            for(int k = j + 1; k < N; k++) {
+                if(!simple_ccw(V[i], V[j], V[k])) {
+                    // 三点が一直線上にある
+                    continue;
+                }
+                // 三点の外心が円の中心
+                Point r = gaisin(V[i], V[j], V[k]);
+                CenterCandidate.push_back(r);
+            }
+        }
+    }
+
+    double res = INF;
+    rep(c, CenterCandidate.size()) {
+        double tmp = 0.0;
+        rep(v, V.size()) {
+            // 中心からの距離が最大の点との距離が，包含円の半径になる
+            chmax(tmp, norm2(V[v] - CenterCandidate[c]));
+        }
+        // 候補の包含円の中で，半径が最小の包含円が最小包含円になる．
+        chmin(res, tmp);
+    }
+    return res;
+}
+
+
+int main() {
+    
+    int n;
+    cin >> n;
+    vector<Point> v(n);
+    rep(i,n) cin >> v[i].x >> v[i].y;
+
+    double r = SmallestEnclosingCircle(v);
+    printf("%.7f\n", r);
+
+}

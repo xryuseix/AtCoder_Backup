@@ -1,0 +1,42 @@
+問題文の引用元：https://atcoder.jp/contests/abc042/tasks/abc042_a
+A - Iroha and Haiku (ABC Edition)Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 100 点
+問題文 : 日本の誇る美しいリズムとして、五七五というものがあります。いろはちゃんは五七五が大好きです。3 つの文節の並びの長さがそれぞれ 5,7,5 となるようにこの順番で並んでいるとき、その 3 つの文節の並びは五七五であると言います。並び替えたい 3 つの文節の長さを表す整数 A,B,C が与えられるので、それらの文節を並び替えて五七五にできるか判定してください。
+制約1≦A,B,C≦10入力入力は以下の形式で標準入力から与えられる。A B C出力文節の並びを五七五にすることができるなら YES 、そうでないなら NO を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc042/submissions/4194397
+// 提出ID : 4194397
+// 問題ID : abc042_a
+// コンテストID : abc042
+// ユーザID : xryuseix
+// コード長 : 365
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+using namespace std;
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	
+	int a[3];
+	cin>>a[0]>>a[1]>>a[2];
+	sort(a,a+3);
+	if(a[0]==5&&a[1]==5&&a[2]==7)cout<<"YES"<<endl;
+	else cout<<"NO"<<endl;
+	
+	
+	
+	
+	
+	
+	
+	return 0;
+}

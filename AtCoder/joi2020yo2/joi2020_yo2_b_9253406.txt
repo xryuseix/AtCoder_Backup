@@ -1,0 +1,88 @@
+問題文の引用元：https://atcoder.jp/contests/joi2020yo2/tasks/joi2020_yo2_b
+B - いちご (Strawberry)Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点： 100 点
+問題文 : Just Oishi Ichigo 農園 (以下 JOI 農園) は東西に細長いことで有名ないちご農園であり，その入り口は農園の最も西にある．以下では，入り口から東に k メートル進んだ場所を地点 k と呼ぶことにする．JOI 農園内には N 個のいちごがなっている．それぞれ 1 から N の番号がつけられている．どのいちごも時刻 0 までは青い．いちご i (1 \leqq i \leqq N) は地点 A_i に実をつけており，時刻 T_i になると熟し赤い状態になる．いちごは青い状態では収穫できない．つまり，いちご i は時刻 T_i となるまで収穫できない．あなたは時刻 0 に地点 0 にある農園の入り口から出発して，最大秒速 1 メートルで東西方向に移動しながらいちごを収穫する．いちごを収穫するのにかかる時間は無視できるとする．いちご農園についての情報が与えられるので，すべてのいちごを赤い状態で収穫したあと入り口に帰ってくるまでにかかる時間の最小値を求めるプログラムを作成せよ．
+制約1 \leqq N \leqq 100\,000．0 \leqq A_i \leqq 1\,000\,000\,000 (=10^9) (1 \leqq i \leqq N)．0 \leqq T_i \leqq 1\,000\,000\,000 (=10^9) (1 \leqq i \leqq N)．入力される値はすべて整数である．入力入力は以下の形式で標準入力から与えられる．NA_1 T_1A_2 T_2\vdotsA_N T_N出力すべてのいちごを赤い状態で収穫したあと入り口に帰ってくるまでにかかる時間の最小値を 1 行に出力せよ．
+// ソースコードの引用元 : https://atcoder.jp/contests/joi2020yo2/submissions/9253406
+// 提出ID : 9253406
+// 問題ID : joi2020_yo2_b
+// コンテストID : joi2020yo2
+// ユーザID : xryuseix
+// コード長 : 1943
+// 実行時間 : 88
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const ll MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<62;
+
+
+int main(void){
+
+    int n;
+    cin>>n;
+    vll a(n),t(n);
+    rep(i,n)cin>>a[i]>>t[i];
+    
+    vector<pair<ll,ll>> itigo;
+    rep(i,n){
+        itigo.pb(mp(a[i],t[i]));
+    }
+    Sort(itigo);
+
+    ll time=itigo[itigo.size()-1].first;
+    for(int i=n-2;i>=0;i--){
+        time=max(itigo[i+1].first-itigo[i].first+time,itigo[i].second);
+    }
+    fin(time+itigo[0].first);
+    
+}

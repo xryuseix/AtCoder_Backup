@@ -1,0 +1,105 @@
+問題文の引用元：https://atcoder.jp/contests/arc014/tasks/arc014_2
+B - あの日したしりとりの結果を僕達はまだ知らない。Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 64 MB
+問題文 : 高橋君は分身できる。今日はしりとりをしたい気分だったが、あいにく近くにお友達がいないので、分身した自分とすることにした。便宜上元々いた高橋君を高橋くん、分身して新しく生まれた高橋君を高橋クンと呼ぶことにする。さて、しりとりを十分に楽しんだ高橋くんと高橋クンであったが、悲しいことに彼らはしりとりのルールを知らなかったため勝敗をつけることが出来なかった。しかしこんな事もあろうかと、自分の発言を全て録音することにしていた高橋君は無事にしりとりで使われた単語のリストを得ることが出来たのだ。しりとりのルールは極めて単純である。以下の条件を守って単語を言っていくだけだ。前の単語の、最後のアルファベットから始まる単語を言う。一度使われた単語をもう一度使わない。この条件を先に破った方が負けとなる。英語のしりとりなので、「ん」を言ったら負け、というルールは存在しない。高橋くんに代わって、あなたは高橋くんの勝敗を判定しなければならない。入力入力は以下の形式で標準入力から与えられる。NW_{1}W_{2}:W_{N}1 行目には録音データから得られた単語の数を表す整数 N(1≦N≦100) が与えられる。2 行目から N+1 行までの N 行では、高橋くんと高橋クンの発した単語 W_{i}が時系列順に高橋くんを先攻として交互に与えられる。W_{i} の長さ L_{i} は 1≦L_{i}≦20 を満たす。また、 W_{i} は、小文字のアルファベットのみで構成される。出力高橋くんが勝利していればWIN、負けていればLOSE、勝敗が決まっていなければDRAW と 1 行で出力すること。また、出力の最後には改行をいれること。 
+// ソースコードの引用元 : https://atcoder.jp/contests/arc014/submissions/8692721
+// 提出ID : 8692721
+// 問題ID : arc014_2
+// コンテストID : arc014
+// ユーザID : xryuseix
+// コード長 : 2355
+// 実行時間 : 1
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const ll MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<62;
+
+
+int main(void){
+
+    int n;
+    cin>>n;
+    string s;
+    map<string,bool> m;
+    string ans="DRAW";
+    char last='a';
+    vs v(n);
+    rep(i,n)cin>>v[i];
+
+    rep(i,n){
+        // cout<<i<<" "<<n<<endl;
+        s=v[i];
+        if(m.find(s)==m.end()){
+            m[s]=true;
+        } else {
+            if(i%2==0){
+                ans="LOSE";
+            } else {
+                ans="WIN";
+            }
+            // cout<<"AAA"<<endl;
+            break;
+        }
+        // cout<<s[s.size()-1]<<" "<<last<<endl;
+        if(i>0&&s[0]!=last){
+            if(i%2==0){
+                ans="LOSE";
+            } else {
+                ans="WIN";
+            }
+            // cout<<"BBB"<<endl;
+            break;
+        }
+        last=s[s.size()-1];
+    }
+    fin(ans);
+}

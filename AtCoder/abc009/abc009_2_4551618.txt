@@ -1,0 +1,64 @@
+問題文の引用元：https://atcoder.jp/contests/abc009/tasks/abc009_2
+B - 心配性な富豪、ファミリーレストランに行く。Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 私は富豪だ。それも大富豪と言っていいぐらいお金を持っている。欲しいと思ったものはまずこの有り余るお金を使って買うことができる。しかし、この底の尽きないように思えるほどのお金でさえ人の心を買うことはできない。いくらお金があろうとも、ひとたび多くの庶民の反発を買ってしまえば、これまでのように生きていくことは難しくなるだろう。この度私は庶民の気持ちを理解するため、初めてファミリーレストランという場所を訪れた。メニューを広げ、料理の内容とその金額を確かめると、なるほど驚きの安さである。どの料理の金額も取るに足らないようなものだから、とりあえず最も金額が高いものを選ぼうかと考えた。しかし、考えてみれば、私は何のためにファミリーレストランに来たのであったか。庶民の気持ちを理解しようというのに、金額のことを考えずに最も高いものを選ぼうなどと、まるで意味がないではないか。ファミリーレストランに来たうえ、これ見よがしに最も高い料理を注文したとなったら、私の悪評が広まってしまう可能性だってある。とはいえ、せっかくだから高いものを選んでその味をみてみたいというのも確かである。そうだ、そういうことなら、この店で 2 番目に高い料理を注文することにしよう。そう思って料理の金額を書き出してみたが、料理の種類が多いために 2 番目に高いものを探すのはなかなか骨が折れる。自分で探すかわりに、プログラムを書いてなんとかできないだろうか？おっと、プログラムを書き始める前にひとつ言っておくが、最も高い金額の料理が複数あるときには注意してもらいたい。というのは、たとえば 4 種類の料理があり、それぞれの金額が 100 円、200 円、300 円、300 円であったときには、2 番目に高いものというのは 200 円の料理になるということだ。入力入力は以下の形式で標準入力から与えられる。NA_1A_2:A_N1 行目には、料理の種類の個数を表す整数 N (2 ≦ N ≦ 100) が与えられる。2 行目から N 行では、それぞれの料理の金額が与えられる。N 行のうち i 行目には整数 A_i (1 ≦ A_i ≦ 1,000) が書かれており、これは i 番目の料理の金額が A_i 円であることを表す。すべての料理の金額が同じであることはない。出力N 個の料理のうち、2 番目に高いものの金額を 1 行に出力せよ。出力の末尾にも改行をいれること。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc009/submissions/4551618
+// 提出ID : 4551618
+// 問題ID : abc009_2
+// コンテストID : abc009
+// ユーザID : xryuseix
+// コード長 : 1065
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX;
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	vector<int> v;
+	int i,n,a;
+	cin>>n;
+	rep(i,n){
+		cin>>a;
+		v.push_back(a);
+	}
+	sort(v.begin(),v.end());
+	for(i=v.size()-2;i>=0;i--){
+		if(v[i]!=v[v.size()-1]){
+			cout<<v[i]<<endl;
+			return 0;
+		}
+	}
+	
+	
+	
+//////////////////////////////////////////////////////
+	return 0;
+}

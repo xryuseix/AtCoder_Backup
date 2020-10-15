@@ -1,0 +1,113 @@
+問題文の引用元：https://atcoder.jp/contests/atc002/tasks/abc007_3
+A - 幅優先探索Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : たかはし君は迷路が好きです。今、上下左右に移動できる二次元盤面上の迷路を解こうとしています。盤面は以下のような形式で与えられます。まず、盤面のサイズと、迷路のスタート地点とゴール地点の座標が与えられる。次に、それぞれのマスが通行可能な空きマス(.)か通行不可能な壁マス(#)かという情報を持った盤面が与えられる。盤面は壁マスで囲まれている。スタート地点とゴール地点は必ず空きマスであり、スタート地点からゴール地点へは、空きマスを辿って必ずたどり着ける。具体的には、入出力例を参考にすると良い。今、彼は上記の迷路を解くのに必要な最小移動手数を求めたいと思っています。どうやって求めるかを調べていたところ、「幅優先探索」という手法が効率的であることを知りました。幅優先探索というのは以下の手法です。スタート地点から近い(たどり着くための最短手数が少ない)マスから順番に、たどり着く手数を以下のように確定していく。説明の例として図1の迷路を利用する。図1. 説明に用いる盤面最初に、スタート地点は、スタート地点から手数0でたどり着ける(当然)ので、最短手数0で確定させる(図2)。図2. 最短手数0でたどり着けるマスが確定(初期)次に、スタート地点の四近傍(上下左右)の空きマスについて、手数1で確定させる(図3)。図3. 最短手数1でたどり着けるマスが確定次に、手数1で確定したそれぞれのマスの4近傍を見て、まだ確定していない空きマスがあればそのマスを手数2で確定させる(図4)。図4. 最短手数2でたどり着けるマスが確定次に、手数2で確定したそれぞれのマスの4近傍を見て、まだ確定していない空きマスがあればそのマスを手数3で確定させる(図5)。図5. 最短手数3でたどり着けるマスが確定次に、手数3で確定したそれぞれのマスの4近傍を見て、まだ確定していない空きマスがあればそのマスを手数4で確定させる(図6)。図6. 最短手数4でたどり着けるマスが確定上記の手順を確定の更新が無くなるまで繰り返すと、スタート地点からたどり着ける全ての空きマスについて最短手数が確定する(図7)。スタートとゴールは必ず空きマスを辿ってたどり着けるという
+制約があるので、ゴール地点への最短手数も分かる。図7. すべてのたどり着けるマスへの最短手数が確定さて、この処理をスマートに実装するためには、先入れ先出し(FIFO)のキュー(Queue)というデータ構造を用いると良いことが知られています。もちろん、使わなくても解くことは可能です。今回、よく分からなければ思いついた方法で解くことをおすすめします。先入れ先出しのキューとは以下のような機能を持つデータ構造です。追加(Push): キューの末尾にデータを追加する。取り出し(Pop): キューの先頭のデータを取り出す。このデータ構造を使うと、先ほどの幅優先探索の説明における「マスの最短手数の確定」のタイミングでその確定マスをキューに追加し、追加操作が終わればPopを行い、取り出したマスの4近傍を調べるということを繰り返せば(つまり先に追加されたものから順番に処理していけば)、簡潔に処理ができることが分かります。入力入力は以下の形式で標準入力から与えられる。R\ Csy\ sxgy\ gxc_{(1,1)}c_{(1,2)}\ …\ c_{(1,C)}c_{(2,1)}c_{(2,2)}\ …\ c_{(2,C)}:c_{(R,1)}c_{(R,2)}\ …\ c_{(R,C)}1 行目には、行数 R(1≦R≦50)と列数 C(1≦C≦50)がそれぞれ空白区切りで与えられる。2 行目には、スタート地点の座標 (sy,sx) が空白区切りで与えられる。スタート地点が sy 行 sx 列にあることを意味する。 1≦sy≦R　かつ 1≦sx≦C である。3 行目には、ゴール地点の座標 (gy,gx) が空白区切りで与えられる。ゴール地点が gy 行 gx 列にあることを意味する。 1≦gy≦R　かつ 1≦gx≦C であり、(gy,gx)≠(sy,sx)であることが保障されている。4 行目から R 行、長さ C の文字列が 1 行ずつ与えられる。各文字は . もしくは # のいずれかであり、i 回目 (1≦i≦R) に与えられられる文字列のうち j 文字目 (1≦j≦C) について、その文字が . なら、マス (i,j) が空きマスであり、# なら、マス (i,j) が壁マスであることをあらわす。盤面は壁マスで囲まれている。つまり、i=1,i=R,j=1,j=C のうちいずれか1つでも条件を満たすマス (i,j) について、c_{(i,j)} は #である。また、スタート地点とゴール地点は必ず空きマスであり、スタート地点からゴール地点へは、空きマスを辿って必ずたどり着ける。出力スタート地点からゴール地点に移動する最小手数を 1 行に出力せよ。最後に改行を忘れないこと。
+// ソースコードの引用元 : https://atcoder.jp/contests/atc002/submissions/6232402
+// 提出ID : 6232402
+// 問題ID : abc007_3
+// コンテストID : atc002
+// ユーザID : xryuseix
+// コード長 : 3334
+// 実行時間 : 10
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <string>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <bitset>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define P 1000000007
+#define STI(s) atoi(s.c_str())//string to int
+#define mp(p,q) make_pair(p,q)
+#define Sort(a) sort(a.begin(),a.end())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int INF = INT_MAX;
+const long long LLINF = 1LL<<60;
+//g++ -std=c++1z temp.cpp
+//./a.out
+
+//①N,M,s_x,s_y,g_y,g_x設定
+/*
+②以下二文mein内に追加
+Corr start = {s_y, s_x, 0};  // 初期位置の深さ(depth)は 0
+q.emplace(start);  // 初期位置をキューに格納
+*/
+//③bfsを呼び出すと深さが返ります
+
+// 座標 corrdinate と深さを保持するための構造体
+struct Corr {
+    ll y;
+    ll x;
+    ll depth;
+};
+
+ll N, M;  // 迷路の縦，横
+ll s_y, s_x, g_y, g_x;  // スタート，ゴールの座標
+ll y, x, depth;  // キューから取り出した座標
+queue<Corr> q;
+
+ll bfs(vector<vector<char> > vec) {
+    vector<int> y_vec = {0, 0, -1, +1};  // 進む方向の簡便化，テクニックとして覚えておく．
+    vector<int> x_vec = {-1, +1, 0, 0};  // ループで回すことで上下左右に移動できるようになっている
+    
+    while (!q.empty()) {
+        Corr now = q.front(); q.pop();  // キューの先頭を取り出す
+        y = now.y, x = now.x, depth = now.depth;  // 行，列が y, x になっているので注意
+        // 停止条件：現在の座標がゴールなら深さを返す
+        if (y == g_y && x == g_x) return depth;
+        
+        // 上下左右 4 方向を探索．進むことができればキューに格納する．
+        for (ll i = 0; i < 4; ++i) {
+            Corr next = {y + y_vec[i], x + x_vec[i], depth + 1};
+            if (0 <= next.y && next.y <= N-1 && 0 <= next.x && next.x <= M-1 && vec[next.y][next.x] == '.') {
+                vec[next.y][next.x] = '#';  // 同じ場所を探索しないようにする
+                q.push(next);
+            }
+        }
+    
+    }
+    return 0;
+}
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+    
+    cin>>N>>M>>s_y>>s_x>>g_y>>g_x;
+    s_y--;
+    s_x--;
+    g_y--;
+    g_x--;
+    vvc v(N,vc(M));
+    rep(i,N)rep(j,M)cin>>v[i][j];
+    Corr start = {s_y, s_x, 0};  // 初期位置の深さ(depth)は 0
+    q.emplace(start);  // 初期位置をキューに格納
+    cout<<bfs(v)<<endl;
+
+//////////////////////////////////////////////////////
+return 0;}

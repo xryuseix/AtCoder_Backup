@@ -1,0 +1,75 @@
+問題文の引用元：https://atcoder.jp/contests/arc021/tasks/arc021_1
+A - DEAD ENDEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : あなたは友人の高橋君からとあるゲームを熱烈にオススメされている。このゲームは 4 \times 4 のグリッド状に区切られた 16 個のセルと、その上に置かれた数が書かれたタイルを使ってプレーする。1 回の操作では上下左右の 4 方向のうちいずれかを指定することができ、指定した方向に向かってセル上のタイルが滑っていく。このとき、同じ数の書かれたタイル 2 枚がぶつかるとその 2 枚はグリッド上から取り除かれ、代わりに数を 2 倍した別のタイルが 1 枚新たに置かれる。次の図は盤面の状態と、そこから右に向かって 1 回操作を行った後の盤面の例である。上下左右のどの方向を指定してもタイルがまったく滑ることができず、同じ数のタイルをぶつけることもできなくなったらゲームオーバーで、それまでに出来るだけ大きい数の書かれたタイルを作るのが目的だ。このゲームは確かに非常に面白そうだと思ったが、まだ慣れていないからか、グリッド上がタイルでいっぱいになったときにゲームオーバーなのかをなかなか判別できない。そこで、グリッド上のタイルの情報が与えられたときにゲームオーバーの状態なのかどうかを判定するようなプログラムを書くことにした。入力入力は以下の形式で標準入力から与えられる。A_{1,1} A_{1,2} A_{1,3} A_{1,4}A_{2,1} A_{2,2} A_{2,3} A_{2,4}A_{3,1} A_{3,2} A_{3,3} A_{3,4}A_{4,1} A_{4,2} A_{4,3} A_{4,4}4 行にわたってタイルの情報が書かれている。A_{r,c} (2 ≦ A_{r,c} ≦ 2048) は、グリッド上で上から数えて r 番目、左から数えて c 番目のセルに置かれているタイルに書かれている数を表す。A_{r,c} はすべて 2 の累乗である。すなわち、A_{r,c} は 2,\,4,\,8,\,16,\,32,\,64,\,128,\,256,\,512,\,1024,\,2048 のいずれかである。出力与えられたグリッドの状態がゲームオーバーなら GAMEOVER、まだ操作ができるなら CONTINUE と 1 行に出力せよ。出力の末尾にも改行をいれること。
+// ソースコードの引用元 : https://atcoder.jp/contests/arc021/submissions/6115127
+// 提出ID : 6115127
+// 問題ID : arc021_1
+// コンテストID : arc021
+// ユーザID : xryuseix
+// コード長 : 1654
+// 実行時間 : 1
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <string>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <bitset>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define fin(ans) cout<<(ans)<<endl
+#define P 1000000007
+#define STI(s) atoi(s.c_str())//string to int
+#define mp(p,q) make_pair(p,q)
+#define Sort(a) sort(a.begin(),a.end())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int INF = INT_MAX;
+const long long LLINF = 1LL<<60;
+//g++ -std=c++1z temp.cpp
+//./a.out
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+    
+    vvi v(4,vector<int> (4));
+    rep(i,4)rep(j,4)cin>>v[i][j];
+    bool ch=false;
+    for(int i=0;i<4;i++){
+        for(int j=0;j<3;j++){
+            if(v[i][j]==v[i][j+1])ch=true;
+        }
+    }
+    for(int i=0;i<3;i++){
+        for(int j=0;j<4;j++){
+            if(v[i][j]==v[i+1][j])ch=true;
+        }
+    }
+
+    if(ch)fin("CONTINUE");
+    else fin("GAMEOVER");
+//////////////////////////////////////////////////////
+return 0;}

@@ -1,0 +1,146 @@
+問題文の引用元：https://atcoder.jp/contests/abc149/tasks/abc149_d
+D - Prediction and RestrictionEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 400 点
+問題文 : 高橋君は、ゲームセンターで「じゃんけんバトル」というゲームをプレイすることにしました。このゲームのルールは以下の通りです。プレイヤーは筐体と N 回じゃんけんを行う (あいこの場合も 1 回のジャンケンと数える)。プレイヤーがじゃんけんで勝った場合、プレイヤーは出した手に応じて以下のスコアを得る (あいこや負けは 0 点)。グーで勝った場合、 R 点チョキで勝った場合、 S 点パーで勝った場合、 P 点ただし、ちょうど K 回前のじゃんけんで出した手と同じ手を出すことはできない。( K 回目までのじゃんけんでは好きな手を出せる。)筐体は、各回のジャンケンで出す手をゲーム開始前に決定します。能力者である高橋君は、ゲーム開始前にこれをすべて読み取りました。高橋君が読み取った情報は文字列 T として与えられます。T の i(1 \leq i \leq N) 文字目が r のときは i 回目のじゃんけんで筐体がグーを出すことを、s のときはチョキを出すことを、p のときはパーを出すことを表します。高橋君が N 回のじゃんけんで出す手を最適に選んだとき、ゲーム終了までに最大で合計何点を得られるでしょうか。
+制約2 \leq N \leq 10^51 \leq K \leq N-11 \leq R,S,P \leq 10^4N,K,R,S,P は全て整数である。|T| = NT に含まれる文字は r , s , p のいずれかである。入力入力は以下の形式で標準入力から与えられる。N KR S PT出力得られる最大の合計スコアを出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc149/submissions/9219694
+// 提出ID : 9219694
+// 問題ID : abc149_d
+// コンテストID : abc149
+// ユーザID : xryuseix
+// コード長 : 3670
+// 実行時間 : 11
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+// bool isPrime(int x){
+//     int i;
+//     if(x < 2)return 0;
+//     else if(x == 2) return 1;
+//     if(x%2 == 0) return 0;
+//     for(i = 3; i*i <= x; i += 2) if(x%i == 0) return 0;
+//     return 1;
+// }
+
+int main(void){
+
+    // // string s,t;
+    // // cin>>s>>t;
+    // // cout<<t<<s<<endl;
+    // ll a,b,k;
+    // cin>>a>>b>>k;
+    // a-=k;
+    // k=max(-a,0LL);
+    // a=max(a,0LL);
+    // b=max(0LL,b-k);
+    // cout<<a<<" "<<b<<endl;
+    // int x;
+    // cin>>x;
+    // for(int i=x;;i++){
+    //     if(isPrime(i)){
+    //         cout<<i<<endl;
+    //         return 0;
+    //     }
+    // }
+
+    int n,k;
+    cin>>n>>k;
+    int r,s,p;
+    cin>>r>>s>>p;
+    string t;
+    cin>>t;
+    int dp[3][t.size()+1];
+    rep(i,n+1)rep(j,3)dp[j][i]=0;
+
+
+    for(int i=1;i<=t.size();i++){
+        char hand[] = {'r','s','p'};
+        for(int B=0;B<3;B++){// 今
+            if(dp[B][i]==-1)continue;
+            if(hand[B]==t[i-1]){
+                // アイコ
+                chmax(dp[B][i],max(dp[0][i-1],0));
+                chmax(dp[B][i],max(dp[1][i-1],0));
+                chmax(dp[B][i],max(dp[2][i-1],0));
+            } else if((hand[B]=='r'&&t[i-1]=='s')||(hand[B]=='s'&&t[i-1]=='p')||(hand[B]=='p'&&t[i-1]=='r')){
+                // かち
+                int point;
+                if(B==0)point=r;
+                else if(B==1)point=s;
+                else point=p;
+                chmax(dp[B][i],max(dp[0][i-1],0)+point);
+                chmax(dp[B][i],max(dp[1][i-1],0)+point);
+                chmax(dp[B][i],max(dp[2][i-1],0)+point);
+                if(i+k<=n)dp[B][i+k]=-1;
+            } else {
+                chmax(dp[B][i],max(dp[0][i-1],0));
+                chmax(dp[B][i],max(dp[1][i-1],0));
+                chmax(dp[B][i],max(dp[2][i-1],0));
+            }
+        }
+    }
+    fin(max(max(dp[0][n],dp[1][n]),dp[2][n]));
+
+    // for(int i=0;i<=n;i++){
+    //     for(int j=0;j<3;j++){
+    //         cout<<dp[j][i]<<" ";
+    //     }
+    //     cout<<endl;
+    // }
+
+
+}

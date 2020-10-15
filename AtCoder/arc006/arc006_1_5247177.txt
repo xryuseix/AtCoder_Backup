@@ -1,0 +1,96 @@
+問題文の引用元：https://atcoder.jp/contests/arc006/tasks/arc006_1
+A - 宝くじEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 64 MB
+問題文 : 　高橋君は夏の宝くじをこっそり買っていました。今日はその宝くじの当選発表日です。購入者は、0 から 9 までの 10 個の数字から重複せずに 6 つの数字を選び購入します。発表日には 6 つの本数字と 1 つのボーナス数字が発表され、購入した宝くじとその数字がいくつ一致しているかで以下のように当選の等級が決まります。1 等 : 6 つ数字が一致2 等 : 5 つ数字が一致し、残りの 1 つの数字がボーナス数字と一致3 等 : 5 つ数字が一致4 等 : 4 つ数字が一致5 等 : 3 つ数字が一致　上記のどれにも当てはまらない場合ははずれになります。また、複数の等級を満たす場合は上位の等級（数字が小さい等級）が適用されます。　高橋君が購入した宝くじの等級を求めなさい。なお、与えられる当選番号とボーナス数字の 7 つの数字は互いに異なります。入力入力は以下の形式で標準入力から与えられる。E_0E_1E_2E_3E_4E_5BL_0L_1L_2L_3L_4L_5入力は 3 行ある。1 行目には、当選番号を表す 6 つの整数 E_i(0≦i≦5, 0≦E_i≦9) が与えられる。E_i は昇順に並んでいる。2 行目には、ボーナス数字を表す整数 B(0≦B≦9) が与えられる。3 行目には、高橋君が購入した宝くじの 6 つの数字を表す整数 L_j(0≦j≦5, 0≦L_j≦9) が与えられる。L_i は昇順に並んでいる。L_i の 6 つの数字は互いに異なります。E_i と B を合わせた 7 つの数字は互いに異なります。出力高橋君が購入した宝くじの等級数 (1 等の場合は 1、2 等の場合は 2、のように) を標準出力に 1 行で出力せよ。また、はずれの場合は 0 を出力せよ。なお、最後には改行を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/arc006/submissions/5247177
+// 提出ID : 5247177
+// 問題ID : arc006_1
+// コンテストID : arc006
+// ユーザID : xryuseix
+// コード長 : 1563
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#include<bits/stdc++.h>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+#define vvi vector<vector<int> >
+#define vvc vector<vector<char> >
+#define vvs vector<vector<string> >
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	vector<int> e(6,0),l(6,0),v;
+	int i,ans=0;
+	rep(i,6)cin>>e[i];
+	int b;
+	cin>>b;
+	rep(i,6)cin>>l[i];
+	if(e==l){
+		cout<<1<<endl;
+		return 0;
+	}
+	rep(i,6) v.push_back(e[i]);
+	rep(i,6) v.push_back(l[i]);
+	v.push_back(b);
+	sort(v.begin(),v.end());
+	bool f=false;
+	rep(i,12){
+		if(v[i]==v[i+1]){
+			if(v[i]==b)f=true;
+			else ans++;
+			
+			i++;
+			
+		}
+	}
+//	rep(i,v.size())cout<<v[i];
+	if(ans==5&&f)fin(2);
+	else{
+//		if(f)ans--;
+		if(ans==5)fin(3);
+		else if(ans==4)fin(4);
+		else if(ans==3)fin(5);
+		else fin(0);
+	}
+	
+	
+	
+	
+	
+//////////////////////////////////////////////////////
+	return 0;
+}
+
+
+
+
+
+

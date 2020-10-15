@@ -1,0 +1,125 @@
+問題文の引用元：https://atcoder.jp/contests/indeednow-quala/tasks/indeednow_2015_quala_3
+C - 説明会Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : ある企業は、説明会に参加する学生の選抜コンテストを行いました。説明会を行おうとしている会場の最大収容可能人数が決まっているため、コンテスト担当者はボーダーラインを何点にするかを悩んでいます。選抜方法を説明します。ボーダーラインが x 点のとき、正の点数を取っている学生のうち x 点以上の得点を得た学生を全て選抜する。つまり、0 点の学生は会場の最大収容可能人数に関わらず選抜しない。あなたには、選抜コンテストにおける N 人の学生の点数が与えられます。また、会場の候補が Q 個あります。そして、会場の最大収容可能人数はそれぞれ k_1,k_2,…,k_Q です。ある企業は、説明会をこれらの会場の候補のうちいずれかで開催しようとしています。あなたの仕事は、それぞれの会場候補で説明会を行う場合について、最小のボーダーラインを出力しなければなりません。具体的には、i (1≦i≦Q) 番目の会場候補で説明会を行うと仮定したとき、上記の方法に基づいて選抜した学生の数が k_i 人以下となるようなボーダーラインのうち 0 以上かつ最小のものを出力してください。入力入力は以下の形式で標準入力から与えられる。Ns_1s_2:s_NQk_1k_2:k_Q1 行目には、学生の数 N (1≦N≦100,000) が与えられる。2 行目から N 行には、選抜コンテストにおける各学生の得点情報が与えられる。そのうち i (1≦i≦N) 行目には、i 番目の学生の得点 s_i (0≦s_i≦1,000,000) が与えられる。2+N 行目には、会場候補の数 Q (1≦Q≦100,000) が与えられる。3+N 行目から Q 行には、各会場候補の最大収容可能人数が与えられる。そのうち i (1≦i≦Q) 行目には、i 番目の会場の最大収容可能人数 k_i (0≦k_i≦N) が与えられる。出力1 行目から Q 行には、各会場候補で説明会を行う場合のボーダーラインを出力せよ。そのうち i (1≦i≦Q) 行目には、i 番目の会場で説明会を行う場合のボーダーラインを出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/indeednow-quala/submissions/12502089
+// 提出ID : 12502089
+// 問題ID : indeednow_2015_quala_3
+// コンテストID : indeednow-quala
+// ユーザID : xryuseix
+// コード長 : 3218
+// 実行時間 : 264
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <random>
+#include <iomanip>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<pair<ll,ll> > vpll;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define arep(i,v) for(auto i : v)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+// #define endl '\n';
+#define fi first
+#define se second
+#define NONVOID [[nodiscard]]
+const int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+const int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+template <class T> inline void dump(T &v){irep(i, v){cout<<*i<<((i==--v.end())?'\n':' ');}}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+
+// vector vの中のn以下の数で最大のものを返す
+int bs(vector<int> &v, int x){
+    int ng = -1; //これがx以下
+    int ok = v.size(); //x以上
+    // 問題によってokとngを入れ替える
+    while(abs(ok - ng) > 1){
+        int mid = (ok + ng)/2;
+        // cout<<ng<<" "<<ok <<" "<< mid<<" "<<v[mid]<<" "<<x<<endl;
+        if(v[mid] <= x) ok = mid;
+        else ng = mid;
+    }
+    return ok;
+}
+
+
+int main() {
+
+    int n;
+    cin>>n;
+    vi v(1000001),csum(1000002);
+    rep(i,n){
+        int a;
+        cin>>a;
+        v[a]++;
+    }
+    csum[1000001]=0;
+    for(int i=1000000;i>=0;i--){
+        csum[i]=csum[i+1]+v[i];
+    }
+    int q;
+    cin>>q;
+    rep(_,q){
+        int k;
+        cin>>k;
+        int pos = bs(csum, k);
+        if(pos==1)pos--;
+        fin(pos);
+    }
+}

@@ -1,0 +1,76 @@
+問題文の引用元：https://atcoder.jp/contests/abc122/tasks/abc122_b
+B - ATCoderEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 200 点
+問題文 : 英大文字からなる文字列 S が与えられます。S の部分文字列 (注記を参照) であるような最も長い ACGT 文字列 の長さを求めてください。ここで、ACGT 文字列とは A, C, G, T 以外の文字を含まない文字列です。注記文字列 T の部分文字列とは、T の先頭と末尾から 0 文字以上を取り去って得られる文字列です。例えば、ATCODER の部分文字列には TCO, AT, CODER, ATCODER,  (空文字列) が含まれ、AC は含まれません。
+制約S は長さ 1 以上 10 以下の文字列である。S の各文字は英大文字である。入力入力は以下の形式で標準入力から与えられる。S出力S の部分文字列であるような最も長い ACGT 文字列の長さを出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc122/submissions/4976165
+// 提出ID : 4976165
+// 問題ID : abc122_b
+// コンテストID : abc122
+// ユーザID : xryuseix
+// コード長 : 1266
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX;
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	vector<int> v,w;
+	string s;
+	int i;
+	cin>>s;
+	v.push_back(-1);
+	bool ch=true;
+	for(i=0;i<s.length();i++){
+		if(s[i]!='A'&&s[i]!='G'&&s[i]!='T'&&s[i]!='C'){
+			v.push_back(i);
+			ch=false;
+		}
+	}
+	v.push_back(s.length());
+	for(i=0;i<v.size()-1;i++){
+		w.push_back(v[i+1]-v[i]-1);
+	}
+	sort(w.begin(),w.end());
+	if(ch)cout<<s.length()<<endl;
+	else cout<<w[w.size()-1]<<endl;
+	
+	
+//////////////////////////////////////////////////////
+	return 0;
+}
+
+
+
+
+

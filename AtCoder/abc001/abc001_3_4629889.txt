@@ -1,0 +1,95 @@
+問題文の引用元：https://atcoder.jp/contests/abc001/tasks/abc001_3
+C - 風力観測Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 64 MB注意この問題は古い問題です。過去問練習をする場合は、新しいAtCoder Beginner Contestから取り組むことをお勧めしています。
+問題文 : ある風向風速計は、風向の角度と風程を 1 分毎に自動で記録してくれます。風向の角度というのは真北を 0 度とし、そこから時計回りに風の吹いてくる方向を定めたものです。気象観測等では全体を等しく 16 分割した 16 方位が用いられます。16 方位と角度は、以下の表のように対応します。  風向と角度の関係　方位　　角度　　方位　　角度　　N (北)　　他のいずれにも当てはまらない　　S (南)　　168.75 度以上 191.25 度未満　　NNE (北北東)　　11.25 度以上 33.75 度未満　　SSW (南南西)　　191.25 度以上 213.75 度未満　　NE (北東)　　33.75 度以上 56.25 度未満　　SW (南西)　　213.75 度以上 236.25 度未満　　ENE (東北東)　　56.25 度以上 78.75 度未満　　WSW (西南西)　　236.25 度以上 258.75 度未満　　E (東)　　78.75 度以上 101.25 度未満　　W (西)　　258.75 度以上 281.25 度未満　　ESE (東南東)　　101.25 度以上 123.75 度未満　　WNW (西北西)　　281.25 度以上 303.75 度未満　　SE (南東)　　123.75 度以上 146.25 度未満　　NW (北西)　　303.75 度以上 326.25 度未満　　SSE (南南東)　　146.25 度以上 168.75 度未満　　NNW (北北西)　　326.25 度以上 348.75 度未満　風程というのは、風向風速計の風車が、ある一定の時間に風によって回った量を距離によって表したものです。例えば、1 分間の風程が 300{\rm m} というのは、1 分間に吹いた風によって風車が 300{\rm m} 回ったという事です。この時、この 1 分間の平均風速は 300{\rm m} を 60 秒で割って、5{\rm m}/{\rm s} と求められます。与えられたデータを、ラジオ等で流れる「気象通報」と同様の形式に直そうと思います。気象通報では、16 方位での風向と、風力 (ビューフォート風力階級) が伝えられます。風向は、先の表の 16 方位です。ただし、風力 0 の場合、実際には「風弱く」と伝えられるため、風向は 16 方位ではなく、特別な向きであるCとします。風力は、風速を計算し、小数第 2 位を四捨五入して、以下の対応により風力に変換します。　  風力と風速の関係 　(ビューフォート風力階級)風力　　風速　　風力　　風速　　風力　　風速　　風力0　　 0.0{\rm m}/{\rm s} 以上 0.2{\rm m}/{\rm s} 以下　　風力5　　 8.0{\rm m}/{\rm s} 以上 10.7{\rm m}/{\rm s} 以下　　風力10　　 24.5{\rm m}/{\rm s} 以上 28.4{\rm m}/{\rm s} 以下　　風力1　　 0.3{\rm m}/{\rm s} 以上 1.5{\rm m}/{\rm s} 以下　　風力6　　 10.8{\rm m}/{\rm s} 以上 13.8{\rm m}/{\rm s} 以下　　風力11　　 28.5{\rm m}/{\rm s} 以上 32.6{\rm m}/{\rm s} 以下　　風力2　　 1.6{\rm m}/{\rm s} 以上 3.3{\rm m}/{\rm s} 以下　　風力7　　 13.9{\rm m}/{\rm s} 以上 17.1{\rm m}/{\rm s} 以下　　風力12　　 32.7{\rm m}/{\rm s} 以上　　風力3　　 3.4{\rm m}/{\rm s} 以上 5.4{\rm m}/{\rm s} 以下　　風力8　　 17.2{\rm m}/{\rm s} 以上 20.7{\rm m}/{\rm s} 以下　　　風力4　　 5.5{\rm m}/{\rm s} 以上 7.9{\rm m}/{\rm s} 以下　　風力9　　 20.8{\rm m}/{\rm s} 以上 24.4{\rm m}/{\rm s} 以下　　　風向 (角度) と 1 分間の風程が入力されるとき、それを気象通報の形式に直して出力するプログラムを作成してください。入力入力は以下の形式の 1 行からなる。Deg DisDegは風向を示し、本来の角度を 10 倍した整数で与えられる (例えば、90 度なら 900、137.5 度なら1375と与えられる) 。Disは 1 分間の風程を示す整数である。単位はメートル ({\rm m}) である。
+制約0≦Deg<3,6000≦Dis<12,000出力出力は以下の形式の 1 行とする。Dir WDirは風向を示し、C, N, E, W, S からなる 1〜3 文字の文字列である。Wは風力を示し、0 以上 12 以下の整数である。また、出力の末尾には改行を入れること。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc001/submissions/4629889
+// 提出ID : 4629889
+// 問題ID : abc001_3
+// コンテストID : abc001
+// ユーザID : xryuseix
+// コード長 : 2040
+// 実行時間 : 4
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX;
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	vector<pair<string,double> > v;
+	double wind[13]={0.2,1.5,3.3,5.4,7.9,10.7,13.8,17.1,20.7,24.4,28.4,32.6,100000};
+	v.push_back(make_pair("N",11.25));
+	v.push_back(make_pair("NNE",33.75));
+	v.push_back(make_pair("NE",56.25));
+	v.push_back(make_pair("ENE",78.75));
+	v.push_back(make_pair("E",101.25));
+	v.push_back(make_pair("ESE",123.75));
+	v.push_back(make_pair("SE",146.25));
+	v.push_back(make_pair("SSE",168.75));
+	v.push_back(make_pair("S",191.25));
+	v.push_back(make_pair("SSW",213.75));
+	v.push_back(make_pair("SW",236.25));
+	v.push_back(make_pair("WSW",258.75));
+	v.push_back(make_pair("W",281.25));
+	v.push_back(make_pair("WNW",303.75));
+	v.push_back(make_pair("NW",326.25));
+	v.push_back(make_pair("NNW",348.75));
+	v.push_back(make_pair("N",361.00));
+	
+	double deg,dis;
+	cin>>deg>>dis;
+	deg/=10;
+	dis/=60;
+	int i,j;
+	dis*=10;
+	dis+=0.5;
+	dis=floor(dis);
+	dis/=10;
+	for(i=0;i<13;i++){
+		if(dis<=wind[i])break;
+	}
+	if(i==0){
+		cout<<"C"<<" "<<0<<endl;
+		return 0;
+	}
+	else{
+		for(j=0;j<v.size();j++){
+//			cout<<deg<<" "<<v[j].second<<endl;
+			if(v[j].second>deg){
+				cout<<v[j].first<<" "<<i<<endl;
+				return 0;
+			}
+		}
+	}
+	
+//////////////////////////////////////////////////////
+	return 0;
+}

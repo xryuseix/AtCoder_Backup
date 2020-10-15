@@ -1,0 +1,47 @@
+問題文の引用元：https://atcoder.jp/contests/abc113/tasks/abc113_b
+B - PalaceEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点: 200 点
+問題文 : ある国で、宮殿を作ることになりました。この国では、標高が x メートルの地点での平均気温は T-x \times 0.006 度です。宮殿を建設する地点の候補は N 個あり、地点 i の標高は H_i メートルです。joisinoお姫様は、これらの中から平均気温が A 度に最も近い地点を選んで宮殿を建設するようにあなたに命じました。宮殿を建設すべき地点の番号を出力してください。ただし、解は一意に定まることが保証されます。
+制約1 \leq N \leq 10000 \leq T \leq 50-60 \leq A \leq T0 \leq H_i \leq 10^5入力は全て整数解は一意に定まる入力入力は以下の形式で標準入力から与えられる。NT AH_1 H_2 ... H_N出力宮殿を建設すべき地点の番号を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc113/submissions/4184123
+// 提出ID : 4184123
+// 問題ID : abc113_b
+// コンテストID : abc113
+// ユーザID : xryuseix
+// コード長 : 483
+// 実行時間 : 3
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+using namespace std;
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	int n,i,t,a;
+	cin>>n>>t>>a;
+	double h[n];
+	for(i=0;i<n;i++)cin>>h[i];
+	for(i=0;i<n;i++)h[i]=t-h[i]*0.006;
+	
+	double diff=1000000000;
+	int ans;
+	for(i=0;i<n;i++){
+		if(abs(a-h[i])<diff){
+			diff=abs(a-h[i]);
+			ans=i;
+		}
+	}
+	cout<<ans+1<<endl;
+	
+	
+	
+	return 0;
+}

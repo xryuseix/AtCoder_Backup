@@ -1,0 +1,81 @@
+問題文の引用元：https://atcoder.jp/contests/cpsco2019-s2/tasks/cpsco2019_s2_b
+B - Telephone QEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 200 点
+問題文 : 夜のテレビ番組「こんばんはゴジラです」では、次のようなパネルめくりゲームを実施しています。ゲームの参加者であるあなたは、初めに 0 円を持っています。各パネルには記号と非負整数が 1 つずつ書かれており、 i 番目のパネルに書かれた記号と非負整数はそれぞれ c_i, a_i です。あなたが i 番目のパネルを開けたとき、以下のルールに従ってあなたの所持金が変化します。 c_i= + のとき：所持金が a_i 円増える。 c_i= - のとき：所持金が a_i 円減る。 c_i= * のとき：所持金が a_i 倍になる。あなたは、 N 枚のパネルのうち 0 枚以上のパネルを、1 枚ずつ好きな順番で開けることができ、途中でいつでもゲームを終了することができます。また、ゲーム途中及び終了時に所持金が負の値になってもかまいません。あらかじめどのパネルに何が書かれてあるかを知っているあなたは、ゲーム終了時の自分の所持金を最大化しようとしました。ゲーム終了時の所持金の最大値 M を答えてください。
+制約1 \leq N \leq 10000 \leq a_i \leq 1000c_i は+, -, * のいずれかである。ゲーム終了時の所持金の最大値 M は 10^9 を超えない。入力入力は以下の形式で標準入力から与えられる。Nc_1 a_1:c_N a_N出力ゲーム終了時の所持金の最大値 M を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/cpsco2019-s2/submissions/5388307
+// 提出ID : 5388307
+// 問題ID : cpsco2019_s2_b
+// コンテストID : cpsco2019-s2
+// ユーザID : xryuseix
+// コード長 : 1281
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#include<bits/stdc++.h>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+#define vvi vector<vector<int> >
+#define vvc vector<vector<char> >
+#define vvs vector<vector<string> >
+#define P 1000000007
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	int t,n,i;
+	char m;
+	vector<int> p,v;
+	cin>>n;
+	rep(i,n){
+		cin>>m>>t;
+		if(m=='+') p.push_back(t);
+		else if(m=='*') v.push_back(t);
+	}
+	ll ans=0;
+	rep(i,p.size())ans+=p[i];
+	rep(i,v.size()){
+		
+		if(v[i]>1)ans*=v[i];
+	}
+	fin(ans);
+	
+	
+//////////////////////////////////////////////////////
+return 0;}
+
+
+
+
+
+
+
+
+

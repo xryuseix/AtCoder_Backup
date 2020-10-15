@@ -1,0 +1,130 @@
+問題文の引用元：https://atcoder.jp/contests/abc030/tasks/abc030_c
+C - 飛行機乗りEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : ウナギの高橋くんは飛行機に乗ることが趣味です。今回は空港Aと空港Bを往復することにしました。空港Aから空港Bの飛行機には X 時間かかり、空港Bから空港Aへの飛行機には Y 時間かかります。空港Aから空港Bへの飛行機は N 本あり、i 番目の便は a_i 時に出発します。空港Bから空港Aへの飛行機は M 本あり、j 番目の便は b_j 時に出発します。ある飛行機には、出発する空港に出発する時刻以前にいれば乗ることができます。出発する時刻ちょうどに到着した場合も、すぐに飛行機に乗って出発できます。高橋くんははじめ空港Aに 0 時にいます。空港Aと空港Bの間を最大何往復できるか調べてください。入力入力は以下の形式で標準入力から与えられる。N MX Ya_1 a_2 .. a_Nb_1 b_2 .. b_M1 行目には、空港Aから空港Bへの本数 N ( 1 ≦ N ≦ 10^5) 、空港Bから空港Aへの本数 M ( 1 ≦ M ≦ 10^5)  が空白区切りで与えられる。2 行目には、空港Aから空港Bへの飛行機にかかる時間 X ( 1 ≦ X ≦ 10^9) 、空港Bから空港Aへの飛行機にかかる時間 Y ( 1 ≦ Y ≦ 10^9)  が空白区切りで与えられる。3 行目には、N 個の空港Aから飛行機が出発する時刻を表す整数 a_i が空白を区切りとして与えられる。4 行目には、M 個の空港Bから飛行機が出発する時刻を表す整数 b_j が空白を区切りとして与えられる。1 ≦ a_i ≦ 10^9 (1 ≦ i ≦ N)  であることが保証される。1 ≦ b_j ≦ 10^9 (1 ≦ j ≦ M)  であることが保証される。a_i < a_{i+1} (1 ≦ i ≦ N-1)  であることが保証される。b_i < b_{j+1} (1 ≦ j ≦ M-1)  であることが保証される。出力高橋くんが空港Aと空港Bの間を最大何往復できるかを 1 行に出力せよ。末尾の改行を忘れないこと。部分点この問題には部分点が設定されている。30 点分のテストケースにおいて、1 ≦ a_i ≦ 10^5, 1 ≦ b_j ≦ 10^5 ( 1 ≦ i ≦ N, 1 ≦ j ≦ M)  を満たす。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc030/submissions/7826523
+// 提出ID : 7826523
+// 問題ID : abc030_c
+// コンテストID : abc030
+// ユーザID : xryuseix
+// コード長 : 2873
+// 実行時間 : 75
+
+
+
+/*
+                   _ooOoo_
+                  o8888888o
+                  88" . "88
+                  (| -_- |)
+                  O\  =  /O
+               ____/`---'\____
+             .'  \\|     |//  `.
+            /  \\|||  :  |||//  \
+           /  _||||| -:- |||||-  \
+           |   | \\\  -  /// |   |
+           | \_|  ''\---/''  |   |
+           \  .-\__  `-`  ___/-. /
+         ___`. .'  /--.--\  `. . __
+      ."" '<  `.___\_<|>_/___.'  >'"".
+     | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+     \  \ `-.   \_ __\ /__ _/   .-` /  /
+======`-.____`-.___\_____/___.-`____.-'======
+                   `=---='
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        fozubaoyou    pass System Test!
+        quoted from "https://codeforces.com/contest/472/submission/7996840"
+*/
+ 
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(),a.end()
+#define rall(a) a.rbegin(),a.rend()
+#define Sort(a) sort(a.begin(),a.end())
+#define Rort(a) sort(a.rbegin(),a.rend())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const int MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+
+
+int main(void){
+    
+	int n,m;
+	int x,y;
+	cin>>n>>m>>x>>y;
+	vi a(n),b(m);
+	rep(i,n)cin>>a[i];
+	rep(i,m)cin>>b[i];
+
+	ll ans=0;
+
+	a.push_back(INF);
+	b.push_back(INF);
+
+	ll turn=0;
+	ll time=a[0];
+
+	while(1){
+		if(turn==0){
+			auto it=lower_bound(b.begin(),b.end(),time+x);
+			if(*it==INF){
+				ans++;
+				break;
+			}
+			time=*it;
+			turn=1-turn;
+			ans++;
+			// cout<<"time:"<<time<<endl;
+		} else {
+			auto it=lower_bound(a.begin(),a.end(),time+y);
+			if(*it==INF){
+				ans++;
+				break;
+			}
+			time=*it;
+			turn=1-turn;
+			ans++;
+			// cout<<"time:"<<time<<endl;
+		}
+	}
+	fin(ans/2);
+
+}

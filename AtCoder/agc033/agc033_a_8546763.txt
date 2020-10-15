@@ -1,0 +1,137 @@
+問題文の引用元：https://atcoder.jp/contests/agc033/tasks/agc033_a
+A - Darker and DarkerEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 1 sec / Memory Limit : 1024 MB
+配点 : 300 点
+問題文 : 縦 H 行、横 W 列の白黒に塗られたマス目が与えられます。マス目の状態は A_{11} から A_{HW} の HW 個の文字で表されており、上から i 行目、左から j 列目にあるマスが黒色のとき A_{ij} は #、上から i 行目、左から j 列目にあるマスが白色のとき A_{ij} は . となっています。すべてのマスが黒色になるまで、以下の操作を繰り返し行います。辺を共有して隣接するマスの中に、黒色のマスが一つ以上存在するような白色のマスすべてが黒色になる。何回の操作を行うことになるか求めてください。ただし、最初に与えられるマス目には少なくとも 1 つ黒色のマスが存在します。
+制約1 ≦ H,W ≦ 1000A_{ij} は # または .与えられるマス目には少なくとも 1 つ黒色のマスが存在する。入力入力は以下の形式で標準入力から与えられる。H WA_{11}A_{12}...A_{1W}:A_{H1}A_{H2}...A_{HW}出力行われる操作の回数を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/agc033/submissions/8546763
+// 提出ID : 8546763
+// 問題ID : agc033_a
+// コンテストID : agc033
+// ユーザID : xryuseix
+// コード長 : 3073
+// 実行時間 : 798
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const ll MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<62;
+
+struct Corr{
+    int y;
+    int x;
+    int depth;
+};
+
+queue<Corr> q;
+set<pair<int,int> > s;
+
+void bfs(vector<string> &v, vvi &dist) {
+    while(!q.empty()) {
+        Corr now = q.front();q.pop();
+        // cout<<now.y<<" "<<now.x<<endl;
+        dist[now.y][now.x]=now.depth;
+        int dx[] = {1,-1,0,0};
+        int dy[] = {0,0,1,-1};
+        for(int i=0;i<4;i++){
+            int nextx = now.x+dx[i];
+            int nexty = now.y+dy[i];
+            if(nextx<0||nextx>=dist[0].size()||nexty<0||nexty>=dist.size())continue;
+            if(dist[nexty][nextx]<=now.depth+1)continue;
+            if(s.count(mp(nextx,nexty))>0)continue;
+            Corr c={nexty,nextx,now.depth+1};
+            q.push(c);
+            s.insert(mp(nextx,nexty));
+        }
+    }
+}
+
+
+int main(void) {
+
+    int n,m;
+    cin>>n>>m;
+    vs v(n);
+    // cout<<"AAAAA\n"<<endl;
+    rep(i,n){
+        string s;
+        cin>>s;
+        v[i]=s;
+    }
+
+    vvi dist(n, vi(m,INF));
+
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            if(v[i][j]=='#'){
+                Corr c={i,j,0};
+                dist[i][j]=0;
+                q.push(c);
+            }
+        }
+    }
+    bfs(v,dist);
+    int ans=0;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            ans=max(ans,dist[i][j]);
+        }
+    }
+    fin(ans);
+
+    // for(int i=0;i<n;i++){
+    //     for(int j=0;j<m;j++){
+    //         cout<<dist[i][j]<<" ";
+    //     }
+    //     cout<<endl;
+    // }
+
+}

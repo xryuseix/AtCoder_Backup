@@ -1,0 +1,64 @@
+問題文の引用元：https://atcoder.jp/contests/abc051/tasks/abc051_b
+B - Sum of Three IntegersEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MBScore : 200 pointsProblem StatementYou are given two integers K and S.Three variable X, Y and Z takes integer values satisfying 0≤X,Y,Z≤K.How many different assignments of values to X, Y and Z are there such that X + Y + Z = S?  Constraints2≤K≤2500  0≤S≤3K  K and S are integers.  InputThe input is given from Standard Input in the following format:K SOutputPrint the number of the triples of X, Y and Z that satisfy the condition.Sample Input 12 2Sample Output 16There are six triples of X, Y and Z that satisfy the condition:X = 0, Y = 0, Z = 2  X = 0, Y = 2, Z = 0  X = 2, Y = 0, Z = 0  X = 0, Y = 1, Z = 1  X = 1, Y = 0, Z = 1  X = 1, Y = 1, Z = 0Sample Input 25 15Sample Output 21The maximum value of X + Y + Z is 15, achieved by one triple of X, Y and Z.
+配点 : 200 点
+問題文 : 2 つの整数 K,S が与えられます。3 つの変数 X,Y,Z があり、0≦X,Y,Z≦K を満たす整数の値を取ります。X + Y + Z = S を満たす X,Y,Z への値の割り当ては何通りありますか。  
+制約2≦K≦2500  0≦S≦3K  K,S は整数である。  入力入力は以下の形式で標準入力から与えられる。  K S出力
+問題文 : の条件を満たす X,Y,Z の組が何通りあるか出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc051/submissions/4268671
+// 提出ID : 4268671
+// 問題ID : abc051_b
+// コンテストID : abc051
+// ユーザID : xryuseix
+// コード長 : 1012
+// 実行時間 : 10
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<cctype>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF=1LL<<60;
+
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	int k,s,x,y,z;
+	ll ans=0;
+	cin>>k>>s;
+	for(x=0;x<=k;x++){
+		for(y=0;y<=k;y++){
+			z=s-x-y;
+			if(z<0)break;
+			else if(z>k)continue;
+			else if(x!=z&&y!=z){
+				ans+=1;
+//				cout<<"1:"<<x<<" "<<y<<" "<<z<<" "<<ans<<endl;
+			}
+			else if(x==y&&y==z){
+				ans+=1;
+//				cout<<"2:"<<x<<" "<<y<<" "<<z<<" "<<ans<<endl;
+			}
+			else if(x==y||y==z||z==x){
+				ans+=1;
+//				cout<<"3:"<<x<<" "<<y<<" "<<z<<" "<<ans<<endl;
+			}
+		}
+	}
+	cout<<ans<<endl;
+	
+	return 0;
+}

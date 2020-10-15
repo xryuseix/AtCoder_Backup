@@ -1,0 +1,70 @@
+問題文の引用元：https://atcoder.jp/contests/arc080/tasks/arc080_a
+C - 4-adjacentEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 400 点
+問題文 : 長さ N の数列 a = (a_1, a_2, ..., a_N) があります。各 a_i は正の整数です。すぬけ君の目標は、a の要素を自由に並べ替え、次の条件が成り立つようにすることです。各 1 ≤ i ≤ N - 1 について、a_i と a_{i + 1} の積は 4 の倍数である。すぬけ君が目標を達成できるか判定してください。
+制約2 ≤ N ≤ 10^5a_i は整数である。1 ≤ a_i ≤ 10^9入力入力は以下の形式で標準入力から与えられる。Na_1 a_2 ... a_N出力すぬけ君が目標を達成できるならば Yes を、できないならば No を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/arc080/submissions/7057149
+// 提出ID : 7057149
+// 問題ID : arc080_a
+// コンテストID : arc080
+// ユーザID : xryuseix
+// コード長 : 1185
+// 実行時間 : 12
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	int n,i;
+	cin>>n;
+	vector<int> v(n,0);
+	rep(i,n)cin>>v[i];
+	int b[3]={0};
+	rep(i,n){
+		if(v[i]%4==0)b[2]++;
+		else if(v[i]%2==0)b[1]++;
+		else b[0]++;
+	}
+	if(b[1]==0){
+		if(b[2]+1>=b[0])cout<<"Yes"<<endl;
+		else cout<<"No"<<endl;
+	}
+	else{
+		if(b[0]<=b[2])cout<<"Yes"<<endl;
+		else cout<<"No"<<endl;
+	}
+	
+	
+//////////////////////////////////////////////////////
+	return 0;
+}

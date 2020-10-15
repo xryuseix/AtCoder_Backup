@@ -1,0 +1,277 @@
+問題文の引用元：https://atcoder.jp/contests/abc132/tasks/abc132_d
+D - Blue and Red BallsEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 400 点
+問題文 : K 個の青いボールと N-K 個の赤いボールがあります。同じ色のボールは区別が不可能です。すぬけ君と高橋君はこれらのボールで遊んでいます。まず、すぬけ君が、N 個のボールを左から右に一列に並べます。次に、高橋君は、これらのうち K 個の青いボールのみを回収します。高橋君は、1 回の操作で連続して並ぶ青いボールを何個でも回収することができます。高橋君は、常に K 個の青いボールを回収するのにかかる操作の回数が最小になるように行動します。K 個の青いボールを回収するために高橋君がちょうど i 回操作をする必要があるボールの並べ方は何通りあるでしょうか。 1 ≤ i ≤ K をみたす i それぞれについて答えを計算し、 10^9+7 で割った余りを答えてください。
+制約1 ≤ K ≤ N ≤ 2000入力入力は以下の形式で標準入力から与えられる。N K出力i 行目 (1 ≤ i ≤ K) に高橋君がちょうど i 回操作をする必要があるボールの並べ方の総数を 10^9+7 で割った余りを出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc132/submissions/13360953
+// 提出ID : 13360953
+// 問題ID : abc132_d
+// コンテストID : abc132
+// ユーザID : xryuseix
+// コード長 : 6595
+// 実行時間 : 37
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <random>
+#include <iomanip>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<pair<ll,ll> > vpll;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+typedef map<int,int> mii;
+typedef set<int> si;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define arep(i,v) for(auto i : v)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+template <class T> inline void dump(T &v){irep(i, v){cout<<*i<<((i==--v.end())?'\n':' ');}}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL<<60;
+constexpr ll MOD = 1000000007;
+constexpr double EPS = 1e-9;
+
+struct mint {
+    ll x;
+    mint(ll _x = 0):x((_x % MOD + MOD) % MOD) {}
+
+    /* 初期化子 */
+    mint operator+() const {
+    return mint(x);
+    }
+    mint operator-() const {
+    return mint(-x);
+    }
+
+    /* 代入演算子 */
+    mint& operator+=(const mint a) {
+        if ((x += a.x) >= MOD) x -= MOD;
+        return *this;
+    }
+    mint& operator-=(const mint a) {
+        if ((x += MOD - a.x) >= MOD) x -= MOD;
+        return *this;
+    }
+    mint& operator*=(const mint a) {
+        (x *= a.x) %= MOD;
+        return *this;
+    }
+    mint& operator/=(const mint a) {
+        x *= modinv(a).x;
+        return (*this);
+    }
+    mint& operator%=(const mint a) {
+        x %= a.x;
+        return (*this);
+    }
+    mint& operator++() {
+        ++x;
+        if(x >= MOD) x -= MOD;
+        return *this;
+    }
+    mint& operator--() {
+        if(!x) x += MOD;
+        --x;
+        return *this;
+    }
+    mint& operator&=(const mint a) {
+        x &= a.x;
+        return (*this);
+    }
+    mint& operator|=(const mint a) {
+        x |= a.x;
+        return (*this);
+    }
+    mint& operator^=(const mint a) {
+        x ^= a.x;
+        return (*this);
+    }
+    mint& operator<<=(const mint a) {
+        x *= pow(2, a).x;
+        return (*this);
+    }
+    mint& operator>>=(const mint a) {
+        x /= pow(2, a).x;
+        return (*this);
+    }
+
+    /* 算術演算子 */
+    mint operator+(const mint a) const {
+        mint res(*this);
+        return res+=a;
+    }
+    mint operator-(const mint a) const {
+        mint res(*this);
+        return res-=a;
+    }
+    mint operator*(const mint a) const {
+        mint res(*this);
+        return res*=a;
+    }
+    mint operator/(const mint a) const {
+        mint res(*this);
+        return res/=a;
+    }
+    mint operator%(const mint a) const {
+        mint res(*this);
+        return res%=a;
+    }
+    mint operator&(const mint a) const {
+        mint res(*this);
+        return res&=a;
+    }
+    mint operator|(const mint a) const {
+        mint res(*this);
+        return res|=a;
+    }
+    mint operator^(const mint a) const {
+        mint res(*this);
+        return res^=a;
+    }
+    mint operator<<(const mint a) const {
+        mint res(*this);
+        return res<<=a;
+    }
+    mint operator>>(const mint a) const {
+        mint res(*this);
+        return res>>=a;
+    }
+
+    /* 条件演算子 */
+    bool operator==(const mint a) const noexcept {
+        return x == a.x;
+    }
+    bool operator!=(const mint a) const noexcept {
+        return x != a.x;
+    }
+    bool operator<(const mint a) const noexcept {
+        return x < a.x;
+    }
+    bool operator>(const mint a) const noexcept {
+        return x > a.x;
+    }
+    bool operator<=(const mint a) const noexcept {
+        return x <= a.x;
+    }
+    bool operator>=(const mint a) const noexcept {
+        return x >= a.x;
+    }
+
+    /* ストリーム挿入演算子 */
+    friend istream& operator>>(istream& is, mint& m) {
+        is >> m.x;
+        m.x = (m.x % MOD + MOD) % MOD;
+        return is;
+    }
+    friend ostream& operator<<(ostream& os, const mint& m) {
+        os << m.x;
+        return os;
+    }
+
+    /* その他の関数 */
+    mint modinv(mint a) {
+        return pow(a, MOD - 2);
+    }
+    mint pow(mint x, mint n){
+        mint res = 1;
+        while(n.x > 0){
+            if((n%2).x) res *= x;
+            x *= x;
+            n.x /= 2;
+        }
+        return res;
+    }
+};
+#define MAX_MINT_NCK 201010
+mint f[MAX_MINT_NCK], rf[MAX_MINT_NCK];
+
+bool isinit = false;
+
+void init() {
+    f[0] = 1;
+    rf[0] = 1;
+    for(int i = 1; i < MAX_MINT_NCK; i++) {
+        f[i] = f[i - 1] * i;
+        // rf[i] = modinv(f[i].x);
+        rf[i] = f[i].pow(f[i], MOD - 2);
+    }
+}
+
+mint nCk(mint n, mint k) {
+    if(n < k) return 0;
+    if(!isinit) {
+        init();
+        isinit = 1;
+    }
+    mint nl = f[n.x]; // n!
+    mint nkl = rf[n.x - k.x]; // (n-k)!
+    mint kl = rf[k.x]; // k!
+    mint nkk = (nkl.x * kl.x);
+
+    return nl * nkk;
+}
+
+int main() {
+    mint n,k;
+    cin>>n>>k;
+    for(int i=1;i<=k.x;i++){
+        cout<<nCk(n-k+1,i)*nCk(k-1,i-1)<<endl;
+    }
+}
+
+
+
+
+
+

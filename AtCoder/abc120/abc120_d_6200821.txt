@@ -1,0 +1,123 @@
+問題文の引用元：https://atcoder.jp/contests/abc120/tasks/abc120_d
+D - Decayed BridgesEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 400 点
+問題文 : N 個の島と M 本の橋があります。i 番目の橋は A_i 番目の島と B_i 番目の島を繋いでおり、双方向に行き来可能です。はじめ、どの 2 つの島についてもいくつかの橋を渡って互いに行き来できます。調査の結果、老朽化のためこれら M 本の橋は 1 番目の橋から順に全て崩落することがわかりました。「いくつかの橋を渡って互いに行き来できなくなった 2 つの島の組 (a, b) (a < b) の数」を不便さと呼ぶことにします。各 i (1 \leq i \leq M) について、i 番目の橋が崩落した直後の不便さを求めてください。
+制約入力は全て整数である。2 \leq N \leq 10^51 \leq M \leq 10^51 \leq A_i < B_i \leq N(A_i, B_i) の組は全て異なる。初期状態における不便さは 0 である。入力入力は以下の形式で標準入力から与えられる。N MA_1 B_1A_2 B_2\vdotsA_M B_M出力i = 1, 2, ..., M の順に、i 番目の橋が崩落した直後の不便さを出力せよ。答えが 32 bit整数型に収まらない場合があることに注意すること。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc120/submissions/6200821
+// 提出ID : 6200821
+// 問題ID : abc120_d
+// コンテストID : abc120
+// ユーザID : xryuseix
+// コード長 : 3350
+// 実行時間 : 170
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <string>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <bitset>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define P 1000000007
+#define STI(s) atoi(s.c_str())//string to int
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define Sort(a) sort(a.begin(),a.end())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int INF = INT_MAX;
+const long long LLINF = 1LL<<60;
+//g++ -std=c++1z temp.cpp
+//./a.out
+
+class UnionFind {
+public:
+    //親の番号を格納する。親だった場合は-(その集合のサイズ)
+    vector<int> Parent;
+    //作るときはParentの値を全て-1にする
+    //こうすると全てバラバラになる
+    UnionFind(int N) {
+        Parent = vector<int>(N, -1);
+    }
+    //Aがどのグループに属しているか調べる
+    int root(int A) {
+        if (Parent[A] < 0) return A;
+        return Parent[A] = root(Parent[A]);
+    }
+    //自分のいるグループの頂点数を調べる
+    int size(int A) {
+        return -Parent[root(A)];//親をとってきたい]
+    }
+    //AとBをくっ付ける
+    bool connect(int A, int B) {
+        //AとBを直接つなぐのではなく、root(A)にroot(B)をくっつける
+        A = root(A);
+        B = root(B);
+        if (A == B) {
+            //すでにくっついてるからくっ付けない
+            return false;
+        }
+        //大きい方(A)に小さいほう(B)をくっ付けたい
+        //大小が逆だったらひっくり返しちゃう。
+        if (size(A) < size(B)) swap(A, B);
+        //Aのサイズを更新する
+        Parent[A] += Parent[B];
+        //Bの親をAに変更する
+        Parent[B] = A;
+        return true;
+    }
+};
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+    int N, M;
+    cin >> N >> M;
+    vector<int> A(M), B(M);
+    for (int i = 0; i < M; i++){
+        cin >> A[i] >> B[i];
+        A[i]--;
+        B[i]--;
+    }
+    vector<long long> ans(M);
+    ans[M - 1] = (long long)N * (N - 1) / 2;
+    UnionFind Uni(N);
+    for (int i = M - 1; i >= 1; i--){
+        ans[i - 1] = ans[i];
+        //繋がってなかったのが繋がった時
+        if (Uni.root(A[i]) != Uni.root(B[i])) {
+            ans[i - 1] -= (long long)Uni.size(A[i]) * Uni.size(B[i]);
+            Uni.connect(A[i], B[i]);
+        }
+    }
+    for (int i = 0; i < M; i++){
+        cout << ans[i] << endl;
+    }
+
+//////////////////////////////////////////////////////
+return 0;}

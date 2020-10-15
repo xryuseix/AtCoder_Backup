@@ -1,0 +1,58 @@
+問題文の引用元：https://atcoder.jp/contests/abc083/tasks/arc088_a
+C - Multiple GiftEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 300 点
+問題文 : 高橋君は、日頃の感謝を込めて、お母さんに数列をプレゼントすることにしました。お母さんにプレゼントする数列 A は、以下の条件を満たす必要があります。A は X 以上 Y 以下の整数からなるすべての 1\leq i \leq |A|-1 に対し、A_{i+1} は A_i の倍数であり、かつ A_{i+1} は A_i より真に大きい高橋君がお母さんにプレゼントできる数列の長さの最大値を求めてください。
+制約1 \leq X \leq Y \leq 10^{18}入力は全て整数である入力入力は以下の形式で標準入力から与えられる。X Y出力数列の長さの最大値を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc083/submissions/7057113
+// 提出ID : 7057113
+// 問題ID : arc088_a
+// コンテストID : abc083
+// ユーザID : xryuseix
+// コード長 : 930
+// 実行時間 : 3
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX;
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	long double x,y;
+	cin>>x>>y;
+	cout<<floor(log2(y)-log2(x))+1<<endl;
+	
+	
+	
+	
+	
+	
+//////////////////////////////////////////////////////
+	return 0;
+}

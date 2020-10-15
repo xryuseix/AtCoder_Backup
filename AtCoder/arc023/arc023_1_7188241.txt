@@ -1,0 +1,75 @@
+問題文の引用元：https://atcoder.jp/contests/arc023/tasks/arc023_1
+A - 経過日数Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 駆け出しプログラマーの高橋君は、バイト先の会社で、ある日付から今日の日付(2014 年 5 月 17 日)までの経過日数を計算するプログラムを作る仕事を割り当てられ、悩んでいました。最終的に、高橋君は「ある程度簡単な計算式に落とし込めたら高速化できるに違いない。」という信念のもとにいろいろ調べることで、ネットの海を彷徨っていると以下のような驚くべき公式を見つけました。この式の計算結果は、1 年 1 月 1 日から　y 年m月 d 日までの経過日数を表しているというのです。ただしこの公式を使う際、ある年1 月と 2 月の場合についてのみは、前年の 13 月,14 月という扱いをすることとします。つまり、たとえば 2012 年 2 月 5 日の場合、y=2011,m=14,d=5 として公式を適用しなければなりません。例えばこの公式に y=2014,m=5,d=17 を代入すると、735369 となり、1 年 1 月 1 日から2014 年 5 月 17 日までに、735369 日経過したことが分かります。この公式を応用すれば、任意の2つの日付に対する日数差を計算することができます。例えば、1988 年 7 月 3 日と 2014 年 5 月 17 日の日数差は、(1年1月1日から2014年5月17日までの経過日数)-(1年1月1日から1988年7月3日までの経過日数) なので、735369-725920=9449 と求まります。残念ながら高橋君は調べるだけで疲れて切ってしまったので、同僚であるあなたが彼の代わりにプログラムを書くことになりました。要するにあなたの仕事は、ある日付から今日の日付(2014 年 5 月 17 日)までの経過日数を計算するプログラムを作ることです。入力入力は以下の形式で標準入力から与えられる。ymd1 行目には、y (1 ≦ y ≦ 2014) が与えられる。2 行目には、m (1 ≦ m ≦ 12) が与えられる。3 行目には、d (1 ≦ d ≦ 31) が与えられる。与えられる日付は2014年5月17日よりも前のものである。また、実際に存在しない日付は与えられない。つまり、m=4,6,9,11 のとき 1≦d≦30 であり、m=1,3,5,7,8,10,12 のとき 1≦d≦31 を満たす。残る m=2 については、y 年が閏年( yが 400 の倍数、もしくは y が 100 の倍数ではない 4 の倍数)であれば 1≦d≦29、閏年でなければ 1≦d≦28 を満たす。出力y 年 m 月 d 日から　2014 年 5 月 17 日までに経過した日数を一行に出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/arc023/submissions/7188241
+// 提出ID : 7188241
+// 問題ID : arc023_1
+// コンテストID : arc023
+// ユーザID : xryuseix
+// コード長 : 1736
+// 実行時間 : 1
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(),a.end()
+#define rall(a) a.rbegin(),a.rend()
+#define Sort(a) sort(a.begin(),a.end())
+#define Rort(a) sort(a.rbegin(),a.rend())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int P = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+int tu(int y,int m,int d){
+    if(m<=2){
+        m+=12;
+        y--;
+    }
+    return 365*y+(y/4)-(y/100)+(y/400)+(306*(m+1)/10)+d-429;
+}
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+
+    int y,m,d;
+    cin>>y>>m>>d;
+    cout<<tu(2014,5,17)-tu(y,m,d)<<endl;
+
+//////////////////////////////////////////////////////
+return 0;}

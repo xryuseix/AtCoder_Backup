@@ -1,0 +1,105 @@
+問題文の引用元：https://atcoder.jp/contests/joi2020yo2/tasks/joi2020_yo2_a
+A - ポスター (Poster)Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点： 100 点
+問題文 : JOI 君は文化祭でのクラスの出し物を宣伝するため，ポスターを作った．そのポスターは N 行 N 列のマス目の形をしており，各マスは赤，緑，青のいずれかの色で塗られている．ポスターの上から i 行目，左から j 列目 (1 \leqq i \leqq N，1 \leqq j \leqq N) にあるマスの色は，S_{i,j}=R のとき赤色，S_{i,j}=G のとき緑色，S_{i,j}=B のとき青色である．しかし，このポスターにクラスのみんなは満足してはくれなかった．話し合いの結果，マス目の形は変えずに色の配置を変えることで，新しいポスターを作ることに決まった．新しいポスターの上から i 行目，左から j 列目 (1 \leqq i \leqq N，1 \leqq j \leqq N) にあるマスの色は，T_{i,j}=R のとき赤色，T_{i,j}=G のとき緑色，T_{i,j}=B のとき青色となるようにする．JOI 君は今あるポスターに以下のいずれかの作業を繰り返し行うことで，新しいポスターを作ることにした．マスを一つ選び，そのマスの色を好きな色に塗りなおす．ポスター全体を 90^{\circ} 時計回りに回転させる．このとき，もともと上から i 行目，左から j 列目 (1 \leqq i \leqq N，1 \leqq j \leqq N) にあるマスは，上から j 行目，左から N-i+1 列目にあるマスに移動する．ポスター全体を 90^{\circ} 反時計回りに回転させる．このとき，もともと上から i 行目，左から j 列目 (1 \leqq i \leqq N，1 \leqq j \leqq N) にあるマスは，上から N-j+1 行目，左から i 列目にあるマスに移動する．JOI 君はどの作業をするにも 1 分かかる．JOI 君が作ったポスター，新しく作るポスターの情報が与えられたとき，JOI 君が新しいポスターを作るのに最短で何分かかるかを求めるプログラムを作成せよ．
+制約1 \leqq N \leqq 500．S_{i,j} は R，G，B のいずれかである．T_{i,j} は R，G，B のいずれかである．入力入力は以下の形式で標準入力から与えられる．NS_{1,1} \cdots S_{1,N}\vdotsS_{N,1} \cdots S_{N,N}T_{1,1} \cdots T_{1,N}\vdotsT_{N,1} \cdots T_{N,N}出力新しいポスターを作るのに最短で何分かかるかを 1 行で出力せよ．
+// ソースコードの引用元 : https://atcoder.jp/contests/joi2020yo2/submissions/9262223
+// 提出ID : 9262223
+// 問題ID : joi2020_yo2_a
+// コンテストID : joi2020yo2
+// ユーザID : xryuseix
+// コード長 : 2221
+// 実行時間 : 24
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const ll MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<62;
+
+vs turn(vs v){
+    string tmp="";
+    rep(i,v.size())tmp+="&";
+    vs res(v.size(),tmp);
+    
+    rep(i,v.size()){
+        rep(j,v.size()){
+            res[j][v.size()-i-1]=v[i][j];
+        }
+    }
+    return res;
+}
+
+int diff(vs v,vs w,int n){
+    int res=0;
+    rep(i,n)rep(j,n){
+        if(v[i][j]!=w[i][j])res++;
+    }
+    return res;
+}
+
+
+int main(void){
+
+    int n;
+    cin>>n;
+    vs v(n),t(n);
+    int ans=INF;
+    rep(i,n)cin>>v[i];
+    rep(i,n)cin>>t[i];
+    for(int i = 0; i<4;i++){
+        int differ = diff(v,t,n);
+        if(i!=3)ans=min(ans,differ+i);
+        else ans=min(ans,differ+1);
+        v=turn(v);
+    }
+    fin(ans);
+}

@@ -1,0 +1,51 @@
+問題文の引用元：https://atcoder.jp/contests/abc045/tasks/abc045_b
+B - Card Game for Three (ABC Edit)Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 200 点
+問題文 : A さん、B さん、C さんの 3 人が以下のようなカードゲームをプレイしています。最初、3 人はそれぞれ a、b、c いずれかの文字が書かれたカードを、何枚か持っている。これらは入力で与えられた順番に持っており、途中で並べ替えたりしない。A さんのターンから始まる。現在自分のターンである人がカードを 1 枚以上持っているならば、そのうち先頭のカードを捨てる。その後、捨てられたカードに書かれているアルファベットと同じ名前の人 (例えば、カードに a と書かれていたならば A さん) のターンとなる。現在自分のターンである人がカードを 1 枚も持っていないならば、その人がゲームの勝者となり、ゲームは終了する。3 人が最初に持っているカードがそれぞれ先頭から順に与えられます。具体的には、文字列 S_A、S_B、S_C が与えられます。文字列 S_A の i 文字目 ( 1 \leq i \leq |S_A| ) に書かれている文字が、A さんの持っている中で先頭から i 番目のカードに書かれている文字です。文字列 S_B、 S_C についても同様です。最終的に誰がこのゲームの勝者となるかを求めてください。
+制約1 \leq |S_A| \leq 1001 \leq |S_B| \leq 1001 \leq |S_C| \leq 100S_A、S_B、S_C に含まれる文字はそれぞれ a、b、c のいずれか入力入力は以下の形式で標準入力から与えられる。S_AS_BS_C出力A さんが勝つなら A、B さんが勝つなら B、C さんが勝つなら C と出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc045/submissions/4219515
+// 提出ID : 4219515
+// 問題ID : abc045_b
+// コンテストID : abc045
+// ユーザID : xryuseix
+// コード長 : 737
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<set>
+#include<cctype>
+using namespace std;
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	string a[3],p="ABC";
+	cin>>a[0]>>a[1]>>a[2];
+	int turn=0,next;
+//	cout<<endl;
+	while(1){
+//		cout<<turn<<endl;
+//		cout<<"before:"<<endl<<a[0]<<endl<<a[1]<<endl<<a[2]<<endl;
+		if(a[turn].length()==0){
+			cout<<p[turn]<<endl;
+			break;
+		}
+		else{
+//			cout<<"turnchar:"<<(int)a[turn][0]-(int)'a'<<endl;
+			next=(int)a[turn][0]-(int)'a';
+			a[turn]=a[turn].substr(1,a[turn].length()-1);
+			turn=next;
+		}
+//		cout<<"after:"<<endl<<a[0]<<endl<<a[1]<<endl<<a[2]<<endl;
+	}
+	
+	return 0;
+}

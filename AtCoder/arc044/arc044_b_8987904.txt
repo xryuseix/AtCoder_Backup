@@ -1,0 +1,110 @@
+問題文の引用元：https://atcoder.jp/contests/arc044/tasks/arc044_b
+B - 最短路問題Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 高橋君は最短路アルゴリズムが大好きです。毎日さまざまな最短路アルゴリズムを実装して遊んでいます。しかし、高橋君は最短路を求めすぎてしまったので、最短路を求めるのに飽きてしまいました。そこで高橋君は、ある頂点からほかの頂点への最短距離が特定の値になるような頂点数がNですべての辺の長さが1の無向単純グラフの数を数えることにしました。より正確には、高橋君は同じ頂点の間を結ぶ辺が複数存在せず、またすべての辺の2端点の頂点が異なるグラフの頂点を順に1,2,...,Nとして、任意のiに対し、頂点1と頂点iを結ぶ経路上に存在する辺の個数の最小値がA_iになるようなグラフの総数を数えます。整数NとA_1,...,A_Nが与えられるので、このようなグラフの個数を10^9+7で割った余りを求めてください。入力入力は以下の形式で標準入力から与えられる。NA_1 A_2 ... A_N1 行目には、グラフの頂点数N(1 ≦ N ≦ 10^5)が与えられる。2 行目には、頂点1から頂点iまでの最短距離を表す整数列A_1,...,A_N(0 ≦ A_1,...,A_N ≦ N-1)が空白区切りで与えられる。出力条件を満たすグラフの個数を10^9+7で割った余りを出力せよ。出力の末尾に改行を入れること。(21:40修正)
+// ソースコードの引用元 : https://atcoder.jp/contests/arc044/submissions/8987904
+// 提出ID : 8987904
+// 問題ID : arc044_b
+// コンテストID : arc044
+// ユーザID : xryuseix
+// コード長 : 2421
+// 実行時間 : 38
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+//xのn乗%modを計算
+ll mod_pow(ll x,ll n,ll mod){
+    ll res = 1;
+    while(n > 0){
+        if(n & 1) res = res*x%mod;
+        x = x*x%mod;
+        n >>= 1;
+    }
+    return res%mod;
+}
+
+int main(void){
+
+    ll n;
+    cin>>n;
+    vll v(n);
+    rep(i,n)cin>>v[i];
+    if(v[0]!=0){
+        fin(0);
+        return 0;
+    }
+    rep(i,n){
+        if(i!=0&&!v[i]){
+            fin(0);
+            return 0;
+        }
+    }
+    vll cnt(100010,0);
+    rep(i,n)cnt[v[i]]++;
+    Sort(v);
+    for(ll i=1;i<n;i++)if(v[i]-v[i-1]>1){
+        fin(0);
+        return 0;
+    }
+    ll ans=1;
+    ll mx=v[n-1];
+    for(ll i=1;i<=mx;i++){
+        ans*=mod_pow((mod_pow(2ll,cnt[i-1],MOD)-1)+MOD,cnt[i],MOD)%MOD;
+        ans%=MOD;
+        ans*=mod_pow(2ll,(cnt[i]*(cnt[i]-1)/2ll),MOD);
+        ans%=MOD;
+    }
+    fin(ans);
+}

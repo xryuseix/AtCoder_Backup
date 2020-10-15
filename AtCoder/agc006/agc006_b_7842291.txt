@@ -1,0 +1,154 @@
+問題文の引用元：https://atcoder.jp/contests/agc006/tasks/agc006_b
+B - Median Pyramid EasyEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 400 点
+問題文 : N 段のピラミッドがあります。段は上から順に 1, 2, ..., N と番号が振られています。各 1≤i≤N について、i 段目には 2i-1 個のブロックが横一列に並んでいます。また、各段の中央のブロックに注目すると、これらは縦一列に並んでいます。N=4 段のピラミッドすぬけ君は N 段目のブロックに (1, 2, ..., 2N-1) を並べ替えたもの（順列）を書き込みました。さらに、次のルールに従い、残りすべてのブロックに整数を書き込みました。あるブロックに書き込まれる整数は、そのブロックの左下、真下、右下のブロックに書き込まれた整数の中央値である。ブロックに整数を書き込む例その後、すぬけ君はすべてのブロックに書き込まれた整数を消してしまいました。すぬけ君は、1 段目のブロックに書き込まれた整数が x であったことだけを覚えています。N 段目のブロックに書き込まれた順列としてあり得るものが存在するか判定し、存在するならばひとつ求めてください。
+制約2≤N≤10^51≤x≤2N-1入力入力は以下の形式で標準入力から与えられる。N x出力N 段目のブロックに書き込まれた順列としてあり得るものが存在しないならば、No を出力せよ。存在するならば、Yes を出力した後、2N-1 行出力せよ。このうち i 行目には、順列の i 番目の整数を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/agc006/submissions/7842291
+// 提出ID : 7842291
+// 問題ID : agc006_b
+// コンテストID : agc006
+// ユーザID : xryuseix
+// コード長 : 3218
+// 実行時間 : 378
+
+
+
+/*
+				   _ooOoo_
+				  o8888888o
+				  88" . "88
+				  (| -_- |)
+				  O\  =  /O
+			   ____/`---'\____
+			 .'  \\|     |//  `.
+		    /  \\|||  :  |||//  \
+		   /  _||||| -:- |||||-  \
+		   |   | \\\  -  /// |   |
+		   | \_|  ''\---/''  |   |
+		   \  .-\__  `-`  ___/-. /
+		 ___`. .'  /--.--\  `. . __
+	  ."" '<  `.___\_<|>_/___.'  >'"".
+	 | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+	 \  \ `-.   \_ __\ /__ _/   .-` /  /
+======`-.____`-.___\_____/___.-`____.-'======
+				   `=---='
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+		fozubaoyou    pass System Test!
+		quoted from "https://codeforces.com/contest/472/submission/7996840"
+*/
+ 
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(),a.end()
+#define rall(a) a.rbegin(),a.rend()
+#define Sort(a) sort(a.begin(),a.end())
+#define Rort(a) sort(a.rbegin(),a.rend())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const int MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+
+int main(void){
+
+
+	int n,x;
+	cin>>n>>x;
+	if(x==1||x==2*n-1){
+		cout<<"No"<<endl;
+	} else{
+		if(n==2){
+			cout<<"Yes"<<endl;
+			cout<<1<<endl;
+			cout<<2<<endl;
+			cout<<3<<endl;
+		}
+		else if(x==2){
+			vector<int> v(2*n-1,-1);
+			set<int> use;
+			for(int i=1;i<=2*n-1;i++){
+				use.insert(i);
+			}
+			v[n-1]=x;
+			v[n]=x-1;
+			v[n+1]=x+2;
+			v[n-2]=x+1;
+			use.erase(x);
+			use.erase(x+1);
+			use.erase(x-1);
+			use.erase(x+2);
+			for(int i=0;i<2*n-1;i++){
+				if(v[i]==-1){
+					v[i]=*use.begin();
+					use.erase(*use.begin());
+				}
+			}
+			cout<<"Yes"<<endl;
+			for(int i=0;i<2*n-1;i++){
+				cout<<v[i]<<endl;
+			}
+		} else{
+			vector<int> v(2*n-1,-1);
+			set<int> use;
+			for(int i=1;i<=2*n-1;i++){
+				use.insert(i);
+			}
+			v[n-1]=x;
+			v[n]=x+1;
+			v[n+1]=x-2;
+			v[n-2]=x-1;
+			use.erase(x);
+			use.erase(x+1);
+			use.erase(x-1);
+			use.erase(x-2);
+			for(int i=0;i<2*n-1;i++){
+				if(v[i]==-1){
+					v[i]=*use.begin();
+					use.erase(*use.begin());
+				}
+			}
+			cout<<"Yes"<<endl;
+			for(int i=0;i<2*n-1;i++){
+				cout<<v[i]<<endl;
+			}
+		}
+	}
+
+}

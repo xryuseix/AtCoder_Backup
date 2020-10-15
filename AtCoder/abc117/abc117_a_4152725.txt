@@ -1,0 +1,33 @@
+問題文の引用元：https://atcoder.jp/contests/abc117/tasks/abc117_a
+A - Entrance ExaminationEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 100 点
+問題文 : 明日の入学試験に合格するために、太郎くんはあと T 時間の勉強をする必要があります。幸いにも、彼は今いる世界(世界A)の X 倍の速度で時間が進む世界Bへ世界跳躍(ワールドリープ)することができます。世界Bで (X \times t) 時間進むと、世界Aでは t 時間進みます。世界Bで T 時間勉強したとき、世界Aでは何時間進んでいるでしょうか。
+制約入力は全て整数である。1 \leq T \leq 1001 \leq X \leq 100入力入力は以下の形式で標準入力から与えられる。T X出力世界Aでは何時間進んでいるかを出力せよ。なお、想定解答との絶対誤差または相対誤差が 10^{-3} 以下であれば正解として扱われる。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc117/submissions/4152725
+// 提出ID : 4152725
+// 問題ID : abc117_a
+// コンテストID : abc117
+// ユーザID : xryuseix
+// コード長 : 261
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+using namespace std;
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	double i,j;
+	cin>>i>>j;
+	cout<<i/j<<endl;
+	
+	return 0;
+}

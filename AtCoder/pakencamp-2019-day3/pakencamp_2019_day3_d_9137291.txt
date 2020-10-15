@@ -1,0 +1,112 @@
+問題文の引用元：https://atcoder.jp/contests/pakencamp-2019-day3/tasks/pakencamp_2019_day3_d
+D - パ研軍旗Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 1 sec / Memory Limit : 1024 MB﻿
+配点: 100 点
+問題文 : 筑駒パ研は，近い将来，パ研戦争に臨むことになりました．そのために，軍旗を作ることになりました．  旗のデザインは縦に 5 個，横に N 個に分かれた 5 \times N のマス目で表されます．上から i 行目，左から j 列目のマスを，(i, j) で表すことにします．  現在，旗のそれぞれのマスは赤・青・白・黒のいずれかで塗られています．より具体的には，マス (i, j) は色 S_{i, j} で塗られています．ただし，S_{i, j} は R, B, W, # のいずれかで，それぞれ赤・青・白・黒で塗られていることを表しています．  E869120 君は，パ研軍旗を、次の条件を満たすように青・白・赤で塗り替えたいです．  N 個の列すべてにおいて，その列の 5 マスが「全部青」「全部白」「全部赤」のいずれかであるどの隣り合った 2 つの列も，色が異なるただし，黒いマスがあったら条件を満たさないことに注意してください．  以下が，条件を満たす旗と条件を満たさない旗の例です．  例 1 は条件を満たします．例 2 は，例えば左から 2 番目の列で青と白のマスがあり，5 つ全部同じになっている必要があるという条件を満たしません．例 3 は，例えば左から 3 番目の列と左から 4 番目の列の色が同じなので，条件を満たしません．例 4 は，例えば左から 5 番目の色が黒になっているので，条件を満たしません．E869120 君は，旗の作成時間を短くするため，できるだけ塗り替えるマスの個数を少なくしたいです．最小でいくつのマスを塗り替える必要があるか求めるプログラムを書いてください．  
+制約すべての入力データは，以下の
+制約を満たす．  N は 1 \leq N \leq 999 をみたす整数S_{i, j} は R, B, W, # のいずれか部分点この問題はいくつかの小課題に分けられ，その小課題のすべてのテストケースに正解した場合に「この小課題に正解した」とみなされます．提出したソースコードの得点は，正解した小課題の点数の合計となります．  (11 点) N = 1 である．(13 点) N = 3 である．(29 点) N \leq 10 である．(22 点) 5 つの行すべてにおいて，その行の N 個のマスがすべて同じ色である．(25 点) 追加の
+制約はない．ただし，小課題 4 について，「N 個の列すべてにおいて，その列の 5 個のマスがすべて同じ色である」のような読み間違えをしないように注意してください．入力入力は以下の形式で標準入力から与えられます．ただし、旗のそれぞれの行の色の情報 S_{i, 1}, S_{i, 2}, S_{i, 3}, \dots, S_{i, N} は，これがつながった N 文字の文字列として入力されることに注意してください．  NS_{1, 1} S_{1, 2} S_{1, 3} \cdots S_{1, N}S_{2, 1} S_{2, 2} S_{2, 3} \cdots S_{2, N}S_{3, 1} S_{3, 2} S_{3, 3} \cdots S_{3, N}S_{4, 1} S_{4, 2} S_{4, 3} \cdots S_{4, N}S_{5, 1} S_{5, 2} S_{5, 3} \cdots S_{5, N}出力パ研軍旗を作るときに塗り替える必要のあるマスの個数の最小値を，1 行で出力してください．  
+// ソースコードの引用元 : https://atcoder.jp/contests/pakencamp-2019-day3/submissions/9137291
+// 提出ID : 9137291
+// 問題ID : pakencamp_2019_day3_d
+// コンテストID : pakencamp-2019-day3
+// ユーザID : xryuseix
+// コード長 : 2547
+// 実行時間 : 2
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+
+
+int main(void){
+
+    int n;
+    cin>>n;
+    vvc v(5,vc(n));
+    rep(i,5)rep(j,n)cin>>v[i][j];
+    vvi dp(3,vi(n,INF));
+    int r=0,b=0,w=0;
+    for(int i=0;i<5;i++){
+        if(v[i][0]=='W')w++;
+        else if(v[i][0]=='B')b++;
+        else if(v[i][0]=='R')r++;
+    }
+    dp[0][0]=5-r;
+    dp[1][0]=5-b;
+    dp[2][0]=5-w;
+    r=b=w=0;
+    for(int i=1;i<n;i++){
+        int color[3]={0};
+        // fin(i);
+        for(int j=0;j<5;j++){
+            // cout<<"j:";
+            // fin(j);
+            if(v[j][i]=='W')color[2]++;
+            else if(v[j][i]=='B')color[1]++;
+            else if(v[j][i]=='R')color[0]++;
+        }
+        // fin(i);
+        for(int j=0;j<3;j++){
+            for(int k=0;k<3;k++){
+                if(k==j)continue;
+                chmin(dp[j][i],dp[k][i-1]+(5-color[j]));
+            }
+        }
+    }
+    int ans=INF;
+    rep(i,3)ans=min(ans,dp[i][n-1]);
+    fin(ans);
+}

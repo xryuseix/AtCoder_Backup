@@ -1,0 +1,39 @@
+問題文の引用元：https://atcoder.jp/contests/dwacon5th-prelims/tasks/dwacon5th_prelims_a
+A - ThumbnailEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2.525 sec / Memory Limit : 1024 MB
+配点 : 200 点
+問題文 : ドワンゴ社員のニワンゴくんは、投稿された動画からサムネイルを生成する機能を実装することになりました。動画からサムネイルとするフレームを選択する手順は以下の通りです。動画の総フレーム数 N と、動画の各フレームを1つの整数で表現した長さ N の整数列 a を入力として受け取る各フレームには、先頭から順番に 0, 1, ..., N-1 のフレーム番号が付いており、フレーム番号 i を表現する整数は a_i であるa の平均値に最も近いフレームをサムネイルとするそのようなフレームが複数ある場合、それらの中で最もフレーム番号の小さいものをサムネイルとするこの手順で得られる、サムネイルとして選択されるフレーム番号を出力してください。
+制約1 \leq N \leq 1001 \leq a_i \leq 100入力として与えられる数値はすべて整数である入力入力は以下の形式で標準入力から与えられる。Na_{0} a_{1} ... a_{N-1}出力答えを出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/dwacon5th-prelims/submissions/4031455
+// 提出ID : 4031455
+// 問題ID : dwacon5th_prelims_a
+// コンテストID : dwacon5th-prelims
+// ユーザID : xryuseix
+// コード長 : 389
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<cmath>
+using namespace std;
+int main(void){
+	
+	int n,i,minnum=10000,mina;
+	double ave=0;
+	cin>>n;
+	int a[n];
+	for(i=0;i<n;i++){
+		cin>>a[i];
+		ave+=a[i];
+	}
+	for(i=0;i<n;i++){
+//		cout<<minnum<<" "<<abs(ave-a[i]*n)<<" "<<a[i]<<endl;
+		if(minnum>abs(ave-a[i]*n)){
+			mina=i;
+			minnum=abs(ave-a[i]*n);
+		}
+	}
+	cout<<mina<<endl;
+	return 0;
+}

@@ -1,0 +1,96 @@
+問題文の引用元：https://atcoder.jp/contests/abc043/tasks/abc043_b
+B - Unhappy Hacking (ABC Edit)Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 200 点
+問題文 : しぐはキーボードを製作しました。シンプルさを極限まで追求したこのキーボードには、0 キー、1 キー、バックスペースキーの 3 つしかキーがありません。手始めに、しぐはこのキーボードで簡単なテキストエディタを操作してみることにしました。このエディタには常に一つの文字列が表示されます（文字列が空のこともあります）。エディタを起動した直後では、文字列は空です。キーボードの各キーを押すと、文字列が次のように変化します。0 キー: 文字列の右端に文字 0 が挿入される。1 キー: 文字列の右端に文字 1 が挿入される。バックスペースキー: 文字列が空なら、何も起こらない。そうでなければ、文字列の右端の 1 文字が削除される。しぐはエディタを起動し、これらのキーを何回か押しました。しぐが押したキーを順番に記録した文字列 s が与えられます。s の中の文字 0 は 0 キー、文字 1 は 1 キー、文字 B はバックスペースキーを表します。いま、エディタの画面にはどのような文字列が表示されているでしょうか？
+制約1 ≦ |s| ≦ 10 (|s| は s の長さを表す)s は文字 0, 1, B のみからなる。正解は空文字列ではない。入力入力は以下の形式で標準入力から与えられる。s出力最終的にエディタに表示されている文字列を出力せよ。（「
+制約」セクションで述べたように、この文字列が空になるような入力は与えられない）
+// ソースコードの引用元 : https://atcoder.jp/contests/abc043/submissions/10928961
+// 提出ID : 10928961
+// 問題ID : abc043_b
+// コンテストID : abc043
+// ユーザID : xryuseix
+// コード長 : 2156
+// 実行時間 : 1
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int;
+#define endl '\n';
+int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+
+
+
+int main() {
+    
+    stack<char> s;
+    string ans="";
+    string S;
+    cin>>S;
+    rep(i,S.size()){
+        if(S[i]=='B'){
+            if(!s.empty())s.pop();
+        } else {
+            s.push(S[i]);
+        }
+    }
+    while(!s.empty()){
+        ans+=s.top();s.pop();
+    }
+    reverse(all(ans));
+    fin(ans);
+}

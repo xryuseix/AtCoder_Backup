@@ -1,0 +1,132 @@
+問題文の引用元：https://atcoder.jp/contests/arc002/tasks/arc002_2
+B - 割り切れる日付Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 64 MB
+問題文 : 高橋君は割り切れる日付が好きです。割り切れる日付とは、年÷月÷日の計算結果が整数になる日付のことです。例えば今日の日付は 2012 年 5 月 2 日ですが、2012÷5÷2=201.2 となり整数ではないので、今日の日付は割り切れる日付ではありません。高橋君は割り切れる日付が好きでたまらないので、次の割り切れる日付を心待ちにして、毎日今日が割り切れる日付かどうかをチェックしてしまいます。彼に少しでも多くの仕事をしてもらうために、入力として与えられた日付以降で最初に来る割り切れる日付を求めなさい。ただし、入力として与えられた日付が割り切れる日付だった場合は、与えられた日付が答えになります。入力入力は以下の形式で標準入力から与えられる。Y/M/Dグレゴリオ暦(現在、日本で一般的に使われている暦)に従って年を表す Y、月を表す M、日を表す D が / で区切られて 1 行で与えられる。Y は 4 桁、M と D は 0 埋めされた 2 桁の整数である（M と D は、1 桁の数の場合も 1 桁目に 0 をつけて 2 桁にする）。与えられる日付は 1000/01/01 以降、2999/12/31 以前とする。出力入力として与えられた日付以降で最初に割り切れる日付を、入力と同じ形式で標準出力に 1 行で出力せよ。ただし、入力として与えられた日付が割り切れる日付だった場合は、入力と同じ日付を出力すること。なお、最後には改行を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/arc002/submissions/8427730
+// 提出ID : 8427730
+// 問題ID : arc002_2
+// コンテストID : arc002
+// ユーザID : xryuseix
+// コード長 : 3540
+// 実行時間 : 3
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const int MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<62;
+
+bool ch(int i ,int j,int k){
+    if(i%j==0&&(i/j)%k==0){
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int main(void) {
+
+    int year,month,day;
+    string s;
+    cin>>s;
+
+    year=(s[0]-'0')*1000+(s[1]-'0')*100+(s[2]-'0')*10+(s[3]-'0');
+    month=(s[5]-'0')*10+(s[6]-'0');
+    day=(s[8]-'0')*10+(s[9]-'0');
+
+
+    for(int i=year;i<3001;i++){
+        for(int j=1;j<=12;j++){
+            int M=j;
+            if(i==year&&j<month)M=month;
+            if(month==2){
+                if(year%400==0||(year%4==0&&year%100!=0)){
+                    for(int k=1;k<=29;k++){
+                        int K=k;
+                        if(M==month&&k<day)K=day;
+                        // cout<<i<<M<<K<<endl;
+                        if(ch(i,M,K)){
+                            printf("%4d/%02d/%02d\n",i,M,K);
+                            return 0;
+                        }
+                    }
+                }else {
+                    for(int k=1;k<29;k++){
+                        int K=k;
+                        if(M==month&&k<day)K=day;
+                        if(ch(i,M,K)){
+                            printf("%4d/%02d/%02d\n",i,M,K);
+                            return 0;
+                        }
+                    }
+                }
+            } else if(M==1||M==3||M==5||M==7||M==8||M==10||M==12) {
+                for(int k=1;k<=31;k++){
+                    int K=k;
+                    if(M==month&&k<day)K=day;
+                    if(ch(i,M,K)){
+                        printf("%4d/%02d/%02d\n",i,M,K);
+                        return 0;
+                    }
+                }
+            } else {
+                for(int k=1;k<31;k++){
+                    int K=k;
+                    if(M==month&&k<day)K=day;
+                    if(ch(i,M,K)){
+                        printf("%4d/%02d/%02d\n",i,M,K);
+                        return 0;
+                    }
+                }
+            }
+        }
+    }
+
+}

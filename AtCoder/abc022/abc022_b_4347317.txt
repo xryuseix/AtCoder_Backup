@@ -1,0 +1,48 @@
+問題文の引用元：https://atcoder.jp/contests/abc022/tasks/abc022_b
+B - Bumble BeeEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 高橋君はマルハナバチ(Bumblebee)という種類のミツバチです。今日も花の蜜を求めて異なる N 個の花を訪れました。高橋君が i 番目に訪れた花の種類は A_i です。i 番目の花は、i > j かつ i 番目の花の種類と j 番目の花の種類が同じになるような j が存在すれば受粉します。高橋君が訪れた N 個の花の種類の情報が与えられるので、そのうちいくつの花が受粉したか求めてください。なお、高橋君以外による受粉や自家受粉を考える必要はありません。入力入力は以下の形式で標準入力から与えられるNA_1A_2:A_N1 行目には高橋君が訪れた花の個数を表す整数 N(1 ≦ N ≦ 10^5) が与えられる。2 行目からの N 行のうち i 行目には i 番目に高橋君が訪れた花の種類を表す整数 A_i (1 ≦ A_i ≦ 10^5) が与えられる。出力受粉した花の個数を 1 行で出力せよ。出力の末尾にも改行を入れること。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc022/submissions/4347317
+// 提出ID : 4347317
+// 問題ID : abc022_b
+// コンテストID : abc022
+// ユーザID : xryuseix
+// コード長 : 687
+// 実行時間 : 34
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<cctype>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF=1LL<<60;
+//set<int>::iterator it;
+
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	int n,a,i;
+	set<int> s;
+	cin>>n;
+	for(i=0;i<n;i++){
+		cin>>a;
+		s.insert(a);
+	}
+	cout<<n-s.size()<<endl;
+	
+	
+	return 0;
+}

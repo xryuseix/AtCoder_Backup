@@ -1,0 +1,83 @@
+問題文の引用元：https://atcoder.jp/contests/tenka1-2012-qualC/tasks/tenka1_2012_9
+A - 与えられた数より小さい素数の個数についてEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 64 MB
+問題文 : 素数とは、1 と自分自身以外に正の約数を持たない、1 以外の自然数のことをいいます。自然数 n が与えられるので、 n よりも小さい素数の数は何個存在するかを求めてください。 入力入力は以下の形式で標準入力から与えられる。n自然数 n ( 1 \leq n \leq 10,000 ) が 1 行で与えられる。出力n よりも小さい素数の個数を標準出力に 1 行で出力せよ。なお、行の終端には改行が必要である。
+// ソースコードの引用元 : https://atcoder.jp/contests/tenka1-2012-qualC/submissions/5909019
+// 提出ID : 5909019
+// 問題ID : tenka1_2012_9
+// コンテストID : tenka1-2012-qualC
+// ユーザID : xryuseix
+// コード長 : 1849
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+#define vi vector<int>
+#define vc vector<char>
+#define vs vector<string>
+#define vpii vector<pair<int,int> >
+#define vvi vector<vector<int> >
+#define vvc vector<vector<char> >
+#define vvs vector<vector<string> >
+#define P 1000000007
+#define STI(s) atoi(s.c_str())//string to int
+#define mp(p,q) make_pair(p,q)
+#define Sort(a) sort(a.begin(),a.end())
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+//|\_
+//g++ -std=c++1z temp.cpp
+//./a.out
+
+vector<bool> eratosmake(int n,vector<bool> num){
+    //整数を列挙して素数の候補とする
+    for(int i=0;i<n;i++)num[i]=true;
+        //0と1を消す
+        num[0]=num[1]=false;
+        //iを残してiの倍数を消していく
+        for(int i=2;i<n;i++){
+            if(num[i]){
+            for(int j=i+i;j<n;j+=i){
+                num[j]=false;
+            }
+        }
+    }
+    return num;
+}
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+    int n;
+    cin>>n;
+    vector<bool> num(n,false);
+    num=eratosmake(n,num);
+    int i,ans=0;
+    rep(i,n){
+        if(num[i])ans++;
+    }
+    fin(ans);
+
+//////////////////////////////////////////////////////
+return 0;}

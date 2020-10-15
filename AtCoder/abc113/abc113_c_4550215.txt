@@ -1,0 +1,68 @@
+問題文の引用元：https://atcoder.jp/contests/abc113/tasks/abc113_c
+C - IDEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点: 300 点
+問題文 : Atcoder国には N 個の県があり、これらの県には合計で M 個の市が属しています。市 i が誕生したのは Y_i 年であり、県 P_i に属しています。ただし、同じ年に誕生した市が複数存在することはないとします。それぞれの市に 12 桁の認識番号を割り振ることとなりました。市 i が 県 P_i に属する市の中で x 番目に誕生した市のとき、市 i の認識番号の上 6 桁は P_i、下 6 桁は x となります。ただし、P_i や x が 6 桁に満たない場合は 6 桁になるまで 0 を左に追加するものとします。全ての市の認識番号を求めてください。ただし、市が 1 つも属さない県がある場合に注意してください。
+制約1 \leq N \leq 10^51 \leq M \leq 10^51 \leq P_i \leq N1 \leq Y_i \leq 10^9Y_i は全て異なる入力は全て整数入力入力は以下の形式で標準入力から与えられる。N MP_1 Y_1:P_M Y_M出力全ての市の認識番号を市の番号の昇順に出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc113/submissions/4550215
+// 提出ID : 4550215
+// 問題ID : abc113_c
+// コンテストID : abc113
+// ユーザID : xryuseix
+// コード長 : 1215
+// 実行時間 : 125
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<(n);i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX;
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+    
+    int i,n,m,j;
+    cin>>n>>m;
+    int p[m][2];
+    vector<vector<int> > v(n,vector<int>());
+    map<int,int> ma;
+    for(i=0;i<m;i++){
+    	cin>>p[i][0]>>p[i][1];
+//    	cout<<p[i][0]-1<<" "<<p[i][1]<<endl;
+    	v[p[i][0]-1].push_back(p[i][1]);
+	}
+	for(i=0;i<n;i++) sort(v[i].begin(),v[i].end());
+	for(i=0;i<n;i++){
+		for(j=0;j<v[i].size();j++){
+			ma[v[i][j]]=j+1;
+		}
+	}
+    for(i=0;i<m;i++){
+    	printf("%06d%06d\n",p[i][0],ma[p[i][1]]);
+	}
+    
+    
+    
+	return 0;
+}

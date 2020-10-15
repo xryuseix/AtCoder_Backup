@@ -1,0 +1,131 @@
+問題文の引用元：https://atcoder.jp/contests/abc087/tasks/arc090_b
+D - People on a LineEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 400 点
+問題文 : x 軸上に N 人の人が立っています。人 i の位置を x_i とします。任意の i に対して、x_i は 0 以上 10^9 以下の整数です。同じ位置に複数の人が立っていることもありえます。これらの人の位置に関する情報が M 個与えられます。このうち i 個めの情報は (L_i, R_i, D_i) という形をしています。この情報は、人 R_i は人 L_i よりも距離 D_i だけ右にいること、すなわち、x_{R_i} - x_{L_i} = D_i が成り立つことを表します。これら M 個の情報のうちのいくつかに誤りがある可能性があることがわかりました。与えられる M 個すべての情報と矛盾しないような値の組 (x_1, x_2, ..., x_N) が存在するかどうか判定してください。
+制約1 \leq N \leq 100,0000 \leq M \leq 200,0001 \leq L_i, R_i \leq N (1 \leq i \leq M)0 \leq D_i \leq 10,000 (1 \leq i \leq M)L_i \neq R_i (1 \leq i \leq M)i \neq j のとき、(L_i, R_i) \neq (L_j, R_j) かつ (L_i, R_i) \neq (R_j, L_j)D_i は整数である入力入力は以下の形式で標準入力から与えられる。N ML_1 R_1 D_1L_2 R_2 D_2:L_M R_M D_M出力与えられるすべての情報と矛盾しない値の組 (x_1, x_2, ..., x_N) が存在するときは Yes と、存在しないときは No と出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc087/submissions/11426774
+// 提出ID : 11426774
+// 問題ID : arc090_b
+// コンテストID : abc087
+// ユーザID : xryuseix
+// コード長 : 3076
+// 実行時間 : 214
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <random>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int;
+#define endl '\n';
+const int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+const int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+inline string getline(){string s; getline(cin,s); return s;}
+inline void yn(const bool b){b?fin("yes"):fin("no");}
+inline void Yn(const bool b){b?fin("Yes"):fin("No");}
+inline void YN(const bool b){b?fin("YES"):fin("NO");}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+
+
+struct Corr{
+    int pos;
+    int w;
+};
+
+vi weight(101010, -1);
+vi ispassed(101010,false);
+
+bool dfs(Corr c, vector<vector<Corr>> &v){
+    int res=1;
+    rep(i,v[c.pos].size()){
+        int nextPos=v[c.pos][i].pos;
+        int nextW=c.w+v[c.pos][i].w;
+        if(weight[nextPos]!=-1){
+            if(nextW!=weight[nextPos])res=0;
+        }
+        if(ispassed[nextPos])continue;
+        ispassed[nextPos]=1;
+        weight[nextPos]=nextW;
+        Corr next={nextPos, nextW};
+        res*=dfs(next, v);
+    }
+    return res;
+}
+
+int main() {
+    
+    int n,m;
+    cin>>n>>m;
+    vector<vector<Corr>> v(n);
+    rep(i,m){
+        int l,r,d;
+        cin>>l>>r>>d;
+        l--;r--;
+        Corr c={r,d};
+        v[l].pb(c);
+        c={l,-d};
+        v[r].pb(c);
+    }
+    
+    bool ans=1;
+    rep(i,n){
+        if(ispassed[i])continue;
+        Corr c={i,0};
+        weight[i]=0;
+        ans*=dfs(c,v);
+    }
+    Yn(ans);
+    // rep(i,10)fin(weight[i]);
+}
+

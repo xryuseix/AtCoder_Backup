@@ -1,0 +1,74 @@
+問題文の引用元：https://atcoder.jp/contests/arc047/tasks/arc047_a
+A - タブの開きすぎEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 高橋君はブラウザでネットサーフィンをするのが大好きです。しかし、タブを開きすぎる癖があるので、よくブラウザがクラッシュします。高橋君が使っているブラウザは開かれているタブが L 個を超えるとクラッシュします。ブラウザはクラッシュすると自動で再起動して、1 個のタブが開いている状態になります。初め、高橋君のブラウザは 1 個のタブが開かれている状態です。そのあとの高橋君の「新しいタブを開く」と「タブを閉じる」の履歴が与えられるので、高橋君が何回ブラウザをクラッシュさせるかを求めてください。入力入力は以下の形式で標準入力から与えられる。N LS1 行目には高橋君が行った行動の個数を表す整数 N(1 ≦ N ≦ 10^5) とブラウザがクラッシュする基準を表す整数 L(1 ≦ L ≦ 10^5) が空白区切りで与えられる。2 行目には高橋君の行動の履歴を表す + と - のみからなる N 文字の文字列 S が与えられる。S は高橋君の行動を時系列順にならべたものであり、 + は新しいタブを開くことを、 - はあるタブを閉じることを表す。タブが 1 個のときにタブを閉じることは無い。出力高橋君がブラウザをクラッシュさせる回数を表す整数を 1 行に出力せよ。出力の末尾に改行を入れること。
+// ソースコードの引用元 : https://atcoder.jp/contests/arc047/submissions/6121990
+// 提出ID : 6121990
+// 問題ID : arc047_a
+// コンテストID : arc047
+// ユーザID : xryuseix
+// コード長 : 1641
+// 実行時間 : 2
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <string>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <bitset>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define P 1000000007
+#define STI(s) atoi(s.c_str())//string to int
+#define mp(p,q) make_pair(p,q)
+#define Sort(a) sort(a.begin(),a.end())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int INF = INT_MAX;
+const long long LLINF = 1LL<<60;
+//g++ -std=c++1z temp.cpp
+//./a.out
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+
+    int n,tab=1,k,sum=0;
+    string s;
+    cin>>n>>k>>s;
+    rep(i,n){
+        if(s[i]=='+')tab++;
+        if(s[i]=='-')tab=max(tab-1,0);
+        if(tab>k){
+            sum++;
+            tab=1;
+        }
+        // cout<<tab<<" "<<i<<endl;
+    }
+    fin(sum);
+//////////////////////////////////////////////////////
+return 0;}

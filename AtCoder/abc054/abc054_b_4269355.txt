@@ -1,0 +1,68 @@
+問題文の引用元：https://atcoder.jp/contests/abc054/tasks/abc054_b
+B - Template MatchingEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 200 点
+問題文 : 縦 N 行、横 N 列に画素が並んだ画像Aと、縦 M 行、横 M 列に画素が並んだテンプレート画像Bが与えられます。 画素は画像を構成する最小単位であり、ここでは 1×1 の正方形とします。  また、与えられる画像は全て2値画像であり、各画素の色は白と黒の2種類で表されます。   入力において、全ての画素は文字で表されており、.は白色の画素、 # は黒色の画素に対応します。 画像Aは N 個の文字列 A_1,...,A_N で表されます。 文字列 A_i の j 文字目は、画像Aの上から i 番目、左から j 番目の画素に対応します。(1≦i,j≦N)  同様に、テンプレート画像Bは M 個の文字列 B_1,...,B_M で表されます。 文字列 B_i の j 文字目は、テンプレート画像Bの上から i 番目、左から j 番目の画素に対応します。(1≦i,j≦M)  画像の平行移動のみ許されるとき、テンプレート画像Bが画像Aの中に含まれているかを判定してください。  
+制約1≦M≦N≦50  A_i は # と . からなる長さ N の文字列  B_i は # と . からなる長さ M の文字列  入力入力は以下の形式で標準入力から与えられる。  N MA_1A_2:  A_NB_1B_2:  B_M出力画像Aの中にテンプレート画像Bを含む場合は Yes、含まない場合は No を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc054/submissions/4269355
+// 提出ID : 4269355
+// 問題ID : abc054_b
+// コンテストID : abc054
+// ユーザID : xryuseix
+// コード長 : 1077
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<cctype>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF=1LL<<60;
+
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	int i,n,j,m,k,l;
+	cin>>n>>m;
+	bool ch;
+	char a[n][n],b[m][m];
+	for(i=0;i<n;i++)for(j=0;j<n;j++)cin>>a[i][j];
+	for(i=0;i<m;i++)for(j=0;j<m;j++)cin>>b[i][j];
+	for(i=0;i<n-m+1;i++){
+		for(j=0;j<n-m+1;j++){
+			ch=true;
+			for(k=0;k<m;k++){
+				for(l=0;l<m;l++){
+//					cout<<a[i+k][j+l]<<" "<<b[k][l]<<" "<<i<<" "<<j<<endl;
+					if(a[i+k][j+l]!=b[k][l]){
+						ch=false;
+						break;
+					}
+					if(!ch)break;
+				}
+			}
+			if(ch==true){
+				cout<<"Yes"<<endl;
+				return 0;
+			}
+		}
+	}
+	cout<<"No"<<endl;
+	
+	
+	
+	return 0;
+}

@@ -1,0 +1,108 @@
+問題文の引用元：https://atcoder.jp/contests/arc029/tasks/arc029_1
+A - 高橋君とお肉Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 高橋君は友達とキャンプに行くことになった。高橋君と友達は性能が同じである 2 個の肉焼き器を持っており、それぞれの肉焼き器にお肉を乗せて並行して焼くことができる。一旦肉焼き器にお肉を乗せたら、お肉が焼きあがるまではその肉焼き器からお肉を取り出したり、その肉焼き器に別のお肉を乗せたりはできない。お肉が焼けたらお肉を取り出すことができる。2 つの肉焼き器にまたがって 1 つのお肉を置くことはできない。また、お肉は全部で N 個あり、お肉には 1 から N まで番号が付けられている。お肉 i を焼くのには、どちらの肉焼き器でも時間 t_i だけかかる。お肉を肉焼き器に置く動作、取り出す動作には時間がかからない。高橋君はお肉を焼く係であり、N 個すべてのお肉を焼くことになった。みんなお腹が空いているので、すべてのお肉を焼くのにかかる時間を最小化させたい。すべてのお肉を焼くのにかかる時間の最小値を求めよ。入力入力は以下の形式で標準入力から与えられる。Nt_1t_2:t_N1 行目には、お肉の個数を表す整数 N (1 ≦ N ≦ 4) が与えられる。これは、お肉が N 個あることを表す。2 行目から N 行にはお肉の情報が与えられる。N 行のうち i 行目には整数 t_i が書かれており、これはお肉 i を焼くのにかかる時間が t_i (1 ≦ t_i ≦ 50) であることを表す。出力すべてのお肉を焼くのにかかる時間の最小値を 1 行に出力せよ。出力の末尾にも改行を入れること。
+// ソースコードの引用元 : https://atcoder.jp/contests/arc029/submissions/10395495
+// 提出ID : 10395495
+// 問題ID : arc029_1
+// コンテストID : arc029
+// ユーザID : xryuseix
+// コード長 : 2454
+// 実行時間 : 1
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <cassert>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+#include <unordered_set>
+#pragma GCC optimize("Ofast")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define irep(it, stl) for(auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i,n) for(int i = (n) - 1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define itn int;
+int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;} return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;} return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);}};
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+const ll MOD = 1000000007;
+const double EPS = 1e-9;
+
+map<ll, ll> prime;
+void factorize(int n) {
+    for(int i = 2; i * i <= n; i++) {
+        while(n % i == 0) {
+            prime[i]++;
+            n /= i;
+        }
+    }
+    if(n != 1) {
+        prime[n] = 1;
+    }
+}
+
+int main(void) {
+
+    int n;
+    cin>>n;
+    vi v(n);
+    int ans=INF;
+    rep(i,n)cin>>v[i];
+    for(int i=0;i<(1<<n);i++) {
+        string s="";
+        int t=i;
+        while(t>0){
+            s+=t%2+'0';
+            t/=2;
+        }
+        reverse(all(s));
+        int a=0,b=0;
+        rep(j,n){
+            if(s[j]=='0')a+=v[j];
+            else b+=v[j];
+        }
+        chmin(ans,max(a,b));
+    }
+    fin(ans);
+}

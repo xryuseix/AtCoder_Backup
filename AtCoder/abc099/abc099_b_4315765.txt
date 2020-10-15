@@ -1,0 +1,23 @@
+問題文の引用元：https://atcoder.jp/contests/abc099/tasks/abc099_b
+B - Stone MonumentEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 200 点
+問題文 : ある村には、高さ 1,(1+2),(1+2+3),...,(1+2+3+...+999) メートルの 999 本の塔が、西から順に 1 メートル間隔で立っています。長く降り続けた雪がようやく収まったので、まだ雪に完全には埋もれていない、互いに 1 メートル離れたある 2 つの塔の、雪に埋もれていない部分の高さを測ったところ、西側の塔は a メートル、東側の塔は b メートルでした。積雪量と標高が村内のどこでも等しいと仮定したとき、雪が何メートル積もっているか求めてください。ただし、雪は必ず 1 メートル以上積もっているものとします。
+制約1 \leq a < b < 499500(=1+2+3+...+999)入力は全て整数仮定が成り立たない入力は与えられない入力入力は以下の形式で標準入力から与えられる。a b出力雪が x メートル積もっているとき、x を整数で出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc099/submissions/4315765
+// 提出ID : 4315765
+// 問題ID : abc099_b
+// コンテストID : abc099
+// ユーザID : xryuseix
+// コード長 : 118
+// 実行時間 : 1
+
+
+
+#include<iostream>
+int main(void){
+	int a,b; 
+	std::cin>>a>>b;
+	std::cout<<(b-a)*(b-a+1)/2-b<<"\n";
+	return 0;
+}

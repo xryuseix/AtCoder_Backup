@@ -1,0 +1,81 @@
+問題文の引用元：https://atcoder.jp/contests/iroha2019-day2/tasks/iroha2019_day2_c
+C - 陽気な妖姫Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点: 300 点            
+問題文 :                     いつも明るいいろはちゃんには妖怪の友達が N 人います。 i(1 \leq i \leq N) 人目の身長は H_i です。            友達が増えすぎたいろはちゃんは、友達がどんなひとだったか忘れないように、その友達の名前と一緒にどれくらいの身長だったかも覚えようと思っています。            しかし、いろはちゃんの友達は妖怪なので、身長がとても高いひともいれば、とても低い人もいます。            そのため、いろはちゃんは友達の身長の大小関係を維持したまま、出来るだけ小さい数に置き換えて覚えておきたいです。具体的には、任意の整数の組 (i, j) について H_i \leq H_j \Leftrightarrow X_i \leq X_j を満たすような正整数の列 X_1,X_2,\cdots,X_N であって、その最大値が最小となるようなものを構築したいです。            いろはちゃんの代わりに N 人の友達の身長を置き換えてあげてください。                
+制約                    入力はすべて整数             1 \leq N \leq 10^5              1 \leq H_i \leq 10^9             入力以下の形式で与えられます。NH_1H_2\vdotsH_N            出力                    1人目から N 人目まで、身長を置き換えた後の正整数を N 行で出力してください。            
+// ソースコードの引用元 : https://atcoder.jp/contests/iroha2019-day2/submissions/5214258
+// 提出ID : 5214258
+// 問題ID : iroha2019_day2_c
+// コンテストID : iroha2019-day2
+// ユーザID : xryuseix
+// コード長 : 1417
+// 実行時間 : 168
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#include<bits/stdc++.h>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+#define vvi vector<vector<int> >
+#define vvc vector<vector<char> >
+#define vvs vector<vector<string> >
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	vector<pair<int,int> > v,w;
+	int n,i,h;
+	cin>>n;
+	rep(i,n){
+		cin>>h;
+		v.push_back(make_pair(h,i));
+	} 
+	sort(v.begin(),v.end());
+	h=1;
+	w.push_back(make_pair(v[0].second,h));
+	for(i=1;i<n;i++){
+		if(v[i].first!=v[i-1].first)h++;
+		w.push_back(make_pair(v[i].second,h));
+	}
+//	rep(i,n)cout<<v[i].first<<" "<<v[i].second<<endl;
+	
+	sort(w.begin(),w.end());
+	rep(i,n)cout<<w[i].second<<endl;
+	
+	
+//////////////////////////////////////////////////////
+	return 0;
+}
+
+
+
+
+
+

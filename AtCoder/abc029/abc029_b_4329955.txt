@@ -1,0 +1,51 @@
+問題文の引用元：https://atcoder.jp/contests/abc029/tasks/abc029_b
+B - カキEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB  
+問題文 : 英小文字からなる 12 個の文字列 S_1, S_2, ..., S_{12} が入力されます。これらの文字列のうち、文字 r が含まれるものの個数を数えてください。入力入力は以下の形式で標準入力から与えられる。S_1S_2:S_{12}i 行目 (1 ≦ i ≦ 12) に、英小文字からなる文字列 S_i (1 ≦ |S_i| ≦ 10) が与えられる。これらの文字列はすべて異なる。出力標準出力に、 12 個の文字列 S_1, S_2, ..., S_{12} のうち文字 r が含まれるものの個数を出力し、最後に改行せよ。 r を複数個含む文字列は一度だけ数える。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc029/submissions/4329955
+// 提出ID : 4329955
+// 問題ID : abc029_b
+// コンテストID : abc029
+// ユーザID : xryuseix
+// コード長 : 718
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<cctype>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF=1LL<<60;
+//set<int>::iterator it;
+
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	
+	string s;
+	int i,ans=0;
+	for(i=0;i<12;i++){
+		cin>>s;
+		if(find(s.begin(),s.end(), 'r')!=s.end())ans++;
+	}
+	cout<<ans<<endl;
+	
+	
+	
+	
+	
+	return 0;
+}

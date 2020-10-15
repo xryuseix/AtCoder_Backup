@@ -1,0 +1,94 @@
+問題文の引用元：https://atcoder.jp/contests/abc137/tasks/abc137_d
+D - Summer VacationEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 400 点
+問題文 : N 件の日雇いアルバイトがあり、i 件目の日雇いアルバイトを請けて働くと、その A_i 日後に報酬 B_i が得られます。あなたは、これらの中から 1 日に 1 件まで選んで請け、働くことができます。ただし、請けたことのある日雇いアルバイトは選べません。今日から M 日後まで(M 日後を含む)に得られる報酬の合計の最大値を求めてください。なお、日雇いアルバイトは今日から請けて働くことができます。
+制約入力は全て整数である。1 \leq N \leq 10^51 \leq M \leq 10^51 \leq A_i \leq 10^51 \leq B_i \leq 10^4入力入力は以下の形式で標準入力から与えられる。N MA_1 B_1A_2 B_2\vdotsA_N B_N出力M 日後までに得られる報酬の合計の最大値を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc137/submissions/6824039
+// 提出ID : 6824039
+// 問題ID : abc137_d
+// コンテストID : abc137
+// ユーザID : xryuseix
+// コード長 : 2029
+// 実行時間 : 33
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(),a.end()
+#define rall(a) a.rbegin(),a.rend()
+#define Sort(a) sort(a.begin(),a.end())
+#define Rort(a) sort(a.rbegin(),a.rend())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int P = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+
+    int n,m;
+    cin>>n>>m;
+    vi a(n),b(n);
+    rep(i,n)cin>>a[i]>>b[i];
+    vpii v(n);
+    rep(i,n)v[i]=mp(a[i],b[i]);
+    Sort(v);
+    priority_queue<int> pq;
+    vll dp(m+1,0);
+
+    int day=0;
+    for(int i=1;i<=m;i++){
+        while(day<n&&v[day].first<=i){
+            pq.push(v[day].second);
+            day++;
+        }
+        if(!pq.empty()){
+            dp[i]=dp[i-1]+pq.top();
+            pq.pop();
+        }
+        else dp[i]=dp[i-1];
+        
+    }
+    fin(dp[m]);
+
+    
+
+//////////////////////////////////////////////////////
+return 0;}

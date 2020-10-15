@@ -1,0 +1,130 @@
+問題文の引用元：https://atcoder.jp/contests/agc013/tasks/agc013_a
+A - Sorted ArraysEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 300 点
+問題文 : 長さ N の配列 A が与えられます。A を何箇所かで切って、A の連続した部分であるようないくつかの数列に分けます。この時、分けられたあとの数列は全て、単調非減少または単調非増加な列になっている必要があります。最小で何個の数列に分ければ良いかを求めて下さい。
+制約1 \leq N \leq 10^51 \leq A_i \leq 10^9A_i は全て整数である入力入力は以下の形式で標準入力から与えられる。NA_1 A_2 ... A_N出力最小で何個の数列に分ければよいか出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/agc013/submissions/7940737
+// 提出ID : 7940737
+// 問題ID : agc013_a
+// コンテストID : agc013
+// ユーザID : xryuseix
+// コード長 : 2723
+// 実行時間 : 42
+
+
+
+/*
+				   _ooOoo_
+				  o8888888o
+				  88" . "88
+				  (| -_- |)
+				  O\  =  /O
+			   ____/`---'\____
+			 .'  \\|     |//  `.
+			/  \\|||  :  |||//  \
+		   /  _||||| -:- |||||-  \
+		   |   | \\\  -  /// |   |
+		   | \_|  ''\---/''  |   |
+		   \  .-\__  `-`  ___/-. /
+		 ___`. .'  /--.--\  `. . __
+	  ."" '<  `.___\_<|>_/___.'  >'"".
+	 | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+	 \  \ `-.   \_ __\ /__ _/   .-` /  /
+======`-.____`-.___\_____/___.-`____.-'======
+				   `=---='
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+		fozubaoyou    pass System Test!
+		quoted from "https://codeforces.com/contest/472/submission/7996840"
+*/
+ 
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(),a.end()
+#define rall(a) a.rbegin(),a.rend()
+#define Sort(a) sort(a.begin(),a.end())
+#define Rort(a) sort(a.rbegin(),a.rend())
+#define PI acos(-1)
+template <class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template <class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const int MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+
+int main(void){
+
+	int n;
+	cin>>n;
+	vi a(n);
+	int ud=0;
+	rep(i,n)cin>>a[i];
+	int ans=0;
+	for(int i=1;i<=n;i++){
+		int j=0;
+		int ud=0;
+		int ct=1;
+		while(i+j<n){
+			// cout<<a[i+j]<<" "<<a[i-1+j]<<endl;
+			if(a[i+j]-a[i-1+j]>0){//増加
+				if(ud==1||ud==0){
+					//増加
+					ct++;
+					ud=1;
+				} else {
+					//現象
+					break;
+				}
+			} else if(a[i+j]==a[i-1+j]){
+				ct++;
+			} else {
+				if(ud==2||ud==0){
+					ud=2;
+					ct++;
+				} else {
+					break;
+				}
+			}
+			j++;
+		}
+		i+=max(0,ct-1);
+		ans++;
+		// cout<<"-----"<<ct<<" "<<i<<endl;
+	}
+	fin(ans);
+}

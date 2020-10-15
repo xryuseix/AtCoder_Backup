@@ -1,0 +1,70 @@
+問題文の引用元：https://atcoder.jp/contests/abc034/tasks/abc034_a
+A - テストEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 高橋君が二回テストを受けました。一回目の得点は x 点、二回目の得点は y 点でした。また、一回目と二回目の得点は異なるものでした。高橋君の得点は改善しましたか。高橋君の二回目の得点が一回目の得点より高くなっている場合は "Better"、低くなっている場合は "Worse" と出力してください。入力入力は以下の形式で標準入力から与えられる。x y入力はすべて整数である。0 ≤ x, y ≤ 100 をみたす。x と y は異なる。部分点この問題には部分点が設定されている。満点は 100 点である。x < y を満たすデータセットに正解した場合は、50 点が与えられる。出力高橋君の二回目の得点が一回目の得点より高くなっている場合は "Better"、低くなっている場合は "Worse" と出力せよ。出力の末尾には改行を入れること。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc034/submissions/4319882
+// 提出ID : 4319882
+// 問題ID : abc034_a
+// コンテストID : abc034
+// ユーザID : xryuseix
+// コード長 : 731
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<cctype>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF=1LL<<60;
+//set<int>::iterator it;
+
+
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	int x,y;
+	cin>>x>>y;
+	if(x<y)cout<<"Better"<<endl;
+	else cout<<"Worse"<<endl;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	return 0;
+}

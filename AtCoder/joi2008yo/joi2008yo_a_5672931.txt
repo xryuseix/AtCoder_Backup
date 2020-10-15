@@ -1,0 +1,79 @@
+問題文の引用元：https://atcoder.jp/contests/joi2008yo/tasks/joi2008yo_a
+A - おつりEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 10 sec / Memory Limit : 256 MB
+配点: 100 点問題太郎君はよくJOI雑貨店で買い物をする． JOI雑貨店には硬貨は 500  円， 100 円， 50 円， 10 円， 5  円， 1 円が十分な数だけあり，いつも最も枚数が少なくなるようなおつ りの支払い方をする． 太郎君がJOI雑貨店で買い物をしてレジで 1000 円札を 1 枚出した時，もらうおつりに含まれる硬貨の枚数を求めるプログ ラムを作成せよ．例えば
+// ソースコードの引用元 : https://atcoder.jp/contests/joi2008yo/submissions/5672931
+// 提出ID : 5672931
+// 問題ID : joi2008yo_a
+// コンテストID : joi2008yo
+// ユーザID : xryuseix
+// コード長 : 1326
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+#define vi vector<int>
+#define vc vector<char>
+#define vs vector<string>
+#define vpii vector<pair<int,int> >
+#define vvi vector<vector<int> >
+#define vvc vector<vector<char> >
+#define vvs vector<vector<string> >
+#define P 1000000007
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	
+	int n,i,ans=0;
+	cin>>n;
+	n=1000-n;
+	int a[]={500,100,50,10,5,1,0};
+	i=0;
+	while(n>=0){
+		ans+=n/a[i];
+		n%=a[i];
+//		cout<<i<<" "<<ans<<endl;
+		i++;
+		if(i==6)break;
+	}
+	cout<<ans<<endl;
+	//620
+	
+	
+//////////////////////////////////////////////////////
+return 0;}
+
+
+
+
+
+
+
+
+

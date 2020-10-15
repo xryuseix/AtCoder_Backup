@@ -1,0 +1,108 @@
+問題文の引用元：https://atcoder.jp/contests/agc011/tasks/agc011_b
+B - Colorful CreaturesEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 400 点
+問題文 : すぬけ君は，N 匹の変わった生き物を見つけました．それぞれの生き物には色と大きさが定まっており，i 番目の生き物の色は i，大きさは A_i で表されます．どの生き物も，大きさが自分の 2 倍以下であるような他の生き物を吸収することができます．大きさ A，色 B の生き物が大きさ C，色 D の生き物を吸収すると (C \leq 2 \times A)，合体して大きさ A+C，色 B の生き物になります．ここで，2 匹の生き物の大きさによっては，どちらも他方を吸収することが可能な場合があります．すぬけ君がこの生き物たちを観察していると，合体を繰り返して，最終的に 1 匹になりました．このとき，残った生き物の色として考えられるものは何種類あるかを求めてください．
+制約2 \leq N \leq 1000001 \leq A_i \leq 10^9A_i は整数入力入力は以下の形式で標準入力から与えられる。NA_1 A_2 … A_N出力この生き物たちが合体を繰り返して，最終的に 1 匹になったとき，残った生き物の色として考えられるものは何通りあるかを出力せよ．
+// ソースコードの引用元 : https://atcoder.jp/contests/agc011/submissions/7094437
+// 提出ID : 7094437
+// 問題ID : agc011_b
+// コンテストID : agc011
+// ユーザID : xryuseix
+// コード長 : 2345
+// 実行時間 : 19
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(),a.end()
+#define rall(a) a.rbegin(),a.rend()
+#define Sort(a) sort(a.begin(),a.end())
+#define Rort(a) sort(a.rbegin(),a.rend())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int P = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+
+    int n;
+    cin>>n;
+    vll v(n),csum;
+    vector<bool> b(n,false);
+    rep(i,n)cin>>v[i];
+    Sort(v);
+
+    csum.push_back(0);
+    rep(i,n){
+        csum.push_back(csum[i]+v[i]);
+    }
+    int ans=0;
+    for(int i=1;i<=n;i++){
+        // cout<<csum[i]*2<<" "<<v[n-1]<<endl;
+        if(csum[i]*2>=v[n-1]){
+            b[n-1]=true;
+        }
+    } 
+    for(int i=n-1;i>=0;i--){
+        if(!b[i]){
+            if(csum[i+1]*2>=v[i+1]&&b[i+1]){
+                b[i]=true;
+            }
+        }
+    }
+    rep(i,n)if(b[i])ans++;
+    fin(ans);
+    // rep(i,csum.size()){
+    //     cout<<csum[i]<<" ";
+    // }
+    // cout<<endl;
+    // rep(i,v.size()){
+    //     cout<<v[i]<<" ";
+    // }
+    // cout<<endl;
+    // rep(i,b.size()){
+    //     cout<<b[i]<<" ";
+    // }
+    // cout<<endl;
+
+
+//////////////////////////////////////////////////////
+return 0;}

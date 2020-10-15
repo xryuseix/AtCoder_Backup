@@ -1,0 +1,79 @@
+問題文の引用元：https://atcoder.jp/contests/arc011/tasks/arc011_1
+A - 鉛筆リサイクルの新技術Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 世界的大手鉛筆会社のファイバーカステラ社が、小さくなって使えなくなってしまった鉛筆を再利用する画期的な新技術を発明した。この技術は小さくなった鉛筆 m 本から新しい鉛筆を n 本 (m > n) 作り出すものである。ファイバーカステラ社が N 本の鉛筆を製造・販売し、その全てが使用されて回収され、回収された使えなくなった鉛筆から新しい鉛筆を作る。これらを販売し、やはり全てが使用後回収されて新たな鉛筆の原料となる。これを繰り返した結果として、ファイバーカステラ社が総計何本の鉛筆を販売できるか計算するプログラムを作成せよ。再利用する際に、回収されたにもかかわらず新しい鉛筆の原料とされなかった鉛筆を保持しておき、任意のタイミングで回収した鉛筆に加えても良い。販売できる本数には、はじめの N 本も忘れずに加えること。また、 N > m とし、m と n が互いに素であるとする。入力入力は以下の形式で標準入力から与えられる。自然数 m 、 n 、 N がこの順に半角空白区切りで入力される。m n N1 行目には整数 m 、 n 、N が与えられる。m は小さくなって使えなくなってしまった鉛筆の数である。n はファイバーカステラ社が作り出す新しい鉛筆の本数である。N はファイバーカステラ社が最初に販売する鉛筆の本数である。(1≦n<m<N≦1,000) であり、m と n が互いに素であることは保証されている。出力ファイバーカステラ社が販売する鉛筆の総数を標準出力に 1 行で出力すること。この数には使い終わった後に再度製造された鉛筆も含まれる。また、出力の最後には改行をいれること。 
+// ソースコードの引用元 : https://atcoder.jp/contests/arc011/submissions/7188191
+// 提出ID : 7188191
+// 問題ID : arc011_1
+// コンテストID : arc011
+// ユーザID : xryuseix
+// コード長 : 1758
+// 実行時間 : 1
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(),a.end()
+#define rall(a) a.rbegin(),a.rend()
+#define Sort(a) sort(a.begin(),a.end())
+#define Rort(a) sort(a.rbegin(),a.rend())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int P = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+
+    int m,n,N;
+    cin>>m>>n>>N;
+    int ans=N;
+    int rest=0;
+    int lng=0;
+    int small=N;
+    while(small>=m){
+        lng=small/m*n;
+        ans+=lng;
+        small=small-small/m*m;
+        small+=lng;
+    }
+    fin(ans);
+
+//////////////////////////////////////////////////////
+return 0;}

@@ -1,0 +1,36 @@
+問題文の引用元：https://atcoder.jp/contests/nikkei2019-qual/tasks/nikkei2019_qual_a
+A - SubscribersEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 100 点
+問題文 : 私たちは、新聞の購読に関する調査を行いました。具体的には、調査の対象者 N 人に対し、それぞれ次の 2 つの質問を行いました。質問 1: あなたは新聞 X を購読しているか？質問 2: あなたは新聞 Y を購読しているか？その結果、質問 1 に対して「はい」と回答した人の数は A 人、質問 2 に対して「はい」と回答した人の数は B 人でした。このとき、調査の対象者のうち新聞 X, Y の両方を購読している人の数は最大で何人であり、また最小で何人であると考えられるでしょうか？この問いに答えるプログラムを書いてください。
+制約1 \leq N \leq 1000 \leq A \leq N0 \leq B \leq N入力される値はすべて整数である。入力入力は以下の形式で標準入力から与えられる。N A B出力両方の新聞を購読している人の数として考えられる最大の人数と最小の人数をこの順に、空白で区切って出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/nikkei2019-qual/submissions/4099686
+// 提出ID : 4099686
+// 問題ID : nikkei2019_qual_a
+// コンテストID : nikkei2019-qual
+// ユーザID : xryuseix
+// コード長 : 339
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+using namespace std;
+
+int main(void){
+	std::ios::sync_with_stdio(false);
+    std::cin.tie(0);
+	
+	int n,a,b;
+	cin>>n>>a>>b;
+	cout<<min(a,b)<<" ";
+	if(n>=a+b)cout<<"0"<<endl;
+	else cout<<a+b-n<<endl;
+	
+	return 0;
+}

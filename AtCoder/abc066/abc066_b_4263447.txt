@@ -1,0 +1,51 @@
+問題文の引用元：https://atcoder.jp/contests/abc066/tasks/abc066_b
+B - ssEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 200 点
+問題文 : 同じ文字列を 2 つ並べてできる文字列のことを偶文字列と呼ぶことにします。例えば、 xyzxyz や aaaaaa は偶文字列ですが、ababab や xyzxy は偶文字列ではありません。アルファベットの小文字からなる偶文字列 S が与えられます。 S の末尾の文字を 1 文字以上消して作れる偶文字列のうち、最も長い偶文字列の長さを求めて下さい。与えられる入力では、条件を満たす 1 文字以上の文字列が存在することが保証されています。
+制約2 \leq |S| \leq 200S は小文字のアルファベットのみからなる偶文字列である。S に対して、条件を満たす 1 文字以上の文字列が存在する。入力入力は以下の形式で標準入力から与えられる。S出力答えとなる文字列の長さを出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc066/submissions/4263447
+// 提出ID : 4263447
+// 問題ID : abc066_b
+// コンテストID : abc066
+// ユーザID : xryuseix
+// コード長 : 734
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<cctype>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF=1LL<<60;
+
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	string s;
+	cin>>s;
+	while(1){
+		s=s.substr(0,s.length()-2);
+		if(s.substr(0,s.length()/2)==s.substr(s.length()/2,s.length()/2)){
+			cout<<s.length()<<endl;
+			return 0;
+		}
+	}
+	
+	
+	
+	return 0;
+}

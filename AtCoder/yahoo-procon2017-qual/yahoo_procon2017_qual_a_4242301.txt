@@ -1,0 +1,45 @@
+問題文の引用元：https://atcoder.jp/contests/yahoo-procon2017-qual/tasks/yahoo_procon2017_qual_a
+A - YahooEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 100 点
+問題文 : 高橋君は新しい会社を作ろうとしています。今回は検索サイトの会社を作ることにしたため、yahoo の 5 文字を並び替えた文字列を社名にすることにしました。友人の青木君は、新しい会社の名前として文字列 S を提案しました。この文字列が高橋君の希望に合うかどうかを判定してください。
+制約|S|=5S は英小文字のみからなる。入力入力は以下の形式で標準入力から与えられる。S出力S が高橋君の希望に合うなら YES を、そうでないなら NO を出力せよ。
+// ソースコードの引用元 : https://atcoder.jp/contests/yahoo-procon2017-qual/submissions/4242301
+// 提出ID : 4242301
+// 問題ID : yahoo_procon2017_qual_a
+// コンテストID : yahoo-procon2017-qual
+// ユーザID : xryuseix
+// コード長 : 767
+// 実行時間 : 1
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<set>
+#include<cctype>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long INF=1LL<<60;
+
+
+int main(void){
+	ios::sync_with_stdio(false); cin.tie(0);
+	
+	char ya[5]={'y','a','h','o','o'},s[5];
+	scanf("%c%c%c%c%c",&s[0],&s[1],&s[2],&s[3],&s[4]);
+	sort(ya,ya+5);
+	sort(s,s+5);
+	if(ya[0]==s[0]&&ya[1]==s[1]&&ya[2]==s[2]&&ya[3]==s[3]&&ya[4]==s[4])
+		cout<<"YES"<<endl;
+	else cout<<"NO"<<endl;	
+	return 0;
+}

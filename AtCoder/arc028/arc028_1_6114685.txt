@@ -1,0 +1,67 @@
+問題文の引用元：https://atcoder.jp/contests/arc028/tasks/arc028_1
+A - 小石を取るゲームEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : アリの Ant さんと Bug くんは小石を取るゲームをしています。このゲームのルールは以下の通りです。最初、N 個の小石が袋に入っています。Ant さん、Bug さん、Ant さん・・・の順番で交互に袋から小石を取っていきます。Ant さんは１回につきちょうど A 個の小石を取ります。ただし、袋の中の小石が A 個未満である場合は、袋の中の全ての小石だけを取ります。Bug くんは１回につきちょうど B 個の小石を取ります。ただし、袋の中の小石が B 個未満である場合は、袋の中の全ての小石だけを取ります。自分のターンで袋を空にすると勝ちとなります。Ant さんはどちらがこのゲームに勝つかを計算してみることにしました。入力入力は以下の形式で標準入力から与えられる。N A B1 行目には、最初に袋に入っている小石の数を表した整数 N (1 ≦ N ≦ 1000) と、Ant さんが一度に取る小石の個数を表した整数 A (1 ≦ A ≦ 1000) と、Bug さんが一度に取る小石の個数を表した整数 B (1 ≦ B  ≦ 1000) が空白区切りで与えられる。出力勝者が Ant さんである場合は Ant、勝者が Bug くんである場合は Bug と 1 行に出力せよ。出力の末尾に改行をいれること。
+// ソースコードの引用元 : https://atcoder.jp/contests/arc028/submissions/6114685
+// 提出ID : 6114685
+// 問題ID : arc028_1
+// コンテストID : arc028
+// ユーザID : xryuseix
+// コード長 : 1451
+// 実行時間 : 1
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <string>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <bitset>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define fin(ans) cout<<(ans)<<endl
+#define P 1000000007
+#define STI(s) atoi(s.c_str())//string to int
+#define mp(p,q) make_pair(p,q)
+#define Sort(a) sort(a.begin(),a.end())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int INF = INT_MAX;
+const long long LLINF = 1LL<<60;
+//g++ -std=c++1z temp.cpp
+//./a.out
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+    int turn=0,n,a,b;
+    cin>>n>>a>>b;
+    while(n>0){
+        if(turn==0)n-=a;
+        else n-=b;
+        turn=1-turn;
+    }
+    if(turn%2==1)fin("Ant");
+    else fin("Bug");
+
+//////////////////////////////////////////////////////
+return 0;}

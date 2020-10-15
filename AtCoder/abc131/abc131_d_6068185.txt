@@ -1,0 +1,81 @@
+問題文の引用元：https://atcoder.jp/contests/abc131/tasks/abc131_d
+D - MegalomaniaEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点: 400 点
+問題文 : AtCoder王国の王立問題工房でABC管理官の座に就いたキザハシ君は、浮かれるあまり仕事を引き受けすぎてしまいました。現在の時刻は 0 です。キザハシ君は 1 から N までの番号が振られた N 件の仕事を持っています。キザハシ君が仕事 i を終えるには A_i 単位時間かかります。また、仕事 i の〆切は時刻 B_i であり、これまでに仕事を終わらせる必要があります。時刻 B_i ちょうどに仕事 i を終わらせてもかまいません。キザハシ君は 2 件以上の仕事を同時にすることはできませんが、ある仕事を終わらせた直後に別の仕事を始めることはできます。キザハシ君はすべての仕事を〆切までに終わらせることができるでしょうか。可能ならば Yes、不可能ならば No を出力してください。
+制約入力はすべて整数1 \leq N \leq 2 \times 10^51 \leq A_i, B_i \leq 10^9 (1 \leq i \leq N)入力入力は以下の形式で標準入力から与えられます。NA_1 B_1...A_N B_N出力全ての仕事を〆切までに終わらせることが可能ならば Yes、不可能ならば No を出力してください。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc131/submissions/6068185
+// 提出ID : 6068185
+// 問題ID : abc131_d
+// コンテストID : abc131
+// ユーザID : xryuseix
+// コード長 : 1816
+// 実行時間 : 52
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <string>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <bitset>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define P 1000000007
+#define STI(s) atoi(s.c_str())//string to int
+#define mp(p,q) make_pair(p,q)
+#define Sort(a) sort(a.begin(),a.end())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int INF = INT_MAX;
+const long long LLINF = 1LL<<60;
+//g++ -std=c++1z temp.cpp
+//./a.out
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+    int n,i;
+    cin>>n;
+    vector<pair<int,pair<int,int> > > vp(n);
+    int a,b;
+    rep(i,n){
+        cin>>a>>b;
+        vp[i]=mp(b,mp(a,i+1));
+    }
+    Sort(vp);
+    vector<int> v(n+1);//v[i]は仕事iの終了時間
+    int time=0;
+    bool ch=true;
+    for(i=0;i<n;i++){
+        time+=vp[i].second.first;
+        v[vp[i].second.second]=time;
+        if(vp[i].first<time)ch=false;
+        // cout<<vp[i].first<<" "<<time<<endl;
+    }
+    if(ch) fin("Yes");
+    else fin("No");
+    // for(i=1;i<=n;i++)cout<<v[i]<<" ";
+    // cout<<endl;
+//////////////////////////////////////////////////////
+return 0;}

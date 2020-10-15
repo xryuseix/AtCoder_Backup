@@ -1,0 +1,117 @@
+問題文の引用元：https://atcoder.jp/contests/abc019/tasks/abc019_4
+D - 高橋くんと木の直径Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 高橋くんは木の直径を求めるのに夢中です。木とは、頂点とそれを結ぶ辺からなる構造「グラフ」の 1 種で、頂点の数を N 個とすると、辺は N-1 本あり、どの頂点も他の全ての頂点に辺で間接・直接的につながっています。この問題では、辺には整数の重みがついています。2頂点の間の距離を、その2つの頂点をつなぐ辺の重みの和と定義します。木の直径とは、最も離れた2つの頂点の間の距離です。以下のような木を考えてみましょう。辺の側に書かれた数が、その辺の重みです。この場合、頂点 1 と 2 の距離は 1、頂点 2 と 4 の間の距離は 1+2=3 となります。頂点 3 と 5 の間の距離は 3+4=7、頂点 4 と 5 の間の距離も 2+1+4=7 で、この距離がこの木の頂点の間では最大なので、木の直径は 7 となります。高橋くんは、頂点の数と 2 頂点間の距離の情報から、木の直径を求めることに興味が出てきました。この問題では、あなたは木の頂点の数 N を最初に与えられ、2 頂点の間の距離を尋ねる質問を何回か行い、木の直径を求めます。ただし、2 頂点間の距離を聞く回数には制限があります。制限された質問の回数以内で木の直径を求めるプログラムを書いてください。入出力まず，木の頂点の数 N が標準入力に与えられる。N続いて，あなたのプログラムは何回か応答プログラムに質問をする．質問のフォーマットは以下のとおりである。? a bこの質問で，a,b 間の距離が標準入力に1行で渡される。1 ≦ a, b ≦ N かつ a≠b を満たしていなければならない。何回か質問を行った後、あなたは木の直径を当てる。木の直径を diameter とおくと、! diameterというフォーマットで出力する。木の直径を出力した後、あなたのプログラムは直ちに終了しなければならない。終了しなかった場合のジャッジ結果は不定である。また、これら以外のフォーマットで出力した場合のジャッジ結果も不定である。この問題ではテストケースごとに質問回数の上限値が設定されており、プログラムの行った質問の回数がその上限値を上回ると誤答と判定される。正答かどうかは木の直径の出力で判断される。木の直径を特定し得ない質問しかしていない場合でも、直径が正しければ正答となる。頂点 1 と頂点 2 の間の距離を質問し、dist という変数で結果を受け取る例をいくつかの言語について示す。ただし、ここに書かれている方法以外で入出力を行っても良い。出力した後に、出力をflushしなければならないことに注意せよ。flushしなかった場合、TLEとなることがある。Cprintf("? %d %d\n", 1, 2);fflush(stdout);scanf("%d", &dist);C++cout << "? " << 1 << " " << 2 << endl;cin >> dist;JavaSystem.out.printf("? %d %d\n", 1, 2);Scanner scanner = new Scanner(System.in);dist = scanner.nextInt();C#Console.WriteLine("? {0} {1}", 1, 2);dist = int.Parse(Console.ReadLine());Dwriteln("? ", 1, " ", 2);stdout.flush();dist = readln.chomp.to!int;PHPecho "? ", 1, " ", 2, PHP_EOL;$dist = trim(fgets(STDIN));Pythonprint "? {0} {1}".format(1, 2)sys.stdout.flush()dist = int(raw_input())Perl$|=1;print "? ", 1, " ", 2, "\n";$dist = <>;Rubyprint "? ", 1, " ", 2, "\n"STDOUT.flushdist = gets.to_i
+制約2 ≦ N ≦ 501 ≦ (それぞれの辺の重み) ≦ 10^6部分点この問題には部分点が設定されている。20 点分のテストケースにおいて、質問回数の上限値は 1300 回である。別の 80 点分のテストケースにおいて、質問回数の上限値は 100 回である。入出力例木が以下のような形状のとき、以下のような入出力が考えられる。プログラムへの入力プログラムの出力5  ? 1 25  ? 2 41  ? 4 52  ? 2 39  ? 1 58  ! 14これは入出力の一つの例であり、意味のある質問をしているとは限らない。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc019/submissions/7898092
+// 提出ID : 7898092
+// 問題ID : abc019_4
+// コンテストID : abc019
+// ユーザID : xryuseix
+// コード長 : 2500
+// 実行時間 : 7
+
+
+
+/*
+				   _ooOoo_
+				  o8888888o
+				  88" . "88
+				  (| -_- |)
+				  O\  =  /O
+			   ____/`---'\____
+			 .'  \\|     |//  `.
+			/  \\|||  :  |||//  \
+		   /  _||||| -:- |||||-  \
+		   |   | \\\  -  /// |   |
+		   | \_|  ''\---/''  |   |
+		   \  .-\__  `-`  ___/-. /
+		 ___`. .'  /--.--\  `. . __
+	  ."" '<  `.___\_<|>_/___.'  >'"".
+	 | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+	 \  \ `-.   \_ __\ /__ _/   .-` /  /
+======`-.____`-.___\_____/___.-`____.-'======
+				   `=---='
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+		fozubaoyou    pass System Test!
+		quoted from "https://codeforces.com/contest/472/submission/7996840"
+*/
+ 
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+#include <cfloat>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(),a.end()
+#define rall(a) a.rbegin(),a.rend()
+#define Sort(a) sort(a.begin(),a.end())
+#define Rort(a) sort(a.rbegin(),a.rend())
+#define PI acos(-1)
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+struct io{io(){ios::sync_with_stdio(false);cin.tie(0);};};
+const int MOD = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+
+
+
+int main(void){
+
+	int n;
+	cin>>n;
+	ll ans=0;
+	int point=0;
+	for(int j=1;j<n;j++){
+		cout<<"? "<<1<<" "<<j+1<<endl;
+		ll c;
+		cin>>c;
+		ans=max(ans,c);
+		if(ans<=c){
+			ans=c;
+			point=j+1;
+		}
+	}
+	ans=0;
+	for(int j=0;j<n;j++){
+		if(point==j+1)continue;
+		cout<<"? "<<point<<" "<<j+1<<endl;
+		ll c;
+		cin>>c;
+		ans=max(ans,c);
+	}
+
+	cout<<"! "<<ans<<endl;
+
+}

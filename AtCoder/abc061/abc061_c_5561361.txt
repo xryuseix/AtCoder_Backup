@@ -1,0 +1,104 @@
+問題文の引用元：https://atcoder.jp/contests/abc061/tasks/abc061_c
+C - Big ArrayEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 300 点
+問題文 : 空の配列が 1 つあります。 この配列に、整数を配列に挿入する操作を N 回行います。 i(1≦i≦N) 回目の操作では、配列に整数 a_i を b_i 個挿入します。 N 回の挿入操作後の配列の中で、K 番目に小さい数を求めてください。  例えば、配列が \{1,2,2,3,3,3\} の時、4 番目に小さい数は 3 となります。   
+制約1≦N≦10^5  1≦a_i,b_i≦10^5   1≦K≦b_1…+…b_n入力は全て整数である。  入力入力は以下の形式で標準入力から与えられる。  N Ka_1 b_1:  a_N b_N出力N 回の挿入操作後の配列の中で、K 番目に小さい数を出力せよ。   
+// ソースコードの引用元 : https://atcoder.jp/contests/abc061/submissions/5561361
+// 提出ID : 5561361
+// 問題ID : abc061_c
+// コンテストID : abc061
+// ユーザID : xryuseix
+// コード長 : 1640
+// 実行時間 : 25
+
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<string>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cctype>
+#include<climits>
+#include<bitset>
+#include<bits/stdc++.h>
+#define ld long double
+#define ll long long int
+#define ull unsigned long long int
+#define rep(i,n) for(i=0;i<n;i++)
+#define fin(ans) cout<<(ans)<<endl
+#define INF INT_MAX
+#define vi vector<int>
+#define vc vector<char>
+#define vs vector<string>
+#define vpii vector<pair<int,int> >
+#define vvi vector<vector<int> >
+#define vvc vector<vector<char> >
+#define vvs vector<vector<string> >
+#define P 1000000007
+using namespace std;
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const long long LLINF=1LL<<60;
+//set<int>::iterator it;
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	/*
+	int n,i,a,b;
+	cin>>n;
+	vector<int> a(n,0),b(n,0);
+	rep(i,n)cin>>a[i]>>b[i];
+	*/
+	ll i,k,n;
+	cin>>n>>k;
+	vector<pair<ll,ll> > a(n,make_pair(0,0));
+	ll s,t;
+	vector<ll> dsum;
+	rep(i,n){
+		cin>>s>>t;
+		a[i]=make_pair(s,t);
+	}
+	ll sum=0;
+	sort(a.begin(),a.end());
+	rep(i,n){
+		if(i==0)dsum.push_back(a[i].second);
+		else dsum.push_back(a[i].second+dsum[i-1]);
+	
+	}
+	
+	rep(i,n+1){
+		
+		
+		if(k<=dsum[i]){
+			cout<<a[i].first<<endl;
+			return 0;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+//////////////////////////////////////////////////////
+return 0;}
+
+
+
+
+
+
+
+
+

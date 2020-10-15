@@ -1,0 +1,105 @@
+問題文の引用元：https://atcoder.jp/contests/abc134/tasks/abc134_d
+D - Preparing BoxesEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 400 点
+問題文 : N 個の空の箱が横一列に並んでいます。左から i \ (1 \leq i \leq N) 番目の箱には整数 i が書かれています。すぬけさんは、それぞれの箱に対してボールを 1 個入れるか何も入れないかを選ぶことができます。ここで、以下の条件を満たすようなボールの入れ方を、いいボールの入れ方と定めます。1 以上 N 以下の任意の整数 i について、i の倍数が書かれた箱に入っているボールの個数の和を 2 で割った余りが a_i である。いいボールの入れ方は存在するでしょうか。存在するならば 1 つ求めてください。
+制約入力は全て整数である。1 \leq N \leq 2 \times 10^5a_i は 0 または 1 である。入力入力は以下の形式で標準入力から与えられる。Na_1 a_2 ... a_N出力いいボールの入れ方が存在しないなら -1 を出力せよ。存在するならば、そのような入れ方のうちの 1 つを以下の形式で出力せよ。Mb_1 b_2 ... b_Mここで M はボールを入れる箱の個数を表し、b_1,\ b_2,\ ...,\ b_M はボールを入れる箱に書かれた整数を任意の順番に並べたものである。
+// ソースコードの引用元 : https://atcoder.jp/contests/abc134/submissions/6465655
+// 提出ID : 6465655
+// 問題ID : abc134_d
+// コンテストID : abc134
+// ユーザID : xryuseix
+// コード長 : 2348
+// 実行時間 : 26
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <queue>
+#include <stack>
+#include <cctype>
+#include <climits>
+#include <string>
+#include <bitset>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int,int> > vpii;
+typedef vector<vector<int> > vvi;
+typedef vector<vector<char> > vvc;
+typedef vector<vector<string> > vvs;
+typedef vector<vector<ll> > vvll;
+#define rep(i,n) for(int i = 0; i < (n); ++i)
+#define rrep(i,n) for(int i = 1; i <= (n); ++i)
+#define drep(i,n) for(int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout<<(ans)<<endl
+#define STI(s) atoi(s.c_str())
+#define mp(p,q) make_pair(p,q)
+#define pb(n) push_back(n)
+#define Sort(a) sort(a.begin(),a.end())
+#define Rort(a) sort(a.rbegin(),a.rend())
+template<class T> inline bool chmax(T& a,T b){if(a<b){a=b;return 1;}return 0;}
+template<class T> inline bool chmin(T& a,T b){if(a>b){a=b;return 1;}return 0;}
+const int P = 1000000007;
+const int INF = INT_MAX;
+const ll LLINF = 1LL<<60;
+//g++ -std=c++1z temp.cpp
+//./a.out
+
+
+
+int main(void){ios::sync_with_stdio(false);cin.tie(0);
+//////////////////////////////////////////////////////
+	int n;
+    cin>>n;
+    vi a(n+1),ans(n+1);
+    for(int i=1;i<=n;i++)cin>>a[i];
+    int sum;
+    for(int i=n/2+1;i<=n;i++){
+        ans[i]=a[i];
+    }
+    // cout<<"AAAA"<<endl;
+    for(int i=n/2;i>0;i--){
+        //今いる位置
+        sum=0;
+        for(int j=i+i;j<=n;j+=i){
+            sum+=ans[j];
+        }
+        // cout<<i<<" "<<a[i]<<" "<<sum<<endl;
+        if(sum%2==a[i]){
+            ans[i]=0;
+        }
+        else{
+            ans[i]=1;
+        }
+    }
+    // cout<<"BBBB"<<endl;
+    int bef,count=0;
+    for(int i=1;i<=n;i++){
+        if(ans[i]==1){
+            bef=i;
+            count++;
+        }
+    }
+    cout<<count<<endl;
+    // for(int i=1;i<=n;i++)cout<<ans[i]<<" ";
+    // cout<<endl;
+    for(int i=1;i<=n;i++){
+        if(ans[i]==1&&i!=bef)cout<<i<<" ";
+        else if(i==bef)cout<<i<<endl;
+    }
+
+//////////////////////////////////////////////////////
+return 0;}
