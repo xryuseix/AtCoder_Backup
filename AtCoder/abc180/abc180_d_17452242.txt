@@ -1,0 +1,27 @@
+問題文の引用元：https://atcoder.jp/contests/abc180/tasks/abc180_d
+D - Takahashi UnevolvedEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 400 点
+問題文 : いろはちゃんはペットを育てるゲームにはまっています。いろはちゃんはペットとして高橋君を飼っており、はじめ高橋君の 強さ は X 、経験値 は 0 です。これらの値は次の 2 種類の特訓によって増加します。カコモンジムに通う：強さが A 倍になり、経験値は 1 増える。AtCoderジムに通う：強さが B 増え、経験値は 1 増える。高橋君は強さが Y 以上になると進化しますが、進化しない方がかわいいといろはちゃんは思っています。そこで、強さが Y 以上にならないように高橋君に特訓を課すとき、経験値の最大値を求めてください。
+制約1 \leq X < Y \leq 10^{18}2 \leq A \leq 10^91 \leq B \leq 10^9入力は全て整数入力入力は以下の形式で標準入力から与えられる。X Y A B出力与えられた条件の下での経験値の最大値を出力せよ。
+
+
+
+x, y, a, b = input().split()
+x = int(x)
+y = int(y)
+a = int(a)
+b = int(b)
+
+ans = 0
+while x < y:
+    if x * a <= x + b and x * a < y:
+        ans += 1
+        x *= a
+    elif x + b < y:
+        ans += (y - 1 - x) // b
+        break
+    else:
+        break
+
+print(ans)
