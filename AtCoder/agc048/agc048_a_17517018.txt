@@ -1,0 +1,152 @@
+問題文の引用元：https://atcoder.jp/contests/agc048/tasks/agc048_a
+A - atcoder < SEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 300 点
+問題文 : 英小文字からなる文字列 S が与えられます．すぬけくんは，S の隣り合う 2 文字をスワップするという操作を行うことができます．例えば，S=agc なら，1 回の操作で，S を gac (a と g をスワップ) もしくは acg (g と c をスワップ) に変換できます．すぬけくんはこの操作を 0 回以上繰り返し，辞書順で atcoder <S となるようにしたいです．辞書順で x&lt y の定義文字列 x,y が辞書順で x&lt y であるとは，以下のうちいずれかの条件を満たすことを意味します． ある整数 i (1 \leq i \leq \mathrm{min}(|x|,|y|)) が存在して，x,y は先頭の i-1 文字が一致しており，かつ，x の i 文字目は y の i 文字目よりアルファベット順で真に小さい． |x|&lt |y| であり，y の先頭の |x| 文字は x と等しい．目標が達成可能かどうか判定し，可能な場合は必要な操作回数の最小値を求めてください．1 つの入力ファイルにつき，T 個のテストケースを解いてください．
+制約1 \leq T \leq 1001 \leq |S| \leq 1000S は英小文字からなる文字列．入力入力は以下の形式で標準入力から与えられる．入力の 1 行目は以下のとおりである．Tそして，T 個のテストケースが続く．これらはそれぞれ以下の形式で与えられる．S出力各テストケースについて，目標が達成不可能な場合は -1，可能な場合は必要な操作回数の最小値を出力せよ．各テストケースごとに改行せよ．
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define arep(i, v) for (auto i : v)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+// #include <atcoder/all>
+// using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T>
+inline bool chmax(T& a, T b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline bool chmin(T& a, T b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+}
+inline string getline() {
+    string s;
+    getline(cin, s);
+    return s;
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+struct io {
+    io() {
+        ios::sync_with_stdio(false);
+        cin.tie(0);
+    }
+};
+template <typename Head, typename Value>
+auto vectors(const Head& head, const Value& v) {
+    return vector<Value>(head, v);
+}
+template <typename Head, typename... Tail>
+auto vectors(Head x, Tail... tail) {
+    auto inner = vectors(tail...);
+    return vector<decltype(inner)>(x, inner);
+}
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 1000000007;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+int main() {
+    string atc = "atcoder";
+    int Q;
+    cin >> Q;
+    while (Q--) {
+        string s, t;
+        cin >> s;
+        t = s;
+        Rort(t);
+        if (t <= atc) {
+            fin(-1);
+            continue;
+        }
+        if (atc < s) {
+            fin(0);
+            continue;
+        }
+        int ans = INF;
+        for (int i = 0; i < atc.size(); i++) {
+            for (int j = 0; j < s.size(); j++) {
+                swap(s[i], s[j]);
+                if (atc < s) {
+                    chmin(ans, abs(i - j));
+                }
+                swap(s[i], s[j]);
+            }
+        }
+        fin(ans);
+    }
+}
