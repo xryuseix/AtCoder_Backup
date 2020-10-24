@@ -1,0 +1,8 @@
+問題文の引用元：https://atcoder.jp/contests/code-formula-2014-qualb/tasks/code_formula_2014_qualB_a
+A - サイコロEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 64 MB
+問題文 : サイコロが 1 つあります。このサイコロは、 1 から 6 までの数字が一つずつ書かれており、対面の和が 7 になるように作られています。今、サイコロの上の面に書かれている数字が、 A であることが解っています。この対面にある、底面に書かれた数字を出力してください。入力入力は以下の形式で標準入力から与えられる。A1 行目には、サイコロの上の面に書かれている数字を表す 1 つの整数 A (1 ≦ A ≦ 6) が与えられる。出力サイコロの底の面に書かれている数字を 1 行で出力せよ。出力の末尾には改行をいれること。
+
+
+
+print(7-int(input()))
