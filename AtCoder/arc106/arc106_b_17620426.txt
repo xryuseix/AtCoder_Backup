@@ -1,0 +1,216 @@
+問題文の引用元：https://atcoder.jp/contests/arc106/tasks/arc106_b
+B - ValuesEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 400 点
+問題文 : N 頂点 M 辺の単純無向グラフが与えられます。 i 番目の辺は頂点 c_i と頂点 d_i を結んでいます。はじめ、頂点 i には値 a_i が書かれています。あなたは次の操作を 0 回以上行うことで、操作後の各頂点の値をそれぞれ b_1,\cdots,b_N にしたいと思っています。辺を 1 つ選ぶ。選んだ辺が頂点 x と頂点 y を結んでいるとしたとき、次のいずれかを選んで行う。値 a_x を -1 し、値 a_y を +1 する値 a_x を +1 し、値 a_y を -1 する適切に操作を行うことで目的を達成することが可能かどうかを判定してください。
+制約1 \leq N \leq 2 \times 10^50 \leq M \leq 2 \times 10^5-10^9 \leq a_i,b_i \leq 10^91 \leq c_i,d_i \leq N与えられるグラフは単純グラフである。すなわち、自己ループや多重辺は存在しない。入力はすべて整数である。入力入力は以下の形式で標準入力から与えられる。N Ma_1 \cdots a_Nb_1 \cdots b_Nc_1 d_1\vdotsc_M d_M出力適切に操作を行うことで目的を達成することが可能な場合は Yes 、可能でない場合は No と出力せよ。
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define arep(i, v) for (auto i : v)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+// #include <atcoder/all>
+// using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T>
+inline bool chmax(T& a, T b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline bool chmin(T& a, T b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+}
+inline string getline() {
+    string s;
+    getline(cin, s);
+    return s;
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+struct io {
+    io() {
+        ios::sync_with_stdio(false);
+        cin.tie(0);
+    }
+};
+template <typename Head, typename Value>
+auto vectors(const Head& head, const Value& v) {
+    return vector<Value>(head, v);
+}
+template <typename Head, typename... Tail>
+auto vectors(Head x, Tail... tail) {
+    auto inner = vectors(tail...);
+    return vector<decltype(inner)>(x, inner);
+}
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 1000000007;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+class UnionFind {
+   public:
+    // 親の番号を格納．親だった場合は-(その集合のサイズ)
+    vector<int> Parent;
+    // 重さの差を格納
+    vector<ll> diffWeight;
+
+    UnionFind(const int N) {
+        Parent = vector<int>(N, -1);
+        diffWeight = vector<ll>(N, 0);
+    }
+
+    // Aがどのグループに属しているか調べる
+    int root(const int A) {
+        if (Parent[A] < 0) return A;
+        int Root = root(Parent[A]);
+        diffWeight[A] += diffWeight[Parent[A]];
+        return Parent[A] = Root;
+    }
+
+    // 自分のいるグループの頂点数を調べる
+    int size(const int A) { return -Parent[root(A)]; }
+
+    // 自分の重さを調べる
+    ll weight(const int A) {
+        root(A);  // 経路圧縮
+        return diffWeight[A];
+    }
+
+    // 重さの差を計算する
+    ll diff(const int A, const int B) { return weight(B) - weight(A); }
+
+    // AとBをくっ付ける
+    bool connect(int A, int B, ll W = 0) {
+        // Wをrootとの重み差分に変更
+        W += weight(A);
+        W -= weight(B);
+
+        // AとBを直接つなぐのではなく、root(A)にroot(B)をくっつける
+        A = root(A);
+        B = root(B);
+
+        if (A == B) {
+            //すでにくっついてるからくっ付けない
+            return false;
+        }
+
+        // 大きい方(A)に小さいほう(B)をくっ付ける
+        // 大小が逆だったらひっくり返す
+        if (size(A) < size(B)) {
+            swap(A, B);
+            W = -W;
+        }
+
+        // Aのサイズを更新する
+        Parent[A] += Parent[B];
+        // Bの親をAに変更する
+        Parent[B] = A;
+
+        // AはBの親であることが確定しているのでBにWの重みを充てる
+        diffWeight[B] = W;
+
+        return true;
+    }
+};
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    map<int, ll> sum1;
+    map<int, ll> sum2;
+    vll a(n), b(n);
+    rep(i, n) { cin >> a[i]; }
+    rep(i, n) { cin >> b[i]; }
+    UnionFind uni(n);
+    rep(i, m) {
+        int a, b;
+        cin >> a >> b;
+        a--;
+        b--;
+        uni.connect(a, b);
+    }
+    rep(i,n){
+        sum1[uni.root(i)]+=a[i];
+        sum2[uni.root(i)]+=b[i];
+    }
+    for(auto it=sum1.begin();it!=sum1.end();it++){
+        if(it->second!=sum2[it->first]){
+            fin("No");
+            return 0;
+        }
+    }
+    fin("Yes");
+}

@@ -1,0 +1,53 @@
+問題文の引用元：https://atcoder.jp/contests/arc106/tasks/arc106_a
+A - 106Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 300 点
+問題文 : 整数 N が与えられます。3^A + 5^B = N を満たす正の整数の組 (A, B) が存在するか判定し、存在する場合は 1 組求めてください。
+制約1 \leq N \leq 10^{18}入力はすべて整数である。入力入力は以下の形式で標準入力から与えられる。N出力条件を満たす組 (A, B) が存在しない場合は -1 と出力せよ。存在する場合は A と B を空白区切りで出力せよ。答えが複数存在する場合はどれを出力してもかまわない。
+
+
+
+n = int(input())
+t = 1
+s = [
+    1,
+    5,
+    25,
+    125,
+    625,
+    3125,
+    15625,
+    78125,
+    390625,
+    1953125,
+    9765625,
+    48828125,
+    244140625,
+    1220703125,
+    6103515625,
+    30517578125,
+    152587890625,
+    762939453125,
+    3814697265625,
+    19073486328125,
+    95367431640625,
+    476837158203125,
+    2384185791015625,
+    11920928955078125,
+    59604644775390625,
+    298023223876953125,
+    1490116119384765625,
+]
+
+for i in range(60):
+    t *= 3
+    if t >= n:
+        break
+    u = n - t
+    if u > 1 and u in s:
+        print(i + 1, end=" ")
+        print(s.index(u))
+        exit()
+
+
+print(-1)
