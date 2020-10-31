@@ -1,0 +1,216 @@
+問題文の引用元：https://atcoder.jp/contests/code-festival-2014-morning-easy/tasks/code_festival_morning_easy_c
+C - 身体バランスEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : C さんは斜めがけの鞄を愛用しています。しかし、片方の肩にばかり鞄をかけていると、身体が歪んでしまうと言われたため、両方の肩に同じ時間だけ鞄をかけるように心がけることにしています。C さんの住んでいる国には、n 個の街と、街同士をつなぐ m 個の道があります。どの 2 つの異なる道に関しても、結んでいる 2 つの街同士が一致することはありません。C さんはある日、街 s から街 t へと移動する必要が出てきました。そこで、途中の街 u で一度だけ鞄を持ち替えて、左右の肩に鞄をかける時間を同じにしたいと考えています。しかし、C さんは最強最速なので、街 s から街 u、街 u から街 t への移動は最短経路を通ります。このような街 u の選び方があるかどうかを求めてください。入力入力は以下の形式で与えられる。n ms tx_1 y_1 d_1x_2 y_2 d_2...x_m y_m d_m    1 行目には、街の数を表す整数 n (3 \leq n \leq 1{,}000) と、道の数を表す整数 m (1 \leq m \leq min(n(n-1)/2, 10^4)) が与えられる。    街にはそれぞれ 1 から n までの番号が振られている。    2 行目には、出発する街の番号を表す整数 s (1 \leq s \leq n) と、目的地の街の番号を表す整数 t (1 \leq t \leq n) が与えられる。    続く m 行には、各道の情報が与えられる。    x_i, y_i (1 \leq x_i, y_i \leq n かつ x_i \neq y_i) と d_i (1 \leq d_i \leq 1{,}000) は、i 番目の道によって街 x_i と街 y_i の間を移動するのに d_i の時間がかかることを意味する。    街 s から街 t へは到達可能であることが保証される。出力答えとなる街 u が存在する場合は、その街の番号を 1 行で出力せよ。答えの候補が複数ある場合は、どれを出力してもよい。また、そのような街 u が無い場合は -1 を出力せよ。最後は改行し、余計な文字、空行を含まないこと。
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define arep(i, v) for (auto i : v)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+// #include <atcoder/all>
+// using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T>
+inline bool chmax(T& a, T b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline bool chmin(T& a, T b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+}
+inline string getline() {
+    string s;
+    getline(cin, s);
+    return s;
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+struct io {
+    io() {
+        ios::sync_with_stdio(false);
+        cin.tie(0);
+    }
+};
+template <typename Head, typename Value>
+auto vectors(const Head& head, const Value& v) {
+    return vector<Value>(head, v);
+}
+template <typename Head, typename... Tail>
+auto vectors(Head x, Tail... tail) {
+    auto inner = vectors(tail...);
+    return vector<decltype(inner)>(x, inner);
+}
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 998244353;  // 1000000007;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+class DIJKSTRA {
+   public:
+    int V;
+
+    struct dk_edge {
+        int to;
+        ll cost;
+    };
+
+    typedef pair<ll, int> PI;  // firstは最短距離、secondは頂点の番号
+    vector<vector<dk_edge>> G;
+    vector<ll> d;      //これ答え。d[i]:=V[i]までの最短距離
+    vector<int> prev;  //経路復元
+
+    DIJKSTRA(int size) {
+        V = size;
+        G = vector<vector<dk_edge>>(V);
+        prev = vector<int>(V, -1);
+    }
+
+    void add(int from, int to, ll cost) {
+        dk_edge e = {to, cost};
+        G[from].push_back(e);
+    }
+
+    void dijkstra(int s) {
+        // greater<P>を指定することでfirstが小さい順に取り出せるようにする
+        priority_queue<PI, vector<PI>, greater<PI>> que;
+        d = vector<ll>(V, LLINF);
+        d[s] = 0;
+        que.push(PI(0, s));
+
+        while (!que.empty()) {
+            PI p = que.top();
+            que.pop();
+            int v = p.second;
+            if (d[v] < p.first) continue;
+            for (int i = 0; i < G[v].size(); i++) {
+                dk_edge e = G[v][i];
+                if (d[e.to] > d[v] + e.cost) {
+                    d[e.to] = d[v] + e.cost;
+                    prev[e.to] = v;
+                    que.push(PI(d[e.to], e.to));
+                }
+            }
+        }
+    }
+    vector<int> get_path(int t) {
+        vector<int> path;
+        for (; t != -1; t = prev[t]) {
+            // tがsになるまでprev[t]をたどっていく
+            path.push_back(t);
+        }
+        //このままだとt->sの順になっているので逆順にする
+        reverse(path.begin(), path.end());
+        return path;
+    }
+    void show(void) {
+        for (int i = 0; i < d.size() - 1; i++) {
+            cout << d[i] << " ";
+        }
+        cout << d[d.size() - 1] << endl;
+    }
+};
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    int s, t;
+    cin >> s >> t;
+    s--;
+    t--;
+    DIJKSTRA ds(n);
+    DIJKSTRA dt(n);
+    rep(i, m) {
+        int x, y, d;
+        cin >> x >> y >> d;
+        x--;
+        y--;
+        ds.add(x, y, d);
+        ds.add(y, x, d);
+        dt.add(x, y, d);
+        dt.add(y, x, d);
+    }
+    ds.dijkstra(s);
+    dt.dijkstra(t);
+    rep(i, n) {
+        if (ds.d[i] == 0) continue;
+        if (dt.d[i] == 0) continue;
+        if (ds.d[i] == dt.d[i] && ds.d[i] != LLINF) {
+            fin(i + 1);
+            return 0;
+        }
+    }
+    fin(-1);
+}
