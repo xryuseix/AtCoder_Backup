@@ -1,0 +1,171 @@
+問題文の引用元：https://atcoder.jp/contests/code-festival-2015-morning-hard/tasks/cf_2015_morning_hard_a
+A - 一次元オセロEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : りんごさんは一次元オセロで遊んでいます。一次元オセロとは、無限に長い 1 列に並んだマス目と、特殊なコマを使って遊ぶゲームです。一次元オセロで用いるコマは表が黒色で裏が白色のコマで、黒のコマを裏返すと白のコマに、白のコマを裏返すと黒のコマになります。一次元オセロは以下のように進行します。まず、白のコマ A_1 個、黒のコマ A_2 個、白のコマ A_3 個、...、白のコマ A_N 個をこの順に連続したマス目に置く。黒のコマをいずれかの空きマスに置く。このとき、隣の 2 マスのうちちょうど 1 マスに白のコマがなければならない。2. で置いた黒のコマに最も近い別の黒のコマ（そのようなコマは常に一意に定まる）との間にある白のコマを全て裏返して黒のコマにする。2. と 3. の黒と白を入れ替えた操作を行う。2. 〜 4. を繰り返す。3. または 4. を終えた時点で、全てのコマが同じ色になった場合はその時点で終了となる。たくさんのコマを裏返すのは大変なので、りんごさんはコマを裏返す回数を少なくしたいと思っています。ゲームが終了するまでにりんごさんが裏返すコマの個数の和の最小値を求めてください。入力入力は以下の形式で標準入力から与えられる。NA_1 A_2 ... A_N1 行目には、整数 N (3 ≦ N < 10^5, N は奇数) が与えられる。2 行目には、コマの初期配置の情報を表す N 個の整数が空白区切りで与えられる。このうち i (1 ≦ i ≦ N) 番目には A_i (1 ≦ A_i ≦ 10^8) が与えられる。出力ゲームが終了するまでにりんごさんが裏返すコマの個数の和の最小値を 1 行に出力せよ。出力の末尾に改行を入れること。
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define arep(i, v) for (auto i : v)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+// #include <atcoder/all>
+// using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T>
+inline bool chmax(T& a, T b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline bool chmin(T& a, T b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+}
+inline string getline() {
+    string s;
+    getline(cin, s);
+    return s;
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+struct io {
+    io() {
+        ios::sync_with_stdio(false);
+        cin.tie(0);
+    }
+};
+template <typename Head, typename Value>
+auto vectors(const Head& head, const Value& v) {
+    return vector<Value>(head, v);
+}
+template <typename Head, typename... Tail>
+auto vectors(Head x, Tail... tail) {
+    auto inner = vectors(tail...);
+    return vector<decltype(inner)>(x, inner);
+}
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 1000000007;  // 998244353;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+
+
+int main() {
+    int n;
+    cin >> n;
+    vll v(n);
+    rep(i, n) cin >> v[i];
+    deque<ll> q;
+    rep(i, n) q.push_back(v[i]);
+    ll ans = 0;
+    while (q.size() > 1) {
+        ll l = 0;
+        ll r = 0;
+
+        {
+            ll t = q.front();
+            l += t * 2;
+            q.pop_front();
+            l += q.front() + 1;
+            q.push_front(t);
+        }
+        {
+            ll t = q.back();
+            r += t * 2;
+            q.pop_back();
+            r += q.back() + 1;
+            q.push_back(t);
+        }
+
+        if (l < r) {
+            ans += l;
+            ll sum = 0;
+            rep(i, 3) {
+                sum += q.front();
+                q.pop_front();
+            }
+            sum += 2;
+            q.push_front(sum);
+        } else {
+            ans += r;
+            ll sum = 0;
+            rep(i, 3) {
+                sum += q.back();
+                q.pop_back();
+            }
+            sum += 2;
+            q.push_back(sum);
+        }
+    }
+    fin(ans);
+}

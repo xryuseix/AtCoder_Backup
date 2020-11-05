@@ -1,0 +1,151 @@
+問題文の引用元：https://atcoder.jp/contests/arc049/tasks/arc049_b
+B - 高橋ノルム君Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 高橋ノルム君の可能性は無限大です。高橋ノルムという名前の人物はこの世界にたくさんいます。2 次元平面上に N 人の高橋ノルム君がいます。i(1≦i≦N) 人目の高橋ノルム君は座標 (x_i,y_i) にいます。各高橋ノルム君には正整数定数 c_i が割り当てられており、i 人目の高橋ノルム君がある点 (X,Y) に移動するためには c_i*max(\|x_i-X|,\|y_i-Y\|) の時間がかかります。あなたの仕事は、全ての高橋ノルム君が一点に集まるために必要な最小の時間を求めることです。ここで、一点に集まるために必要な最小の時間とは最も遅くその点に到着する高橋君の移動にかかった時間とします。高橋ノルム君は一斉に動き出し、お互いに干渉せず動くものとします。入力入力は以下の形式で標準入力から与えられる。Nx_1 y_1 c_1x_2 y_2 c_2:x_N y_N c_N1 行目には、高橋ノルム君の数を表す整数 N (2≦N≦1,000) が与えられる。2 行目からの N 行のうち i (1≦i≦N) 行目には、i 人目の高橋君の二次元平面上の位置と定数を表す 3 つの整数 x_i,y_i,c_i (-10^5≦x_i,y_i≦10^5,1≦c_i≦1,000) が空白区切りで与えられる。同じ座標に複数の高橋ノルム君がいることもあります。部分点この問題には部分点が設定されている。任意の i(1≦i≦N) について、c_i=1 を満たすデータセットに正解した場合は、30 点が与えられる。追加
+制約のないデータセットに正解した場合は、上記とは別に 70 点が与えられる。出力全ての高橋ノルム君が一点に集まるために必要な最小の時間を出力せよ。絶対誤差または相対誤差が 10^{−4} 以下ならば正解となる。 出力の末尾には改行を入れること。
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define arep(i, v) for (auto i : v)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+// #include <atcoder/all>
+// using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T>
+inline bool chmax(T& a, T b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline bool chmin(T& a, T b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+}
+inline string getline() {
+    string s;
+    getline(cin, s);
+    return s;
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+struct io {
+    io() {
+        ios::sync_with_stdio(false);
+        cin.tie(0);
+    }
+};
+template <typename Head, typename Value>
+auto vectors(const Head& head, const Value& v) {
+    return vector<Value>(head, v);
+}
+template <typename Head, typename... Tail>
+auto vectors(Head x, Tail... tail) {
+    auto inner = vectors(tail...);
+    return vector<decltype(inner)>(x, inner);
+}
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 1000000007;  // 998244353;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+double f(vi& x, vi& c, double mid) {
+    double t = 0;
+    for (int i = 0; i < x.size(); i++) {
+        chmax(t, c[i] * abs(x[i] - mid));
+    }
+    return t;
+}
+
+double ternary_search(vi& x, vi& c) {
+    double l = -1e6, r = 1e6;
+    while (l + pow(10, -8) < r) {
+        double c1 = l + (r - l) / 3;
+        double c2 = r - (r - l) / 3;
+        if (f(x, c, c1) < f(x, c, c2)) {
+            r = c2;
+        } else {
+            l = c1;
+        }
+    }
+    return f(x, c, l);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vi x(n), y(n), c(n);
+    rep(i, n) cin >> x[i] >> y[i] >> c[i];
+    vi X = x, Y = y;
+    printf("%.6f\n", max(ternary_search(x, c), ternary_search(y, c)));
+}
