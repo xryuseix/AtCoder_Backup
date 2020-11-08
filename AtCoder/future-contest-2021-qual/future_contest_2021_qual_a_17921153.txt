@@ -1,0 +1,317 @@
+問題文の引用元：https://atcoder.jp/contests/future-contest-2021-qual/tasks/future_contest_2021_qual_a
+A - カードの回収Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 3 sec / Memory Limit : 1024 MB
+問題文 : 20\times 20 マスの盤面上に100枚のカードが置かれています。一つのマスには高々一枚のカードが置かれています。それぞれのカードには 0,1,\ldots,99 の数字が一つ書かれており、同じ数字のカードはちょうど一枚だけ存在します。あなたの目的は高橋くんロボを操作してカードを全て回収し、最終的に回収したカードの山(山札と呼びます)が下から順に 0,1,\ldots,99 の順番になるようにすることです。高橋くんロボは以下の命令からなる命令列を与えることで操作します。U: 上に1マス移動する。現在位置が一番上のマスの場合は無効な操作となる。D: 下に1マス移動する。現在位置が一番下のマスの場合は無効な操作となる。L: 左に1マス移動する。現在位置が一番左のマスの場合は無効な操作となる。R: 右に1マス移動する。現在位置が一番右のマスの場合は無効な操作となる。I: 現在位置のマスに置かれているカードを回収して山札の一番上に置く。現在位置のマスにカードが置かれていない場合は無効な操作となる。O: 山札の一番上のカードを現在位置のマスに置く。山札が0枚の場合や、現在位置に既にカードが置かれている場合は無効な操作となる。高橋くんロボは初期状態で山札が0枚の状態で一番左上のマスの上に居ます。命令列を全て実行し終えた段階で山札が下から順に 0,1,\ldots,99 となっていれば、ミッション成功となります。移動命令(U,D,L,R)の回数が出来るだけ少ない命令列でミッションを成功させてください。移動命令の回数を k とすると、4000-k のスコアが得られます。カードの回収・設置命令(I,O)の回数はスコアに影響しないことに注意してください。k が4000を超えた場合、命令列の長さが10000を超えた場合、無効な操作が行われた場合、もしくはミッションに失敗した場合のスコアは0点となります。操作の例高橋くんロボが一番左上のマスに居る状態でRRDDIUULLIRIという操作を行うと、0,1,2という順番でカードを回収し、移動命令の総数は9となります。別の方法として、IRIRODOという操作を行うと、まず1,2という順番でカードを回収し、2,1という順番で置き直すことで下図のような状態になります。ここからさらにDIUIUIという操作を行うと、0,1,2という順番でカードを回収し、移動命令の総数は先程より少ない6となります。入力入力は以下の形式で標準入力から与えられる。x_0 y_0x_1 y_1\vdotsx_{99} y_{99}数字 i の書かれたカードは一番左上のマスから下に x_i、右に y_i 移動した先のマスに置かれていることを表し、0\leq x_i,y_i\leq 19 を満たす。出力高橋くんロボを操作する命令列を空白や改行を含めずに一行で出力せよ。入力生成方法カードの配置はランダムに生成される。具体的には (0,0),(0,1)\ldots ,(19,19) の長さ400の座標列をランダムシャッフルし、各 i=0,1,\ldots,99 に対して i 番目の座標に数字 i が書かれたカードが置かれる。
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define arep(i, v) for (auto i : v)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+// #include <atcoder/all>
+// using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T>
+inline bool chmax(T& a, T b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline bool chmin(T& a, T b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+}
+inline string getline() {
+    string s;
+    fflush(stdin);
+    getline(cin, s);
+    return s;
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+struct io {
+    io() {
+        ios::sync_with_stdio(false);
+        cin.tie(0);
+    }
+};
+template <typename Head, typename Value>
+auto vectors(const Head& head, const Value& v) {
+    return vector<Value>(head, v);
+}
+template <typename Head, typename... Tail>
+auto vectors(Head x, Tail... tail) {
+    auto inner = vectors(tail...);
+    return vector<decltype(inner)>(x, inner);
+}
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 1000000007;  // 998244353;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+#include <random>
+std::mt19937 mt{std::random_device{}()};
+int rand(int from, int to) {
+    std::uniform_int_distribution<int> dist(from, to);
+    return dist(mt);
+}
+
+class DIJKSTRA {
+   public:
+    int V;
+
+    struct dk_edge {
+        int to;
+        ll cost;
+    };
+
+    typedef pair<ll, int> PI;  // firstは最短距離、secondは頂点の番号
+    vector<vector<dk_edge>> G;
+    vector<ll> d;      //これ答え。d[i]:=V[i]までの最短距離
+    vector<int> prev;  //経路復元
+
+    DIJKSTRA(int size) {
+        V = size;
+        G = vector<vector<dk_edge>>(V);
+        prev = vector<int>(V, -1);
+    }
+
+    void add(int from, int to, ll cost) {
+        dk_edge e = {to, cost};
+        G[from].push_back(e);
+    }
+
+    void dijkstra(int s) {
+        // greater<P>を指定することでfirstが小さい順に取り出せるようにする
+        priority_queue<PI, vector<PI>, greater<PI>> que;
+        d = vector<ll>(V, LLINF);
+        d[s] = 0;
+        que.push(PI(0, s));
+
+        while (!que.empty()) {
+            PI p = que.top();
+            que.pop();
+            int v = p.second;
+            if (d[v] < p.first) continue;
+            for (int i = 0; i < G[v].size(); i++) {
+                dk_edge e = G[v][i];
+                if (d[e.to] > d[v] + e.cost) {
+                    d[e.to] = d[v] + e.cost;
+                    prev[e.to] = v;
+                    que.push(PI(d[e.to], e.to));
+                }
+            }
+        }
+    }
+    string get_path(int t) {
+        vector<int> path;
+        for (; t != -1; t = prev[t]) {
+            // tがsになるまでprev[t]をたどっていく
+            path.push_back(t);
+        }
+        //このままだとt->sの順になっているので逆順にする
+        reverse(path.begin(), path.end());
+        string res;
+        rep(i, path.size() - 1) {
+            if (path[i] + 1 == path[i + 1]) {
+                res += 'D';
+            } else if (path[i] - 1 == path[i + 1]) {
+                res += 'U';
+            } else if (path[i] + 20 == path[i + 1]) {
+                res += 'R';
+            } else if (path[i] - 20 == path[i + 1]) {
+                res += 'L';
+            }
+        }
+        return res;
+    }
+    void show(void) {
+        for (int i = 0; i < d.size() - 1; i++) {
+            cout << d[i] << " ";
+        }
+        cout << d[d.size() - 1] << endl;
+    }
+};
+vector<vector<DIJKSTRA>> dj(20, vector<DIJKSTRA>(20, 400));
+void add_alledge(int a, int b) {
+    rep(i, 20) {
+        rep(j, 20) {
+            dj[i][j].add(a, b, 1);
+            dj[i][j].add(b, a, 1);
+        }
+    }
+}
+void alldijk() {
+    rep(i, 20) {
+        rep(j, 20) { dj[i][j].dijkstra(i * 20 + j); }
+    }
+}
+set<pair<int, int>> pos;
+// tuple<int, int, int, int> befxy(string s, int x, int y) {
+//     int back = 0;
+//     reverse(all(s));
+//     for (auto si : s) {
+//         back++;
+//         if (si == 'L') {
+//             y += 1;
+//         } else if (si == 'R') {
+//             y -= 1;
+//         } else if (si == 'U') {
+//             x += 1;
+//         } else if (si == 'D') {
+//             x -= 1;
+//         }
+//         if (!pos.count(mp(y, x))) {
+//             return {x, y, back, 1};
+//         }
+//     }
+//     return {x, y, back, 0};
+// }
+
+pair<int, int> nextpos(int X, int Y, char c) {
+    if (c == 'L') {
+        Y--;
+    } else if (c == 'R') {
+        Y++;
+    } else if (c == 'U') {
+        X--;
+    } else if (c == 'D') {
+        X++;
+    }
+    return {X, Y};
+}
+int main() {
+    vvi num(101, vi(2));
+    rep(i, 100) {
+        cin >> num[i][1] >> num[i][0];
+        pos.insert(mp(num[i][0], num[i][1]));
+    }
+    num[100][0] = INF;
+    num[100][1] = INF;
+    rep(i, 20) {
+        rep(j, 19) { add_alledge(i * 20 + j, i * 20 + j + 1); }
+    }
+    rep(i, 19) {
+        rep(j, 20) { add_alledge(i * 20 + j, (i + 1) * 20 + j); }
+    }
+    alldijk();
+
+    string ans;
+    int X = 0;
+    int Y = 0;
+
+    bool hold = 0;
+
+    for (int next = 0; next < 100; next++) {
+        string path = dj[Y][X].get_path(num[next][0] * 20 + num[next][1]);
+
+        for (auto p : path) {
+            ans += p;
+            auto [nX, nY] = nextpos(X, Y, p);
+            X = nX;
+            Y = nY;
+            // if(X==3&&Y==7&&next==72){
+            //     // irep(i,pos){
+            //     //     cout<<i->first<<" "<<i->second<<endl;
+            //     // }
+            //     auto [nextX, nextY] = nextpos(X, Y, p);
+            //     cout<<hold<<" "<<nextX<<" "<<nextY<<" "<<pos.count(mp(Y, X))<<" "<<pos.count(mp(nextY, nextX))<<endl;
+            // }
+            if (hold && !pos.count(mp(Y, X))) {
+                auto [nextX, nextY] = nextpos(X, Y, p);
+                if (pos.count(mp(nextY, nextX))) {
+                    // cout << "O " << next << " " << X << " " << Y << " " << p
+                    //      << " " << nextX << " " << nextY << endl;
+                    hold = 0;
+                    ans += 'O';
+                    num[next + 1][1] = X;
+                    num[next + 1][0] = Y;
+                    pos.insert(mp(Y, X));
+                }
+            }
+            else if (!hold && num[next + 1][0] == Y && num[next + 1][1] == X) {
+                auto [nextX, nextY] = nextpos(X, Y, p);
+                if (!pos.count(mp(nextY, nextX))) {
+                    // cout << "I " << next << " " << X << " " << Y << " " << p
+                    //      << " " << nextX << " " << nextY << endl;
+                    hold = 1;
+                    ans += 'I';
+                    pos.erase(mp(Y, X));
+                }
+            }
+        }
+        ans += 'I';
+        pos.erase(mp(Y, X));
+    }
+    fin(ans);
+}
