@@ -1,0 +1,180 @@
+問題文の引用元：https://atcoder.jp/contests/abc182/tasks/abc182_e
+E - AkariEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2.5 sec / Memory Limit : 1024 MB
+配点 : 500 点
+問題文 : H 行 W 列のマス目があります。このマス目の i 行目 j 列目のマスをマス (i, j) と呼ぶことにします。このマス目の上には N 個の電球と M 個のブロックが置かれていて、i 個目の電球はマス (A_i, B_i) に、i 個目のブロックはマス (C_i, D_i) に置かれています。一つのマスにある電球とブロックは合計で高々一つです。全ての電球は、ブロックが置かれているマスに到達するまで届く光を上下左右の 4 方向に放ちます。電球が置かれているマス自身にも光が届くものとします。マス目上のブロックの置かれていないマスのうち電球の光が届くものの数を求めてください。  
+制約1 \le H, W \le 15001 \le N \le 5 \times 10^51 \le M \le 10^51 \le A_i \le H1 \le B_i \le W1 \le C_i \le H1 \le D_i \le W(A_i, B_i) \neq (A_j, B_j)\ \ (i \neq j)(C_i, D_i) \neq (C_j, D_j)\ \ (i \neq j)(A_i, B_i) \neq (C_j, D_j)入力はすべて整数入力入力は以下の形式で標準入力から与えられる。H W N MA_1 B_1A_2 B_2A_3 B_3\hspace{15pt} \vdotsA_N B_NC_1 D_1C_2 D_2C_3 D_3\hspace{15pt} \vdotsC_M D_M出力マス目上のブロックの置かれていないマスのうち、電球の光が届くものの数を出力せよ。  
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define arep(i, v) for (auto i : v)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+// #include <atcoder/all>
+// using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T>
+inline bool chmax(T& a, T b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline bool chmin(T& a, T b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+}
+inline string getline() {
+    string s;
+    fflush(stdin);
+    getline(cin, s);
+    return s;
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+struct io {
+    io() {
+        ios::sync_with_stdio(false);
+        cin.tie(0);
+    }
+};
+template <typename Head, typename Value>
+auto vectors(const Head& head, const Value& v) {
+    return vector<Value>(head, v);
+}
+template <typename Head, typename... Tail>
+auto vectors(Head x, Tail... tail) {
+    auto inner = vectors(tail...);
+    return vector<decltype(inner)>(x, inner);
+}
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 1000000007;  // 998244353;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+int main() {
+    int h, w, n, m;
+    cin >> h >> w >> n >> m;
+    vvi tate(h, vi(w));
+    vvi yoko(h, vi(w));
+    rep(i, n) {
+        int a, b;
+        cin >> a >> b;
+        a--;
+        b--;
+        tate[a][b] = 1;
+        yoko[a][b] = 1;
+    }
+    rep(i, m) {
+        int a, b;
+        cin >> a >> b;
+        a--;
+        b--;
+        tate[a][b] = 2;
+        yoko[a][b] = 2;
+    }
+    rep(i, h - 1) {
+        rep(j, w) {
+            if (tate[i][j] == 2 || tate[i + 1][j] == 2) continue;
+            if (tate[i][j] == 0) continue;
+            tate[i + 1][j] = 1;
+        }
+    }
+    for (int i = h - 1; i > 0; i--) {
+        rep(j, w) {
+            if (tate[i][j] == 2 || tate[i - 1][j] == 2) continue;
+            if (tate[i][j] == 0) continue;
+            tate[i - 1][j] = 1;
+        }
+    }
+    rep(i, h) {
+        rep(j, w - 1) {
+            if (yoko[i][j] == 2 || yoko[i][j + 1] == 2) continue;
+            if (yoko[i][j] == 0) continue;
+            yoko[i][j + 1] = 1;
+        }
+    }
+    rep(i, h) {
+        for (int j = w - 1; j > 0; j--) {
+            if (yoko[i][j] == 2 || yoko[i][j - 1] == 2) continue;
+            if (yoko[i][j] == 0) continue;
+            yoko[i][j - 1] = 1;
+        }
+    }
+    // rep(i,h)dump(tate[i]);
+    // rep(i,h)dump(yoko[i]);
+    int ans = 0;
+    rep(i, h) rep(j, w) {
+        if (tate[i][j] == 1 || yoko[i][j] == 1) ans++;
+    }
+    fin(ans);
+}

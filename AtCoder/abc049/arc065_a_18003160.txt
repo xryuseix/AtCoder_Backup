@@ -1,0 +1,11 @@
+問題文の引用元：https://atcoder.jp/contests/abc049/tasks/arc065_a
+C - DaydreamEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 300 点
+問題文 : 英小文字からなる文字列 S が与えられます。Tが空文字列である状態から始め、以下の操作を好きな回数繰り返すことで S = T とすることができるか判定してください。T の末尾に dream dreamer erase eraser のいずれかを追加する。
+制約1≦|S|≦10^5S は英小文字からなる。入力入力は以下の形式で標準入力から与えられる。S出力S = T とすることができる場合 YES を、そうでない場合 NO を出力せよ。
+
+
+
+s=input().replace("eraser","").replace("erase","").replace("dreamer","").replace("dream","")
+print("YNEOS"[(s!="")::2])
