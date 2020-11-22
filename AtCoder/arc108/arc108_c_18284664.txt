@@ -1,0 +1,177 @@
+問題文の引用元：https://atcoder.jp/contests/arc108/tasks/arc108_c
+C - Keep Graph ConnectedEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 500 点
+問題文 : 1 から N の番号がついた N 個の頂点と 1 から M の番号がついた M 本の辺からなる連結な無向グラフが与えられます。このグラフに多重辺は存在するかもしれませんが、自己ループはありません。このグラフのそれぞれの辺には 1 以上 N 以下の整数で表されるラベルがついています。辺 i はラベル c_i がついており、頂点 u_i,v_i を双方向につなぐ辺です。すぬけ君はそれぞれの頂点に 1 以上 N 以下の整数を書き込んだのち(頂点に書き込まれた整数に重複があっても構いません)、以下の条件を満たす辺のみを残してそれ以外の辺を取り除くことにしました。条件：辺の両端の頂点に書き込まれた整数を x,y として、x,y のいずれか一方のみが辺についたラベルと等しい上記の条件を満たさない辺を取り除いたあとのグラフも連結のままであるような頂点への整数の書き込み方を よい書き込み方 と呼びます。よい書き込み方が存在するかどうかを判定し、存在するならばその一例を示してください。
+制約2 \leq N \leq 10^5N-1 \leq M \leq 2 \times 10^51 \leq u_i,v_i,c_i \leq N与えられるグラフは連結与えられるグラフに自己ループはない入力入力は以下の形式で標準入力から与えられる。N Mu_1 v_1 c_1\vdotsu_M v_M c_M出力よい書き込み方が存在しないならば No を出力せよ。存在する場合、N 行出力せよ。i 行目には頂点 i に書き込む整数を出力せよ。この書き込み方がよい書き込み方ならば正解となる。
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define arep(i, v) for (auto i : v)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define rall(a) a.rbegin(), a.rend()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+// #include <atcoder/all>
+// using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T>
+inline bool chmax(T& a, T b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline bool chmin(T& a, T b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+}
+inline string getline() {
+    string s;
+    fflush(stdin);
+    getline(cin, s);
+    return s;
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+struct io {
+    io() {
+        ios::sync_with_stdio(false);
+        cin.tie(0);
+    }
+};
+template <typename Head, typename Value>
+auto vectors(const Head& head, const Value& v) {
+    return vector<Value>(head, v);
+}
+template <typename Head, typename... Tail>
+auto vectors(Head x, Tail... tail) {
+    auto inner = vectors(tail...);
+    return vector<decltype(inner)>(x, inner);
+}
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 1000000007;  // 998244353;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+struct edge {
+    int to;
+    int c;
+};
+vector<vector<edge>> g(201010);
+vector<int> ans(201010, 0);
+int n, m;
+
+void dfs(int pos, int bef, int c) {
+    if(ans[pos])return;
+    ans[pos] = c;
+    rep(i, g[pos].size()) {
+        int ne_v = g[pos][i].to;
+        int ne_c = g[pos][i].c;
+        if (bef == ne_v) {
+            continue;
+        }
+        int nc = ne_c;
+        if (ne_c == ans[pos]) {
+            nc = nc % n + 1;
+        }
+        dfs(ne_v, pos, nc);
+    }
+    if (c == -1) {
+        set<int> s;
+        for (auto p : g[0]) {
+            // fin(p.to);
+            s.insert(ans[p.to]);
+        }
+        rep(i, 201010) {
+            if (s.count(i + 1) == 0) {
+                ans[0] = i + 1;
+                return;
+            }
+        }
+    }
+}
+
+int main() {
+    cin >> n >> m;
+    int v, w, c;
+    rep(i, m) {
+        cin >> v >> w >> c;
+        v--;
+        w--;
+        edge e1 = {w, c};
+        edge e2 = {v, c};
+        g[v].pb(e1);
+        g[w].pb(e2);
+    }
+
+    dfs(0, -1, -1);
+    rep(i, n) { fin(ans[i]); }
+}
