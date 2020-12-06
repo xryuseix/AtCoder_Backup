@@ -1,0 +1,157 @@
+問題文の引用元：https://atcoder.jp/contests/arc110/tasks/arc110_c
+C - ExoswapEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 500 点
+問題文 : 1, 2, \ldots, N を並び替えた数列 P = P_1, P_2, \ldots, P_N があります。あなたは P に対して、以下の N - 1 種類の操作を、任意の順番でちょうど 1 回ずつ行わなければなりません。P_1 と P_2 を入れ替えるP_2 と P_3 を入れ替える\vdotsP_{N - 1} と P_N を入れ替える操作の順番を適切に決めることで、P を昇順に並び替えてください。もしそれが不可能な場合、-1 を出力してください。
+制約入力は全て整数2 \leq N \leq 2 \times 10^5P は 1, 2, \ldots, N を並び替えた数列入力入力は以下の形式で標準入力から与えられる。NP_1 P_2 \ldots P_N出力どのような順番で操作しても P を昇順に並び替えることができない場合、-1 を出力せよ。P を昇順に並び替えることができる場合、そのような操作列を N - 1 行使って出力せよ。i ~ (1 \leq i \leq N - 1) 行目には、i 回目の操作で P_j と P_{j + 1} を入れ替えるとして、j を出力せよ。P を昇順に並び替える操作列が複数存在する場合、どれを出力しても構わない。
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+// #include <atcoder/all>
+// using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T>
+inline bool chmax(T& a, T b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline bool chmin(T& a, T b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+}
+template <class T, class U>
+inline void dump(pair<T, U>& p) {
+    cout << p.first << " " << p.second << '\n';
+}
+inline string getline() {
+    string s;
+    fflush(stdin);
+    getline(cin, s);
+    return s;
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+template <typename Head, typename Value>
+auto vectors(const Head& head, const Value& v) {
+    return vector<Value>(head, v);
+}
+template <typename Head, typename... Tail>
+auto vectors(Head x, Tail... tail) {
+    auto inner = vectors(tail...);
+    return vector<decltype(inner)>(x, inner);
+}
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 1000000007;  // 998244353;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+int main() {
+    int n;
+    cin >> n;
+    vi v(n);
+    rep(i, n) cin >> v[i];
+    vi ticket(n - 1, 1);
+    bool ch = 1;
+    map<int, int> m;
+    rep(i, n) { m[v[i]] = i; }
+    vi ans;
+    for (int i = 1; i <= n; i++) {
+        // fin(i);
+        // dump(v);
+        // dump(m);
+        // dump(ticket);
+        if (v[i - 1] == i) continue;
+        while (m[i] != i - 1) {
+            if (ticket[m[i] - 1] == 0) {
+                ch = 0;
+                break;
+            }
+            ans.pb(m[i]);
+            ticket[m[i] - 1] = 0;
+            int a = m[i] - 1;
+            int b = m[i];
+            m[v[m[i] - 1]]++;
+            m[i]--;
+            swap(v[a], v[b]);
+        }
+    }
+    rep(i, ticket.size()) {
+        if (ticket[i] == 1) ch = 0;
+    }
+    if (ch)
+        rep(i, ans.size()) fin(ans[i]);
+    else
+        fin(-1);
+}

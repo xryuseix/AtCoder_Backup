@@ -1,0 +1,11 @@
+問題文の引用元：https://atcoder.jp/contests/arc110/tasks/arc110_a
+A - Redundant RedundancyEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 300 点
+問題文 : 整数 N があります。2, 3, \ldots, N のどれで割っても 1 余る、N 以上 10^{13} 以下の整数を 1 つ出力してください。この問題の
+制約下では、そのような整数は必ず 1 つ以上存在します。
+制約入力は全て整数2 \leq N \leq 30入力入力は以下の形式で標準入力から与えられる。N出力2, 3, \ldots, N のどれで割っても 1 余る、N 以上 10^{13} 以下の整数を 1 つ出力せよ。そのような整数が複数存在する場合、どれを出力しても構わない。
+
+
+
+2329089562801
