@@ -1,0 +1,133 @@
+問題文の引用元：https://atcoder.jp/contests/joi2015yo/tasks/joi2015yo_d
+D - シルクロード (Silk Road)Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 10 sec / Memory Limit : 256 MB
+配点: 100 点問題現在カザフスタンがある地域には，古くは「シルクロード」と呼ばれる交易路があった．シルクロード上には N + 1 個の都市があり，西から順に都市 0, 都市 1, ... , 都市 N と番号がつけられている．都 市 i - 1 と都市 i の間の距離 (1 \leq i \leq N) は D_i である．貿易商である JOI 君は，都市 0 から出発して，都市を順番に経由し ，都市 N まで絹を運ぶことになった．都市 0 から都市 N まで M 日以内に移動しなければならない．JOI 君は，それぞれの日の行動として，以下の 2 つのうちいずれか 1 つを選ぶ ．移動： 現在の都市から 1 つ東の都市へ 1 日かけて移動する．現在都市 i - 1 (1 \leq i \leq N) にいる場合は，都市 i に移動する．待機： 移動を行わず，現在いる都市で 1 日待機する．移動は大変であり，移動するたびに疲労度が溜まっていく．シルクロードでは日毎に天候の変動があり，天候が悪い日ほど移動には苦労を要する．JOI 君が絹を運ぶのに使える M 日間のうち j 日目 (1 \leq j \leq M) の天候の悪さは C_j であることが分かってい る．都市 i - 1 から都市 i (1 \leq i \leq N) に j 日目 (1 \leq j \leq M) に移動する場合，疲労度が D_i \times C_j だけ溜まってしまう．移動を行わず待機している日は疲労 度は溜まらない．JOI 君は，それぞれの日の行動をうまく選ぶことで，できるだけ疲労度を溜めずに移動したい．JOI 君が M 日以内に都市 N に移動するときの ，移動を開始してから終了するまでに溜まる疲労度の合計の最小値を求めよ．入力入力は 1 + N + M 行からなる．1 行目には，2 つの整数 N, M (1 \leq N \leq M \leq 1000) が空白を区切りとして書かれている．これは，シルクロ ードが N + 1 個の都市からなり，JOI 君が絹を都市 0 から 都市 N まで M 日以内に運ばなければならないことを表す．続く N 行のうちの i 行目 (1 \leq i \leq N) には，整数 D_i (1 \leq D_i \leq 1000) が書かれている ．これは，都市 i - 1 と都市 i の間の距離が D_i であることを表す．続く M 行のうちの j 行目 (1 \leq j \leq M) には，整数 C_j (1 \leq C_j \leq 1000) が書かれている ．これは， j 日目の天候の悪さが C_j であることを表す．出力JOI 君が M 日以内に都市 N に移動するときの，移動を開始してから終了するまでに溜まる疲労度の合計の最小値を 1 行で出力せ よ．
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+// #include <atcoder/all>
+// using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T>
+inline bool chmax(T& a, T b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline bool chmin(T& a, T b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+}
+template <class T, class U>
+inline void dump(pair<T, U>& p) {
+    cout << p.first << " " << p.second << '\n';
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+template <typename Head, typename Value>
+auto vectors(const Head& head, const Value& v) {
+    return vector<Value>(head, v);
+}
+template <typename Head, typename... Tail>
+auto vectors(Head x, Tail... tail) {
+    auto inner = vectors(tail...);
+    return vector<decltype(inner)>(x, inner);
+}
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 1000000007;  // 998244353;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vi d(n + 1), c(m);
+    rep(i, n) cin >> d[i];
+    rep(i, m) cin >> c[i];
+
+    vvll dp(n + 2, vll(m + 1, LLINF));
+    rep(i, m) dp[0][i] = 0;
+    rep(i, n) {
+        rep(j, m) {
+            // 移動
+            chmin(dp[i + 1][j + 1], dp[i][j] + d[i] * c[j]);
+            // 待機
+            chmin(dp[i][j + 1], dp[i][j]);
+        }
+    }
+    ll ans = LLINF;
+    rep(i, m + 1) chmin(ans, dp[n][i]);
+    cout << ans << endl;
+    // rep(i, n + 1) dump(dp[i]);
+}

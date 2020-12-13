@@ -1,0 +1,246 @@
+問題文の引用元：https://atcoder.jp/contests/joi2019yo/tasks/joi2019_yo_d
+D - 日本沈没 (Japan Sinks)Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点： 100 点
+問題文 : 日本列島は細長い列島である．日本列島は平行な境界線により N 個の区画に分けられている．区画には端から順に 1 から N の番号が付けられている．区画 i (1 ≦ i ≦ N) の高さは A_i である．日本列島は海に囲まれており，海面の高さは場所によらず一定である．高さが海面の高さより高い区画を陸地と呼ぶ．陸地が連続している部分のことを島と呼ぶ．より正確に書くと以下の通りである．整数 l, r (1 ≦ l ≦ r ≦ N) について，日本列島のうち区画 l，区画 l+1，...，区画 r からなる部分を領域 [l, r] という．以下の条件を満たす領域 [l, r] を島という：区画 l，区画 l+1，...，区画 r はすべて陸地である．l>1 ならば区画 l-1 は陸地ではない．r<N ならば区画 r+1 は陸地ではない．海面の上昇により，日本列島は少しずつ沈没している．現在の海面の高さは 0 であるが，これは時間が経つにつれて徐々に上がり，ついには日本全体が海になってしまう．JOI 君は，海面の高さが上昇すると，日本の島の数が増減することに気付いた．現在から，日本に陸地がなくなるまでの間 (現在も含む) における，島の数の最大値を求めたい．
+制約1 ≦ N ≦ 100000 (= 10^5)0 ≦ A_i ≦ 1000000000 (= 10^9) (1 ≦ i ≦ N)入力入力は以下の形式で標準入力から与えられる．NA_1 A_2 ... A_N出力現在から，日本に陸地がなくなるまでの間 (現在も含む) における，島の数の最大値を 1 行で出力せよ．小課題(7 点) N ≦ 2000, A_i ≦ 2000 (1 ≦ i ≦ N)(8 点) N ≦ 2000(85 点) 追加の
+制約はない．
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+// #include <atcoder/all>
+// using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T>
+inline bool chmax(T& a, T b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline bool chmin(T& a, T b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+}
+template <class T, class U>
+inline void dump(pair<T, U>& p) {
+    cout << p.first << " " << p.second << '\n';
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+template <typename Head, typename Value>
+auto vectors(const Head& head, const Value& v) {
+    return vector<Value>(head, v);
+}
+template <typename Head, typename... Tail>
+auto vectors(Head x, Tail... tail) {
+    auto inner = vectors(tail...);
+    return vector<decltype(inner)>(x, inner);
+}
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 1000000007;  // 998244353;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+class UnionFind {
+   public:
+    // 親の番号を格納．親だった場合は-(その集合のサイズ)
+    vector<int> Parent;
+    // 重さの差を格納
+    vector<ll> diffWeight;
+    int allsize;
+
+    UnionFind(const int N) {
+        Parent = vector<int>(N, -1);
+        diffWeight = vector<ll>(N, 0);
+        allsize = N;
+    }
+
+    // Aがどのグループに属しているか調べる
+    int root(const int A) {
+        if (Parent[A] < 0) return A;
+        int Root = root(Parent[A]);
+        diffWeight[A] += diffWeight[Parent[A]];
+        return Parent[A] = Root;
+    }
+
+    // 自分のいるグループの頂点数を調べる
+    int size(const int A) { return -Parent[root(A)]; }
+
+    // 自分の重さを調べる
+    ll weight(const int A) {
+        root(A);  // 経路圧縮
+        return diffWeight[A];
+    }
+
+    // 重さの差を計算する
+    ll diff(const int A, const int B) { return weight(B) - weight(A); }
+
+    // AとBをくっ付ける
+    bool connect(int A, int B, ll W = 0) {
+        // Wをrootとの重み差分に変更
+        W += weight(A);
+        W -= weight(B);
+
+        // AとBを直接つなぐのではなく、root(A)にroot(B)をくっつける
+        A = root(A);
+        B = root(B);
+
+        if (A == B) {
+            //すでにくっついてるからくっ付けない
+            return false;
+        }
+
+        allsize--;
+
+        // 大きい方(A)に小さいほう(B)をくっ付ける
+        // 大小が逆だったらひっくり返す
+        if (size(A) < size(B)) {
+            swap(A, B);
+            W = -W;
+        }
+
+        // Aのサイズを更新する
+        Parent[A] += Parent[B];
+        // Bの親をAに変更する
+        Parent[B] = A;
+
+        // AはBの親であることが確定しているのでBにWの重みを充てる
+        diffWeight[B] = W;
+
+        return true;
+    }
+};
+
+map<int, int> zip;
+int compress(vector<int> x) {
+    int unzip[x.size()];
+    sort(x.begin(), x.end());
+    x.erase(unique(x.begin(), x.end()), x.end());
+    for (int i = 0; i < x.size(); i++) {
+        zip[x[i]] = i;
+        unzip[i] = x[i];
+    }
+    return x.size();
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vi v(n);
+    int sum = 0;
+    rep(i, n) {
+        cin >> v[i];
+        sum += v[i];
+    }
+    if (!sum) {
+        fin(0);
+        return 0;
+    }
+    compress(v);
+    rep(i, n) v[i] = zip[v[i]];
+
+    map<int, vi> point;
+    rep(i, n) {
+        if (point.find(v[i]) == point.end()) {
+            point[v[i]] = vector<int>(0);
+        }
+        point[v[i]].pb(i);
+    }
+
+    vi exist(n, 0);
+    int inai = n;
+
+    UnionFind uni(n);
+
+    int ans = 0;
+    for (int height = 100001; height >= 0; height--) {
+        if (point.find(height) == point.end()) continue;
+        for (auto it = point[height].begin(); it != point[height].end(); it++) {
+            int p = *it;
+            exist[p] = true;
+            if (p > 0) {
+                if (exist[p - 1]) uni.connect(p, p - 1);
+            }
+            if (p < n - 1) {
+                if (exist[p + 1]) uni.connect(p, p + 1);
+            }
+            inai--;
+        }
+        // cout<<height << " " << uni.allsize << " " << inai << endl;
+        // dump(exist);
+        // cout << endl;
+        chmax(ans, uni.allsize - inai);
+    }
+    fin(ans);
+}
