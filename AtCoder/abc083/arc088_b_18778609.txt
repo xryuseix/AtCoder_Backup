@@ -1,0 +1,128 @@
+問題文の引用元：https://atcoder.jp/contests/abc083/tasks/arc088_b
+D - Wide FlipEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 500 点
+問題文 : 0 と 1 からなる文字列 S が与えられます。以下の操作を好きな回数繰り返すことで S の要素をすべて 0 にできるような、|S| 以下の最大の整数 K を求めてください。S の長さ K 以上の連続する区間 [l,r] を選ぶ(すなわち、r-l+1\geq K が満たされる必要がある)。l\leq i\leq r なるすべての整数 i に対し、S_i が 0 なら S_i を 1 に、S_i が 1 なら S_i を 0 に置き換える。
+制約1\leq |S|\leq 10^5S_i(1\leq i\leq N) は 0 または 1 である入力入力は以下の形式で標準入力から与えられる。S出力操作を好きな回数繰り返すことで S の要素をすべて 0 にできるような 最大の (21:08 JST 修正) 整数 K を出力せよ。
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+// #include <atcoder/all>
+// using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T>
+inline bool chmax(T& a, T b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline bool chmin(T& a, T b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+}
+template <class T, class U>
+inline void dump(pair<T, U>& p) {
+    cout << p.first << " " << p.second << '\n';
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+template <typename Head, typename Value>
+auto vectors(const Head& head, const Value& v) {
+    return vector<Value>(head, v);
+}
+template <typename Head, typename... Tail>
+auto vectors(Head x, Tail... tail) {
+    auto inner = vectors(tail...);
+    return vector<decltype(inner)>(x, inner);
+}
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 1000000007;  // 998244353;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+int main() {
+    string s;
+    cin >> s;
+    int ans = INF;
+    for (int i = 1; i < s.size(); i++) {
+        if (s[i] != s[i - 1]) {
+            chmin(ans, max(i, (int)s.size() - i));
+        }
+    }
+    if (ans == INF) {
+        cout << s.size() << endl;
+        return 0;
+    }
+    fin(ans);
+}
