@@ -1,0 +1,153 @@
+問題文の引用元：https://atcoder.jp/contests/arc027/tasks/arc027_3
+C - 最高のトッピングにしようなEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : 私の行きつけの飲食店では、食事をすることでチケットを得ることができる。チケットは、トッピングとの交換に必須なスペシャルチケットと、通常のチケットの 2 種類存在する。このお店には N 種類のトッピングがあり、トッピング i は、t_i 枚のチケットと交換することによって入手できる。このお店ではチケットを組み合わせて複数種類のトッピングを入手することもできるが、同じトッピングを複数回入手することはできない。交換の際、スペシャルチケットも通常のチケットも区別なく 1 枚として数えられるが、交換で用いるチケットには、各トッピングごとにスペシャルチケットが 1 枚以上含まれなければならない。例えば 4 枚のチケットと交換できるトッピングがあった場合、以下の 4 通りの交換方法が考えられる。スペシャルチケット 1 枚と通常のチケット 3 枚の組み合わせ。スペシャルチケット 2 枚と通常のチケット 2 枚の組み合わせ。スペシャルチケット 3 枚と通常のチケット 1 枚の組み合わせ。スペシャルチケット 4 枚のみからなる組み合わせ。またトッピングにはそれぞれ嬉しさという正の整数が決められていて、トッピング i を入手した時の嬉しさは h_i である。今日は特別な日なので、現在持っているチケットをうまく使用して、入手したトッピングの嬉しさの合計値を最大化させたい。チケットとトッピングの情報から、嬉しさの合計値として考えられる最大値を求めるプログラムを作成せよ。入力入力は以下の形式で標準入力から与えられる。X YNt_1 h_1t_2 h_2:t_N h_N1 行目には、持っているチケットの枚数を表す 2 つの整数 X (1 ≦ X ≦ 300) と Y (0 ≦ Y ≦ 300) が空白区切りで書かれている。これは、最初にスペシャルチケットを X 枚、通常のチケットを Y 枚持っていることを表す。2 行目には、トッピングの種類数を表す整数 N (1 ≦ N ≦ 300) が与えられる。3 行目から N 行には、トッピングに関する情報を表す 2 つの整数 t_i (1 ≦ t_i ≦ 600), h_i (1 ≦ h_i ≦ 5,000,000) が空白区切りで与えられる。これは、トッピング i がチケット t_i 枚と交換することで入手でき、入手したことで得られる嬉しさが h_i であることを表す。部分点この問題には部分点が設定されている。X ≦ 50, Y ≦ 50, N ≦ 50, t_i ≦ 100 (1 ≦ i ≦ N) を満たすデータセット 1 に正解した場合は、30 点が与えられる。追加
+制約のないデータセット 2 に正解した場合は、上記とは別に 70 点が与えられる。出力嬉しさの合計値として考えられる最大値を 1 行に出力せよ。出力の末尾にも改行を入れること。
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+// #include <atcoder/all>
+// using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T>
+inline bool chmax(T& a, T b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline bool chmin(T& a, T b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+}
+template <class T, class U>
+inline void dump(pair<T, U>& p) {
+    cout << p.first << " " << p.second << '\n';
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+template <typename Head, typename Value>
+auto vectors(const Head& head, const Value& v) {
+    return vector<Value>(head, v);
+}
+template <typename Head, typename... Tail>
+auto vectors(Head x, Tail... tail) {
+    auto inner = vectors(tail...);
+    return vector<decltype(inner)>(x, inner);
+}
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 1000000007;  // 998244353;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+int main() {
+    int x, y;
+    cin >> x >> y;
+    int n;
+    cin >> n;
+    vi t(n), h(n);
+    rep(i, n) cin >> t[i] >> h[i];
+
+    ll dp[n + 1][x + 1][y + 1];
+    rep(i, n + 1) rep(j, x + 1) rep(k, y + 1) dp[i][j][k] = 0;
+
+    rep(i, n) {
+        // 今見ている品物
+        rep(j, x + 1) {
+            // Xのうちjまい使っている状態
+            rep(k, y + 1) {
+                // Yのうちkまい使っている状態
+                // 使うばあい
+                if (j + 1 <= x && k + (t[i] - 1) <= y) {
+                    // スペシャルチケットが1まいのばあい
+                    chmax(dp[i + 1][j + 1][k + (t[i] - 1)], dp[i][j][k] + h[i]);
+                } else {
+                    // スペシャルチケットが2まい以上のばあい
+                    int normal = y - k;
+                    int sp = t[i] - normal;
+                    if (sp > 0 && j + sp <= x && k + normal <= y) {
+                        chmax(dp[i + 1][j + sp][y], dp[i][j][k] + h[i]);
+                    }
+                }
+
+                // 使わないばあい
+                chmax(dp[i + 1][j][k], dp[i][j][k]);
+            }
+        }
+    }
+    ll ans = 0;
+    rep(i, x + 1) {
+        rep(j, y + 1) { chmax(ans, dp[n][i][j]); }
+    }
+    cout << ans << endl;
+}
