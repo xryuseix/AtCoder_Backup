@@ -1,0 +1,152 @@
+問題文の引用元：https://atcoder.jp/contests/abc021/tasks/abc021_c
+C - 正直者の高橋くんEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : あなたと高橋君は、AtCoder 王国に住んでいます。AtCoder 王国には、N 個の町と、町どうしを結ぶ M 本の道路が存在し、それらは双方向に移動可能です。N 個の町はそれぞれ 町 1,町 2,…,町 N と呼ばれています。また、M 個の道路はそれぞれ 道路 1,道路 2,…,道路 M と呼ばれています。高橋君はあなたの家に遊びに行くことにしました。そして、高橋君は町 a から出発して、AtCoder 王国のいくつかの町（0 個でも良い）を経由して町 b にあるあなたの家に到着しました。高橋君は最短経路を辿ってきたと主張しています。高橋君は正直なので、絶対に嘘をつきません。そこで、あなたは町 a から町 b への最短経路が何通りあるかを数えることにしました。答えは非常に大きくなる可能性があるので、実際の答えを 1,000,000,007(=10^9+7) で割った余りを出力してください。町 a から町 b への最短経路とは、町 a から町 b への移動経路において道路を通る回数が最小となるような経路のことを言います。入力入力は以下の形式で標準入力から与えられる。Na bMx_1 y_1x_2 y_2:x_M y_M1 行目には、AtCoder 王国に存在する町の個数を表す整数 N(2≦N≦100) が与えられる。2 行目には、高橋君が出発する町とあなたの家がある町の番号を表す 2 つの整数 a,b(1≦a,b≦N,a≠b) が空白区切りで与えられる。3 行目には、AtCoder 王国に存在する道路の個数を表す整数 M(1≦M≦200) が与えられる。4 行目から M 行には、道路の情報が与えられる。そのうち i(1≦i≦M) 行目には道路 i が結んでいる 2 つの町の番号 x_i,y_i(1≦x_i,y_i≦N,x_i≠y_i) が空白区切りで与えられる。どの町からどの町へもいくつかの道を辿ることによって行くことができる。出力1 行目に、町 a から町 b への最短経路の個数を 1,000,000,007 で割った余りを出力してください。末尾の改行を忘れないこと。
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+// #include <atcoder/all>
+// using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T>
+inline bool chmax(T& a, T b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline bool chmin(T& a, T b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+}
+template <class T, class U>
+inline void dump(pair<T, U>& p) {
+    cout << p.first << " " << p.second << '\n';
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+template <typename Head, typename Value>
+auto vectors(const Head& head, const Value& v) {
+    return vector<Value>(head, v);
+}
+template <typename Head, typename... Tail>
+auto vectors(Head x, Tail... tail) {
+    auto inner = vectors(tail...);
+    return vector<decltype(inner)>(x, inner);
+}
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 1000000007;  // 998244353;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+int main() {
+    int n;
+    cin >> n;
+    int a, b;
+    cin >> a >> b;
+    a--;
+    b--;
+    int m;
+    cin >> m;
+    vvi v(n);
+    rep(i, m) {
+        int A, B;
+        cin >> A >> B;
+        A--;
+        B--;
+        v[A].pb(B);
+        v[B].pb(A);
+    }
+    queue<int> q;
+    vpll dp(n, mp(INF, 1));  // 最短経路，何通り
+    dp[a] = mp(0, 1);
+    q.push(a);
+
+    while (!q.empty()) {
+        int p = q.front();
+        q.pop();
+        int path = dp[p].fi;
+        int cnt = dp[p].se;
+        for (auto i : v[p]) {
+            if (dp[i].fi == path + 1) {
+                dp[i].se += cnt;
+                dp[i].se %= MOD;
+            } else if (dp[i].fi > path + 1) {
+                dp[i] = mp(path + 1, dp[p].se);
+                q.push(i);
+            }
+        }
+    }
+    cout << dp[b].second << endl;
+    // rep(i, n) { cout << i << " : " << dp[i].fi << " " << dp[i].se << endl; }
+}
