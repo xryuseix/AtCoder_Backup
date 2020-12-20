@@ -1,0 +1,162 @@
+問題文の引用元：https://atcoder.jp/contests/joi2021yo2/tasks/joi2021_yo2_a
+A - 往復すごろく (Round Sugoroku)Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点： 100 点
+問題文 : JOI 高校の葵は新しいすごろくを購入した．このすごろくは N+2 個のマスが横一列に並んだ形をしている．これらのマスには，左端のマスから右端のマスへと順に，0 から N+1 までの番号がついている．初め，マス 0 とマス N+1 には X が，マス i (1 \leqq i \leqq N) には S_i が書かれている．ただし，S_i は文字 . または # である．葵はこのすごろくと 1 つの駒を使って遊んでいる．初め，駒はマス A (1 \leqq A \leqq N) に右を向いた状態で置かれている．ただし，S_A は文字 . である．葵は 1 秒経つごとに，駒を向いている方向へ 1 マス移動させる．このすごろくには次のようなルールが設定されている．X が書かれたマスに駒が乗ると，駒の向きは反転する．. が書かれたマスに駒が乗ったとしても，何も起こらない．# が書かれたマスに駒が乗ると，駒の向きは反転する．このとき，このマスに書かれた文字を . に変更する．したがって，その後はこのマスに駒が乗ったとしても向きは反転しない．なお，駒の反転や文字の変更にかかる時間は無視できる．すごろくと駒の初めの状態が与えられたとき，# が書かれたマスがすべてなくなるまでに要する時間を求めるプログラムを作成せよ．
+制約2 \leqq N \leqq 200\,000．1 \leqq A \leqq N．S_i は文字 . または # である (1 \leqq i \leqq N)．S_A は文字 . である．S_i が文字 # であるような i (1 \leqq i \leqq N) が少なくとも 1 つ存在する．小課題(40 点) N \leqq 3\,000．(60 点) 追加の
+制約はない．入力入力は以下の形式で標準入力から与えられる．N ASただし，S は長さ N の文字列で，その i 文字目 (1 \leqq i \leqq N) は S_i である．出力標準出力に，# が書かれたマスがすべてなくなるまでに何秒かかるかを 1 行で出力せよ．
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define MATHPI acos(-1)
+#define fi first
+#define se second
+// #include <atcoder/all>
+// using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T, class U>
+inline bool chmax(T& a, U b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T, class U>
+inline bool chmin(T& a, U b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+}
+template <class T, class U>
+inline void dump(pair<T, U>& p) {
+    cout << p.first << " " << p.second << '\n';
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+template <typename Head, typename Value>
+auto vectors(const Head& head, const Value& v) {
+    return vector<Value>(head, v);
+}
+template <typename Head, typename... Tail>
+auto vectors(Head x, Tail... tail) {
+    auto inner = vectors(tail...);
+    return vector<decltype(inner)>(x, inner);
+}
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 1000000007;  // 998244353;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+    k--;
+    string s;
+    cin >> s;
+    vvi v(2);
+    rep(i, n) {
+        if (i < k) {
+            if (s[i] == '#') v[0].pb(i);
+        } else if (i > k) {
+            if (s[i] == '#') v[1].pb(i);
+        }
+    }
+    reverse(all(v[0]));
+    v[0].pb(INF);
+    v[1].pb(INF);
+    int pos = k;
+    int turn = 0;
+    int cur[2] = {0};
+    ll ans = 0;
+
+    // dump(v[0]);
+    // dump(v[1]);
+
+    while (1) {
+        turn = 1 - turn;
+        if (v[turn][cur[turn]] == INF) {
+            if (turn == 0) {
+                // スタート
+                ans += abs(pos - (-1));
+                pos = -1;
+            } else {
+                // ゴール
+                ans += abs(pos - (n));
+                pos = n;
+            }
+        } else {
+            ans += abs(pos - v[turn][cur[turn]]);
+            pos = v[turn][cur[turn]];
+            cur[turn]++;
+        }
+        if (v[0][cur[0]] == INF && v[1][cur[1]] == INF) {
+            break;
+        }
+    }
+    fin(ans);
+}
