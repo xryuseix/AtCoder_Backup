@@ -1,0 +1,9 @@
+問題文の引用元：https://atcoder.jp/contests/iroha2019-day3/tasks/iroha2019_day3_j
+J - Go to HeavenEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点: 100 点
+問題文 : この問題はあなたが普段いかに徳を積んできたかを確かめる問題です。 1 行にJudgementとだけ出力し、最後に改行してください。すると、 1/2 の確率でACが得られます。(この抽選は提出ごとに独立に行われます。)なお、この問題でリジャッジが行われないことが保証されます。入力この問題では入力は与えられない。出力指示通り出力して下さい。偉大なる神はあなたの行いを全てご覧になり、その結果を業という形であなたに授けることに注意してください。解説解説
+
+
+
+print("Judgement")
