@@ -1,0 +1,9 @@
+問題文の引用元：https://atcoder.jp/contests/pakencamp-2020-day1/tasks/pakencamp_2020_day1_a
+A - パ研合宿2020Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB                                        
+配点 : 100 点                
+問題文 :                                     この合宿の名前はパ研合宿2020ですが、今年は西暦で何年ですか？                                                                                                    入力                    この問題では入力は与えられません。                                                                            出力                                            今年が西暦 n 年であるとして、n を出力してください。                        出力の最後に改行を忘れないでください。                                                                                            出力例                2021                                        \cdots あれ？                        
+
+
+
+2021

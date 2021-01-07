@@ -1,0 +1,149 @@
+問題文の引用元：https://atcoder.jp/contests/pakencamp-2020-day1/tasks/pakencamp_2020_day1_e
+E - AmaryEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB                                        
+配点 : 300 点                
+問題文 :                                     penguinman は 2 つの正整数 A,\ B を持っていましたが、失くしてしまいました。                    彼曰く、A,\ B は以下の性質を持っていたそうです。                                    A を B で割った余りが X                    B を A で割った余りが Y                    1 \leq A,\ B\leq10^{18}                    A,\ B は共に整数                                彼の証言に合致する A,\ B の組が存在するか判定し、存在するならあり得るものを 1 つ構築してください。                                                                
+制約                            入力は全て整数である。                0\leq X,\ Y\leq10^9                                                                            入力                    入力は以下の形式で標準入力から与えられます。                    \(X\) \(Y\)                                                                            出力                    証言に合致する A,\ B の組が存在しない場合、-1 を出力してください。                    存在する場合、あり得る A,\ B の組を空白区切りで出力してください。                    答えが複数存在する場合いずれを出力しても構いません。                                                                        
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define fi first
+#define se second
+// #include <atcoder/all>
+// using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T, class U>
+inline bool chmax(T& a, U b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T, class U>
+inline bool chmin(T& a, U b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+}
+template <class T, class U>
+inline void dump(pair<T, U>& p) {
+    cout << p.first << " " << p.second << '\n';
+}
+string getline() {
+    string s;
+    fflush(stdin);
+    getline(cin, s);
+    return s;
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+template <typename Head, typename Value>
+auto vectors(const Head& head, const Value& v) {
+    return vector<Value>(head, v);
+}
+template <typename Head, typename... Tail>
+auto vectors(Head x, Tail... tail) {
+    auto inner = vectors(tail...);
+    return vector<decltype(inner)>(x, inner);
+}
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 1000000007;  // 998244353;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+pair<ll, ll> calc(ll X, ll Y) {
+    rep(i, 200000) {
+        ll A = (X + Y) * i + X;
+        ll B = (X + Y);
+        if (!A || !B) continue;
+        if (A % B == X && B % A == Y) {
+            return {A, B};
+        }
+    }
+    return {-1, -1};
+}
+
+int main() {
+    ll a, b;
+    cin >> a >> b;
+    if(!a&&!b){
+        fin("1 1");
+        return 0;
+    }
+    auto [A, B] = calc(a, b);
+    if (A != -1) {
+        cout << A << " " << B << endl;
+    } else {
+        auto [B, A] = calc(b, a);
+        if (A == -1) {
+            fin(-1);
+        } else {
+            cout << A << " " << B << endl;
+        }
+    }
+}
