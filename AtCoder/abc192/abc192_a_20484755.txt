@@ -1,0 +1,10 @@
+問題文の引用元：https://atcoder.jp/contests/abc192/tasks/abc192_a
+A - StarEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 100 点
+問題文 : 高橋君はゲームで遊んでいます。このゲームでは、今までに集めたコインの枚数が 100 の倍数になるごとにご褒美がもらえます。高橋君が今までに集めたコインの枚数は X 枚です。次にご褒美をもらうためには、あと何枚のコインを集めればよいでしょうか？ (X が 100 の倍数の場合、コインを累計で X 枚集めたことに対するご褒美はすでにもらったとします。)
+制約0 \leq X \leq 10^5入力入力は以下の形式で標準入力から与えられる。X出力次にご褒美をもらうために、追加で集める必要のあるコインの枚数を出力せよ。
+
+
+
+print(100-int(input())%100)

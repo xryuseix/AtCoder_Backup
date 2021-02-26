@@ -1,0 +1,194 @@
+問題文の引用元：https://atcoder.jp/contests/abc192/tasks/abc192_e
+E - TrainEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 500 点
+問題文 : AtCoder国には 1 から N の番号がついた N 個の都市と、1 から M の番号がついた M 本の鉄道があります。鉄道 i は都市 A_i と都市 B_i の間を結んでおり、時刻が K_i の倍数になる毎に、双方の都市からそれぞれ他方の都市への列車が発車します。この列車は出発から到着までに T_i の時間がかかります。  あなたはいま都市 X にいます。時刻 0 またはそれ以降に都市 X を発車する列車に乗って移動を開始するとき、都市 Y には最速でいつたどり着けるか求めてください。都市 Y にたどり着くことが出来ない場合はそのことを報告してください。ただし、乗り換えにかかる時間は無視できるため、どの都市においても、あなたの乗っている列車の到着時刻と同時に発車する別の列車に乗り換えることが可能であるとします。
+制約2 \leq N \leq 10^50 \leq M \leq 10^51 \leq X,Y \leq NX \neq Y1 \leq A_i,B_i \leq NA_i \neq B_i1 \leq T_i \leq 10^91 \leq K_i \leq 10^9入力は全て整数入力入力は以下の形式で標準入力から与えられる。N M X YA_1 B_1 T_1 K_1\vdotsA_M B_M T_M K_M出力都市 Y にたどり着くことができる最も早い時刻を出力せよ。ただし、都市 Y にたどり着くことが出来ない場合はかわりに -1 と出力せよ。
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define fi first
+#define se second
+// #include <atcoder/all>
+// using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T, class U>
+inline bool chmax(T& a, U b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T, class U>
+inline bool chmin(T& a, U b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+}
+template <class T, class U>
+inline void dump(pair<T, U>& p) {
+    cout << p.first << " " << p.second << '\n';
+}
+string getline() {
+    string s;
+    fflush(stdin);
+    getline(cin, s);
+    return s;
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 1000000007;  // 998244353;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+class DIJKSTRA {
+   public:
+    int V;
+
+    struct dk_edge {
+        int to;
+        ll cost;
+        ll k;
+    };
+
+    typedef pair<ll, int> PI;  // firstは最短距離、secondは頂点の番号
+    vector<vector<dk_edge>> G;
+    vector<ll> d;      //これ答え。d[i]:=V[i]までの最短距離
+    vector<int> prev;  //経路復元
+
+    DIJKSTRA(int size) {
+        V = size;
+        G = vector<vector<dk_edge>>(V);
+        prev = vector<int>(V, -1);
+    }
+
+    void add(int from, int to, ll cost, ll k) {
+        dk_edge e = {to, cost, k};
+        G[from].push_back(e);
+    }
+
+    void dijkstra(int s) {
+        // greater<P>を指定することでfirstが小さい順に取り出せるようにする
+        priority_queue<PI, vector<PI>, greater<PI>> que;
+        d = vector<ll>(V, LLINF);
+        d[s] = 0;
+        que.push(PI(0, s));
+
+        while (!que.empty()) {
+            PI p = que.top();
+            que.pop();
+            int v = p.second;
+            if (d[v] < p.first) continue;
+            for (int i = 0; i < G[v].size(); i++) {
+                dk_edge e = G[v][i];
+                if (d[e.to] > e.cost + (d[v] + e.k - 1) / e.k * e.k) {
+                    d[e.to] = e.cost + (d[v] + e.k - 1) / e.k * e.k;
+                    que.push(PI(d[e.to], e.to));
+                }
+            }
+        }
+    }
+    vector<int> get_path(int t) {
+        vector<int> path;
+        for (; t != -1; t = prev[t]) {
+            // tがsになるまでprev[t]をたどっていく
+            path.push_back(t);
+        }
+        //このままだとt->sの順になっているので逆順にする
+        reverse(path.begin(), path.end());
+        return path;
+    }
+    void show(void) {
+        for (int i = 0; i < d.size() - 1; i++) {
+            cout << d[i] << " ";
+        }
+        cout << d[d.size() - 1] << endl;
+    }
+};
+
+int main() {
+    int n, m, x, y;
+    cin >> n >> m >> x >> y;
+    int a, b, t, k;
+    x--;
+    y--;
+    DIJKSTRA dj(n);
+    rep(i, m) {
+        cin >> a >> b >> t >> k;
+        a--;
+        b--;
+        dj.add(a, b, t, k);
+        dj.add(b, a, t, k);
+    }
+    dj.dijkstra(x);
+    if (dj.d[y] == LLINF) {
+        fin(-1);
+    } else
+        cout << dj.d[y] << endl;
+}
