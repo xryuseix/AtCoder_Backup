@@ -1,0 +1,265 @@
+問題文の引用元：https://atcoder.jp/contests/abc065/tasks/arc076_b
+D - Built?Editorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+配点 : 500 点
+問題文 : 平面上に、N 個の街があります。i 個目の街は、座標 (x_i,y_i) にあります。同じ座標に、複数の街があるかもしれません。座標 (a,b) にある街と座標 (c,d) にある街の間に道を造るのには、min(|a-c|,|b-d|) 円かかります。街と街の間以外に、道を造ることはできません。任意の 2 つの街の間を、道を何本か通って行き来できるようにするためは、最低で何円必要でしょうか。
+制約2 ≦ N ≦ 10^50 ≦ x_i,y_i ≦ 10^9入力は全て整数である入力入力は以下の形式で標準入力から与えられる。Nx_1 y_1x_2 y_2:x_N y_N出力任意の 2 つの街の間を道を何本か通って行き来できるようにするためにかかるお金の最小値を出力せよ。
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define fi first
+#define se second
+#include <atcoder/all>
+using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T, class U>
+inline bool chmax(T& a, U b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T, class U>
+inline bool chmin(T& a, U b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+}
+template <class T, class U>
+inline void dump(pair<T, U>& p) {
+    cout << p.first << " " << p.second << '\n';
+}
+string getline() {
+    string s;
+    fflush(stdin);
+    getline(cin, s);
+    return s;
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 1000000007;  // 998244353;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+class UnionFind {
+   public:
+    // 親の番号を格納．親だった場合は-(その集合のサイズ)
+    vector<int> Parent;
+    // 重さの差を格納
+    vector<ll> diffWeight;
+
+    UnionFind(const int N) {
+        Parent = vector<int>(N, -1);
+        diffWeight = vector<ll>(N, 0);
+    }
+
+    // Aがどのグループに属しているか調べる
+    int root(const int A) {
+        if (Parent[A] < 0) return A;
+        int Root = root(Parent[A]);
+        diffWeight[A] += diffWeight[Parent[A]];
+        return Parent[A] = Root;
+    }
+
+    // 自分のいるグループの頂点数を調べる
+    int size(const int A) { return -Parent[root(A)]; }
+
+    // 自分の重さを調べる
+    ll weight(const int A) {
+        root(A);  // 経路圧縮
+        return diffWeight[A];
+    }
+
+    // 重さの差を計算する
+    ll diff(const int A, const int B) { return weight(B) - weight(A); }
+
+    // AとBをくっ付ける
+    bool connect(int A, int B, ll W = 0) {
+        // Wをrootとの重み差分に変更
+        W += weight(A);
+        W -= weight(B);
+
+        // AとBを直接つなぐのではなく、root(A)にroot(B)をくっつける
+        A = root(A);
+        B = root(B);
+
+        if (A == B) {
+            //すでにくっついてるからくっ付けない
+            return false;
+        }
+
+        // 大きい方(A)に小さいほう(B)をくっ付ける
+        // 大小が逆だったらひっくり返す
+        if (size(A) < size(B)) {
+            swap(A, B);
+            W = -W;
+        }
+
+        // Aのサイズを更新する
+        Parent[A] += Parent[B];
+        // Bの親をAに変更する
+        Parent[B] = A;
+
+        // AはBの親であることが確定しているのでBにWの重みを充てる
+        diffWeight[B] = W;
+
+        return true;
+    }
+};
+// Union-Findも呼んで！！そして上の書き換えて！！！
+struct kr_edge {
+    int u;  // 辺の片方，fromではないので二回辺を張る必要はない
+    int v;  // 辺のもう片方
+    int cost;
+
+    // コストの大小で順序定義
+    bool operator<(const kr_edge& e) const { return cost < e.cost; }
+};
+class Kruskal {
+   public:
+    bool comp(const kr_edge& e1, const kr_edge& e2) {  // sort関数の比較関数
+        return e1.cost < e2.cost;
+    }
+
+    vector<kr_edge> es;     // 辺の集合
+    vector<kr_edge> minst;  // 最小全域木に用いられる辺の集合
+    int V, E;               // 頂点数と辺数
+
+    Kruskal(int v) { V = v; }
+
+    void add(int v, int u, int cost) {
+        kr_edge e = {v, u, cost};
+        es.push_back(e);
+    }
+
+    ll kruskal(void) {
+        sort(es.begin(), es.end());  // kr_edge.costが小さい順にソートされる
+        UnionFind uni(V);            // union-findの初期化
+        ll res = 0;
+        for (int i = 0; i < es.size(); i++) {
+            kr_edge e = es[i];
+            if (uni.root(e.u) != uni.root(e.v)) {
+                uni.connect(e.u, e.v);
+                res += e.cost;
+                minst.push_back(e);
+            }
+        }
+        return res;
+    }
+
+    void show(void) {
+        vvi v(V, vi(V, -1));
+        for (int i = 0; i < minst.size(); i++) {
+            v[minst[i].u][minst[i].v] = minst[i].cost;
+            v[minst[i].v][minst[i].u] = minst[i].cost;
+        }
+        for (int i = 0; i < V; i++) {
+            for (int j = 0; j < V; j++) {
+                if (v[i][j] == -1) {
+                    printf("  __ ");
+                } else {
+                    printf("%4d ", v[i][j]);
+                }
+            }
+            cout << endl;
+        }
+    }
+};
+
+template <class T>
+void lambdaSort(vector<T>& v) {
+    sort(all(v), [](auto const& l, auto const& r) {
+        return l.fi.se < r.fi.se;  // このbool式が成り立つ時入れ替える
+    });
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<pair<pair<int, int>, int>> v(n);
+    rep(i, n) {
+        cin >> v[i].fi.fi >> v[i].fi.se;
+        v[i].se = i;
+    }
+    Kruskal kr(n);
+    Sort(v);
+    rep(i, n - 1) {
+        kr.add(v[i].se, v[i + 1].se,
+               min(abs(v[i].fi.fi - v[i + 1].fi.fi),
+                   abs(v[i].fi.se - v[i + 1].fi.se)));
+    }
+    lambdaSort(v);
+    rep(i, n - 1) {
+        kr.add(v[i].se, v[i + 1].se,
+               min(abs(v[i].fi.fi - v[i + 1].fi.fi),
+                   abs(v[i].fi.se - v[i + 1].fi.se)));
+    }
+    ll ans = kr.kruskal();
+    fin(ans);
+}
