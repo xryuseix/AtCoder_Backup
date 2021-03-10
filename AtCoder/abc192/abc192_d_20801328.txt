@@ -1,0 +1,51 @@
+問題文の引用元：https://atcoder.jp/contests/abc192/tasks/abc192_d
+D - Base nEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 400 点
+問題文 : 0 ～ 9 からなる文字列 X と、整数 M が与えられます。X に含まれる最も大きい数字を d とします。d+1 以上の整数 n を選んで X を n 進法表記の数とみなして得られる値のうち、M 以下であるようなものは何種類あるでしょうか？
+制約X は 0 ～ 9 のみからなるX の長さは 1 以上 60 以下X の先頭の文字は 0 ではない1 \leq M \leq 10^{18}入力入力は以下の形式で標準入力から与えられる。XM出力答えを出力せよ。
+
+
+
+x = input()
+m = int(input())
+
+
+if x == "1" or int(x) == m:
+    print(1)
+    exit()
+
+first_d = int(max(x))
+
+if first_d > m:
+    print(0)
+    exit()
+
+
+def Base_10_to_n(X, n):
+    ans = 0
+    base = 1
+    for i in range(len(X)):
+        ans += int(X[-i - 1]) * base
+        base *= n
+    return ans
+
+
+ok = first_d
+ng = 1000000000000000001
+while abs(ok - ng) > 1:
+    mid = (ok + ng) // 2
+    x2 = Base_10_to_n(x, mid)
+    if x2 <= m:
+        ok = mid
+    else:
+        ng = mid
+
+
+if int(x) < 10:
+    print(1)
+elif ok > m:
+    print(0)
+else:
+    print(ok - first_d)
+
