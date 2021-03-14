@@ -1,0 +1,272 @@
+問題文の引用元：https://atcoder.jp/contests/abc017/tasks/abc017_4
+D - サプリメントEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 3 sec / Memory Limit : 256 MB
+問題文 : 健康志向の高橋君は通販で購入したサプリメントを摂取することにした。サプリメントは N 個あり、1 から N まで番号が付けられている。また、サプリメントの味は M 種類あり、1 から M まで番号が付けられている。サプリメント i (1 ≦ i ≦ N) の味は f_i (1 ≦ f_i ≦ M) である。高橋君はサプリメントを番号順に複数日かけて摂取する予定である。高橋君はサボらないように、サプリメントが 1 つ以上残っている場合はその日中に必ず 1 つ以上サプリメントを摂取しなければならないという規則を定めた。高橋君は強靭な肉体を持っているため、1 日にどれだけサプリメントを摂取しても大丈夫だが、同じ味には飽きてしまうので、同じ日に同じ味のサプリメントを 2 つ以上摂取することはできない。高橋君は、サプリメントの摂取方法の是非について吟味するため、このような条件下で全部で何通りの摂取方法があるかを知りたい。ここで 2 つの摂取方法についてそれらが違うというのは、ある日について摂取したサプリメントの番号の組み合わせが異なることを定義する。入力入力は以下の形式で標準入力から与えられる。N Mf_1f_2:f_N1 行目には、2 つの整数 N (1 ≦ N ≦ 100,000) と M (1 ≦ M ≦ 100,000) が空白区切りで書かれている。これはサプリメントが N 個あり、味の種類が M 種類あることを表す。2 行目から N 行には、サプリメントの味に関する情報が与えられる。これら N 行のうち上から i (1 ≦ i ≦ N) 行目には整数 f_i (1 ≦ f_i ≦ M) が書かれている。これは、サプリメント i の味が f_i であることを表す。部分点この問題には部分点が設定されている。N ≦ 5,000 かつ M ≦ 5,000 を満たすデータセット 1 に正解した場合は、上記とは別に 30 点が与えられる。追加
+制約のないデータセット 2 に正解した場合は、上記とは別に 70 点が与えられる。出力摂取方法の総数を 1,000,000,007 (= 1000000007) で割ったあまりを 1 行に出力せよ。出力の末尾にも改行を入れること。
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+#pragma GCC target("avx2")
+#pragma GCC optimize("O3")
+#pragma GCC optimize("unroll-loops")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef pair<int, int> P;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define fi first
+#define se second
+// #include <atcoder/all>
+// using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T, class U>
+inline bool chmax(T& a, U b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T, class U>
+inline bool chmin(T& a, U b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T>
+inline void dump(T& v) {
+    irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+}
+template <class T, class U>
+inline void dump(pair<T, U>& p) {
+    cout << p.first << " " << p.second << '\n';
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 1000000007;  // 998244353;
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+struct mint {
+    ll x;
+    mint(ll _x = 0) : x((_x % MOD + MOD) % MOD) {}
+
+    /* 初期化子 */
+    mint operator+() const { return mint(x); }
+    mint operator-() const { return mint(-x); }
+
+    /* 代入演算子 */
+    mint& operator+=(const mint a) {
+        if ((x += a.x) >= MOD) x -= MOD;
+        return *this;
+    }
+    mint& operator-=(const mint a) {
+        if ((x += MOD - a.x) >= MOD) x -= MOD;
+        return *this;
+    }
+    mint& operator*=(const mint a) {
+        (x *= a.x) %= MOD;
+        return *this;
+    }
+    mint& operator/=(const mint a) {
+        x *= modinv(a).x;
+        x %= MOD;
+        return (*this);
+    }
+    mint& operator%=(const mint a) {
+        x %= a.x;
+        return (*this);
+    }
+    mint& operator++() {
+        ++x;
+        if (x >= MOD) x -= MOD;
+        return *this;
+    }
+    mint& operator--() {
+        if (!x) x += MOD;
+        --x;
+        return *this;
+    }
+    mint& operator&=(const mint a) {
+        x &= a.x;
+        return (*this);
+    }
+    mint& operator|=(const mint a) {
+        x |= a.x;
+        return (*this);
+    }
+    mint& operator^=(const mint a) {
+        x ^= a.x;
+        return (*this);
+    }
+    mint& operator<<=(const mint a) {
+        x *= pow(2, a).x;
+        return (*this);
+    }
+    mint& operator>>=(const mint a) {
+        x /= pow(2, a).x;
+        return (*this);
+    }
+
+    /* 算術演算子 */
+    mint operator+(const mint a) const {
+        mint res(*this);
+        return res += a;
+    }
+    mint operator-(const mint a) const {
+        mint res(*this);
+        return res -= a;
+    }
+    mint operator*(const mint a) const {
+        mint res(*this);
+        return res *= a;
+    }
+    mint operator/(const mint a) const {
+        mint res(*this);
+        return res /= a;
+    }
+    mint operator%(const mint a) const {
+        mint res(*this);
+        return res %= a;
+    }
+    mint operator&(const mint a) const {
+        mint res(*this);
+        return res &= a;
+    }
+    mint operator|(const mint a) const {
+        mint res(*this);
+        return res |= a;
+    }
+    mint operator^(const mint a) const {
+        mint res(*this);
+        return res ^= a;
+    }
+    mint operator<<(const mint a) const {
+        mint res(*this);
+        return res <<= a;
+    }
+    mint operator>>(const mint a) const {
+        mint res(*this);
+        return res >>= a;
+    }
+
+    /* 条件演算子 */
+    bool operator==(const mint a) const noexcept { return x == a.x; }
+    bool operator!=(const mint a) const noexcept { return x != a.x; }
+    bool operator<(const mint a) const noexcept { return x < a.x; }
+    bool operator>(const mint a) const noexcept { return x > a.x; }
+    bool operator<=(const mint a) const noexcept { return x <= a.x; }
+    bool operator>=(const mint a) const noexcept { return x >= a.x; }
+
+    /* ストリーム挿入演算子 */
+    friend istream& operator>>(istream& is, mint& m) {
+        is >> m.x;
+        m.x = (m.x % MOD + MOD) % MOD;
+        return is;
+    }
+    friend ostream& operator<<(ostream& os, const mint& m) {
+        os << m.x;
+        return os;
+    }
+
+    /* その他の関数 */
+    mint modinv(mint a) { return pow(a, MOD - 2); }
+    mint pow(mint x, mint n) {
+        mint res = 1;
+        while (n.x > 0) {
+            if ((n % 2).x) res *= x;
+            x *= x;
+            n.x /= 2;
+        }
+        return res;
+    }
+};
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vi v(n);
+    rep(i, n) cin >> v[i];
+    vi same(n, n);
+    map<int, int> ma;
+    map<int, int> cnt;
+    int same2 = n;
+    for (int i = n - 1; i >= 0; i--) {
+        cnt[v[i]]++;
+        if (ma.find(v[i]) != ma.end()) {
+            chmin(same[i], ma[v[i]]);
+        }
+        if (cnt[v[i]] >= 2) {
+            chmin(same2, same[i]);
+        }
+        chmin(same[i], same2);
+        ma[v[i]] = i;
+    }
+    // dump(same);
+    vector<mint> dp(n + 1);
+    dp[0] = 1;
+    rep(i, n) {
+        int skip = same[i];
+        for (int j = i + 1; j <= skip; j++) {
+            dp[j] += dp[i];
+        }
+    }
+    fin(dp[n].x);
+}
