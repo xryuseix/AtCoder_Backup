@@ -1,0 +1,8 @@
+問題文の引用元：https://atcoder.jp/contests/code-festival-2014-qualb/tasks/code_festival_qualB_a
+A - あるピアニストEditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 256 MB
+問題文 : あるピアニストは両手を使って、2 つの曲を同時に演奏することができます。つまり、右手と左手で異なる曲を同時に演奏します。片方の曲の演奏時間は A 秒で、もう片方の曲の演奏時間は B 秒です。このピアニストはこれら異なる 2 曲を同時に演奏し始めます。よって、ステージ上にいる時間はこれらの演奏時間のうち長い方と一致します。ピアニストがステージ上にいる時間を求めてください。入力入力は以下の形式で標準入力から与えられるA B1 行目にはピアニストが弾く 2 曲の演奏時間を表す 2 つの整数 A,B(1 ≦ A,B ≦ 1000) が空白区切りで与えられる。出力ピアニストがステージ上にいる時間を 1 行で出力せよ。出力の末尾には改行をいれること。
+
+
+
+print(max(map(int,input().split())))
