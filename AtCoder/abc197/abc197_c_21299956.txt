@@ -1,0 +1,145 @@
+問題文の引用元：https://atcoder.jp/contests/abc197/tasks/abc197_c
+C - ORXOREditorial / $(function() {var ts = $('#task-statement span.lang');if (ts.children('span').size() <= 1) {$('#task-lang-btn').hide();ts.children('span').show();return;}var REMEMBER_LB = 5;var LS_KEY = 'task_lang';var taskLang = getLS(LS_KEY) || '';var changeTimes = 0;if (taskLang == 'ja' || taskLang == 'en') {changeTimes = REMEMBER_LB;} else {var changeTimes = parseInt(taskLang, 10);if (isNaN(changeTimes)) {changeTimes = 0;delLS(LS_KEY);}changeTimes++;taskLang = LANG;}ts.children('span.lang-' + taskLang).show();$('#task-lang-btn span').click(function() {var l = $(this).data('lang');ts.children('span').hide();ts.children('span.lang-' + l).show();if (changeTimes < REMEMBER_LB) setLS(LS_KEY, changeTimes);else setLS(LS_KEY, l);});});
+Time Limit : 2 sec / Memory Limit : 1024 MB
+配点 : 300 点
+問題文 : 長さ N の数列 A が与えられます。この数列を、1 つ以上の空でない連続した区間に分けます。その後、分けた各区間で、区間内の数のビット単位 \mathrm{OR} を計算します。こうして得られた全ての値のビット単位 \mathrm{XOR} として考えられる最小値を求めてください。              ビット単位 \mathrm{OR} 演算とは                整数 A, B のビット単位 \mathrm{OR}、A\ \mathrm{OR}\ B は以下のように定義されます。                    A\ \mathrm{OR}\ B を二進表記した際の 2^k (k \geq 0) の位の数は、A, B を二進表記した際の 2^k の位の数のうち少なくとも片方が 1 であれば 1、そうでなければ 0 である。                例えば、3\ \mathrm{OR}\ 5 = 7 となります (二進表記すると: 011\ \mathrm{OR}\ 101 = 111)。          一般に k 個の整数 p_1, p_2, p_3, \dots, p_k のビット単位 \mathrm{OR} は (\dots ((p_1\ \mathrm{OR}\ p_2)\ \mathrm{OR}\ p_3)\ \mathrm{OR}\ \dots\ \mathrm{OR}\ p_k) と定義され、これは p_1, p_2, p_3, \dots p_k の順番によらないことが証明できます。                  ビット単位 \mathrm{XOR} 演算とは                整数 A, B のビット単位 \mathrm{XOR} 、A\ \mathrm{XOR}\ B は、以下のように定義されます。                    A\ \mathrm{XOR}\ B を二進表記した際の 2^k (k \geq 0) の位の数は、A, B を二進表記した際の 2^k の位の数のうち一方のみが 1 であれば 1、そうでなければ 0 である。                例えば、3\ \mathrm{XOR}\ 5 = 6 となります (二進表記すると: 011\ \mathrm{XOR}\ 101 = 110)。          一般に k 個以上の整数 p_1, p_2, p_3, \dots, p_k のビット単位 \mathrm{XOR} は (\dots ((p_1\ \mathrm{XOR}\ p_2)\ \mathrm{XOR}\ p_3)\ \mathrm{XOR}\ \dots\ \mathrm{XOR}\ p_k) と定義され、これは p_1, p_2, p_3, \dots p_k の順番によらないことが証明できます。      
+制約1 \le N \le 200 \le A_i \lt 2^{30}入力に含まれる値は全て整数である入力入力は以下の形式で標準入力から与えられる。NA_1 A_2 A_3 \dots A_N出力答えを出力せよ。  
+
+
+
+#include <algorithm>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <deque>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
+#pragma GCC target("avx2")
+#pragma GCC optimize("O3")
+#pragma GCC optimize("unroll-loops")
+using namespace std;
+typedef long double ld;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef vector<int> vi;
+typedef vector<char> vc;
+typedef vector<bool> vb;
+typedef vector<double> vd;
+typedef vector<string> vs;
+typedef vector<ll> vll;
+typedef vector<pair<int, int>> vpii;
+typedef vector<pair<ll, ll>> vpll;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<vc> vvc;
+typedef vector<vs> vvs;
+typedef vector<vll> vvll;
+typedef pair<int, int> P;
+typedef map<int, int> mii;
+typedef set<int> si;
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define rrep(i, n) for (int i = 1; i <= (n); ++i)
+#define irep(it, stl) for (auto it = stl.begin(); it != stl.end(); it++)
+#define drep(i, n) for (int i = (n)-1; i >= 0; --i)
+#define fin(ans) cout << (ans) << '\n'
+#define STLL(s) strtoll(s.c_str(), NULL, 10)
+#define mp(p, q) make_pair(p, q)
+#define pb(n) push_back(n)
+#define all(a) a.begin(), a.end()
+#define Sort(a) sort(a.begin(), a.end())
+#define Rort(a) sort(a.rbegin(), a.rend())
+#define fi first
+#define se second
+// #include <atcoder/all>
+// using namespace atcoder;
+constexpr int dx[8] = {1, 0, -1, 0, 1, -1, -1, 1};
+constexpr int dy[8] = {0, 1, 0, -1, 1, 1, -1, -1};
+template <class T, class U>
+inline bool chmax(T& a, U b) {
+    if (a < b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T, class U>
+inline bool chmin(T& a, U b) {
+    if (a > b) {
+        a = b;
+        return 1;
+    }
+    return 0;
+}
+template <class T, class U>
+ostream& operator<<(ostream& os, pair<T, U>& p) {
+    cout << "(" << p.first << ", " << p.second << ")";
+    return os;
+}
+template <class T>
+inline void dump(T& v) {
+    if (v.size() > 100) {
+        cout << "ARRAY IS TOO LARGE!!!" << endl;
+    } else {
+        irep(i, v) { cout << (*i) << ((i == --v.end()) ? '\n' : ' '); }
+    }
+}
+template <class T, class U>
+inline void dump(map<T, U>& v) {
+    if (v.size() > 100) {
+        cout << "ARRAY IS TOO LARGE!!!" << endl;
+    } else {
+        irep(i, v) { cout << i->first << " " << i->second << '\n'; }
+    }
+}
+template <class T, class U>
+inline void dump(pair<T, U>& p) {
+    cout << p.first << " " << p.second << '\n';
+}
+inline void yn(const bool b) { b ? fin("yes") : fin("no"); }
+inline void Yn(const bool b) { b ? fin("Yes") : fin("No"); }
+inline void YN(const bool b) { b ? fin("YES") : fin("NO"); }
+const int INF = INT_MAX;
+constexpr ll LLINF = 1LL << 61;
+constexpr ll MOD = 1000000007;  // 998244353;  //
+constexpr ld EPS = 1e-11;
+
+/* --------------------   ここまでテンプレ   -------------------- */
+
+int n;
+
+ll calc(vi& v, int bit) {
+    int xo = 0;
+    int orr = 0;
+    rep(i, n) {
+        orr |= v[i];
+        if ((bit >> i) & 1) {
+            xo ^= orr;
+            orr = 0;
+        }
+    }
+    xo ^= orr;
+    // cout << bit << " " << xo << endl;
+    return xo;
+}
+
+int main() {
+    cin >> n;
+    vi v(n);
+    rep(i, n) cin >> v[i];
+    ll ans = LLINF;
+    rep(bit, 1LL << (n - 1)) { chmin(ans, calc(v, bit)); }
+    fin(ans);
+}
